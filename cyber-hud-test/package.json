@@ -1,0 +1,22 @@
+{
+  "name": "cyber-hud-test",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "preview": "rea preview",
+    "render": "rea render CyberHudShowcase out-cyberpunk.mp4",
+    "cut": "rea cut",
+    "probe": "rea probe",
+    "validate": "rea validate"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "remotion": "^4.0.0",
+    "@remotion/cli": "^4.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/react": "^18.2.0"
+  }
+}

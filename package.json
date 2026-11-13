@@ -1,0 +1,39 @@
+{
+  "name": "antigravity-remotion-skills",
+  "version": "1.0.0",
+  "description": "Remotion Engine for Antigravity (REA) - Autonomous video motion graphics skills, plugins, and CLI for Google Antigravity 2.0",
+  "main": "bin/rea-cli.js",
+  "bin": {
+    "rea": "./bin/rea-cli.js"
+  },
+  "scripts": {
+    "test": "node bin/rea-cli.js --help",
+    "rea": "node bin/rea-cli.js",
+    "list-plugins": "node bin/rea-cli.js list-plugins"
+  },
+  "keywords": [
+    "antigravity",
+    "antigravity-agent",
+    "remotion",
+    "motion-graphics",
+    "video-generation",
+    "ai-agent",
+    "rea",
+    "dastras"
+  ],
+  "author": "DASTRAS",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "typescript": "^5.0.0"
+  }
+}

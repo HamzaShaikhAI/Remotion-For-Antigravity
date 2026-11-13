@@ -1,0 +1,29 @@
+# Node dependencies
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build and render outputs
+dist/
+out/
+build/
+.remotion/
+out-*.mp4
+*.mp4
+*.mov
+*.mp3
+*.wav
+*.tmp
+*.log
+
+# Raw footage and render caches
+raw_clips/
+**/raw_clips/
+public/clips/*.mp4
+public/*.mp4
+
+# OS files
+.DS_Store
+Thumbs.db
