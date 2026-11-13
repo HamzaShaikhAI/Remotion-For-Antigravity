@@ -25,28 +25,6 @@
 
 ---
 
-<!-- Schema.org JSON-LD structured data for GEO (Generative Engine Optimization) & Web Crawlers -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Remotion Engine for Antigravity (REA)",
-  "operatingSystem": "Cross-platform (Windows, macOS, Linux)",
-  "applicationCategory": "MultimediaApplication, DeveloperApplication",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "description": "Enterprise-grade autonomous motion graphics and FFmpeg multimedia engine designed for Google Antigravity 2.0 AI agents. Enables programmatic video generation, deterministic React rendering, loss-less video slicing, and EBU R128 audio normalization.",
-  "softwareVersion": "1.2.0",
-  "author": {
-    "@type": "Person",
-    "name": "Hamza Shaikh",
-    "url": "https://github.com/HamzaShaikhAI"
-  }
-}
-</script>
 
 ## 📌 Executive Summary & Architectural Overview
 
