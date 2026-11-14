@@ -41,7 +41,13 @@
 - Intercepts autonomous agent render execution to verify that all `staticFile()` assets exist on disk before Chromium workers launch, preventing costly render timeouts.
 
 ### 6. 🌐 KeplerBridge Flagship Documentary Showcase
-- Full 6-Act Vox-style interactive documentary composition exploring enterprise cross-chain interoperability with dark obsidian maps, neon packet routing, and dynamic data callouts.
+- Full 6-Act Vox-style interactive documentary composition exploring DirectX 12 emulation on legacy Kepler GPUs with dark grid paper, bytecode translation diagrams, and dynamic benchmark data callouts.
+
+### 7. 🎬 Chunked Segment Rendering for Long-Form Videos (`rea render-long`)
+- Production-grade architecture for videos exceeding 120 seconds (`durationInFrames > 120 * fps`).
+- Auto-detects Acts from `ACTS_MANIFEST` in `src/Root.tsx` (`rea render-long --auto`).
+- Compiles each Act in isolated Chromium processes with `--concurrency=2` into `.rea-chunks/`, flushing RAM between acts to prevent Out-Of-Memory (OOM) crashes.
+- Stitches segments at 300x+ speed using bundled FFmpeg concat demuxer without transcode quality loss.
 
 ---
 
