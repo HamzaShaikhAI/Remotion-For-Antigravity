@@ -1,0 +1,104 @@
+[
+  {
+    "file": "audio/seismo_paced/seismo_01.wav",
+    "startFrame": 0,
+    "durationFrames": 143,
+    "durationSeconds": 4.777551
+  },
+  {
+    "file": "audio/seismo_paced/seismo_02.wav",
+    "startFrame": 143,
+    "durationFrames": 61,
+    "durationSeconds": 2.039546
+  },
+  {
+    "file": "audio/seismo_paced/seismo_03.wav",
+    "startFrame": 204,
+    "durationFrames": 179,
+    "durationSeconds": 5.95941
+  },
+  {
+    "file": "audio/seismo_paced/seismo_04.wav",
+    "startFrame": 383,
+    "durationFrames": 122,
+    "durationSeconds": 4.054467
+  },
+  {
+    "file": "audio/seismo_paced/seismo_05.wav",
+    "startFrame": 505,
+    "durationFrames": 165,
+    "durationSeconds": 5.495465
+  },
+  {
+    "file": "audio/seismo_paced/seismo_06.wav",
+    "startFrame": 670,
+    "durationFrames": 54,
+    "durationSeconds": 1.79102
+  },
+  {
+    "file": "audio/seismo_paced/seismo_07.wav",
+    "startFrame": 724,
+    "durationFrames": 151,
+    "durationSeconds": 5.035873
+  },
+  {
+    "file": "audio/seismo_paced/seismo_08.wav",
+    "startFrame": 875,
+    "durationFrames": 98,
+    "durationSeconds": 3.279229
+  },
+  {
+    "file": "audio/seismo_paced/seismo_09.wav",
+    "startFrame": 973,
+    "durationFrames": 138,
+    "durationSeconds": 4.595102
+  },
+  {
+    "file": "audio/seismo_paced/seismo_10.wav",
+    "startFrame": 1111,
+    "durationFrames": 89,
+    "durationSeconds": 2.982676
+  },
+  {
+    "file": "audio/seismo_paced/seismo_11.wav",
+    "startFrame": 1200,
+    "durationFrames": 119,
+    "durationSeconds": 3.968299
+  },
+  {
+    "file": "audio/seismo_paced/seismo_12.wav",
+    "startFrame": 1319,
+    "durationFrames": 76,
+    "durationSeconds": 2.523583
+  },
+  {
+    "file": "audio/seismo_paced/seismo_13.wav",
+    "startFrame": 1395,
+    "durationFrames": 76,
+    "durationSeconds": 2.523719
+  },
+  {
+    "file": "audio/seismo_paced/seismo_14.wav",
+    "startFrame": 1471,
+    "durationFrames": 107,
+    "durationSeconds": 3.571655
+  },
+  {
+    "file": "audio/seismo_paced/seismo_15.wav",
+    "startFrame": 1578,
+    "durationFrames": 176,
+    "durationSeconds": 5.873424
+  },
+  {
+    "file": "audio/seismo_paced/seismo_16.wav",
+    "startFrame": 1754,
+    "durationFrames": 67,
+    "durationSeconds": 2.222177
+  },
+  {
+    "file": "audio/seismo_paced/seismo_17.wav",
+    "startFrame": 1821,
+    "durationFrames": 121,
+    "durationSeconds": 4.044717
+  }
+]

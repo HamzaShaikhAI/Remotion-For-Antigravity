@@ -4022,6 +4022,68 @@ function handleCloudCost(args) {
   }
 }
 
+async function handleLambdaRender(args) {
+  const compId = args[1];
+  if (!compId || compId.startsWith('-')) {
+    logError('Composition ID required: rea lambda-render <compositionId> -b <bucketName> [-r <region>]');
+    process.exit(1);
+  }
+
+  const bucketIdx = args.findIndex((a) => a === '-b' || a === '--bucket' || a.startsWith('--bucket='));
+  let bucket = '';
+  if (bucketIdx !== -1) {
+    bucket = args[bucketIdx].includes('=') ? args[bucketIdx].split('=')[1] : args[bucketIdx + 1];
+  }
+
+  if (!bucket) {
+    logError('AWS S3 bucket name is required: -b <bucketName> or --bucket=<bucketName>');
+    process.exit(1);
+  }
+
+  const regionIdx = args.findIndex((a) => a === '-r' || a === '--region' || a.startsWith('--region='));
+  let region = 'ap-south-1';
+  if (regionIdx !== -1) {
+    region = args[regionIdx].includes('=') ? args[regionIdx].split('=')[1] : args[regionIdx + 1];
+  }
+
+  try {
+    const { deployAndRenderLambda } = require('../src/engines/backend');
+    await deployAndRenderLambda({
+      compositionId: compId,
+      bucketName: bucket,
+      region,
+    }, {});
+  } catch (err) {
+    logError(`Lambda render error: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+async function handleMusic(args) {
+  const prompt = args[1];
+  if (!prompt || prompt.startsWith('-')) {
+    logError('Prompt required: rea music "<prompt>" [-d <duration>] [-b <bpm>] [-o <outPath>]');
+    process.exit(1);
+  }
+
+  const durArg = args.find((a) => a.startsWith('-d=') || a.startsWith('--duration='))?.split('=')[1] ||
+    (args.includes('-d') ? args[args.indexOf('-d') + 1] : args.includes('--duration') ? args[args.indexOf('--duration') + 1] : '30');
+  
+  const bpmArg = args.find((a) => a.startsWith('-b=') || a.startsWith('--bpm='))?.split('=')[1] ||
+    (args.includes('-b') ? args[args.indexOf('-b') + 1] : args.includes('--bpm') ? args[args.indexOf('--bpm') + 1] : '128');
+
+  const outArg = args.find((a) => a.startsWith('-o=') || a.startsWith('--out='))?.split('=')[1] ||
+    (args.includes('-o') ? args[args.indexOf('-o') + 1] : args.includes('--out') ? args[args.indexOf('--out') + 1] : 'public/audio/custom_soundtrack.mp3');
+
+  try {
+    const { generateAiSoundtrack } = require('../src/engines/backend');
+    await generateAiSoundtrack(prompt, parseFloat(durArg), parseFloat(bpmArg), outArg);
+  } catch (err) {
+    logError(`Music generation error: ${err.message}`);
+    process.exit(1);
+  }
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -4073,6 +4135,7 @@ ${colors.bold}DECENTRALIZED ENGINES COMMANDS (V2.2):${colors.reset}
   ${colors.green}fleet "<!edit combat Zenitsu audio=...>"${colors.reset}      Fleet Commander: Real-time autonomous bot command dispatcher
 
 ${colors.bold}AUDIO & SOUND DESIGN COMMANDS (V2):${colors.reset}
+  ${colors.green}music "<prompt>" [-d 30] [-b 128] [-o out.mp3]${colors.reset} AI Custom Music & Soundtrack Engine (ACE-Step 1.5 & Procedural)
   ${colors.green}install-skill${colors.reset}                                    Install skill globally into ~/.gemini/config/skills/
   ${colors.green}sfx <whoosh|pop|riser|typewriter> [out.wav]${colors.reset}      Deterministic 44.1 kHz WAV procedural sound synthesis
   ${colors.green}voice "<text>" [out.wav] [--provider=gemini|edge]${colors.reset} Dual-provider (Gemini 3.8 Flash TTS / Edge) speech engine
@@ -4093,6 +4156,7 @@ ${colors.bold}REMOTION ENGINE & AGENT COMMANDS:${colors.reset}
   ${colors.green}add <plugin-name>${colors.reset}                                  Installs a REA visual plugin (transitions, particles, etc.)
   ${colors.green}preview [options]${colors.reset}                                  Launches Remotion Studio at http://localhost:3000
   ${colors.green}render <comp-id> [out.mp4]${colors.reset}                         Compiles video with pre-flight asset audits
+  ${colors.green}lambda-render <comp-id> -b <bucket> [-r region]${colors.reset}  Distributed AWS Lambda serverless parallel rendering
   ${colors.green}render-long <Comp1,Comp2..|--auto> [out.mp4]${colors.reset} Chunked multi-act rendering + zero-loss concat (memory-safe)
   ${colors.green}validate [comp-id]${colors.reset}                                Audits project assets and staticFile references
   ${colors.green}list-plugins${colors.reset}                                      Displays all available REA visual plugins
@@ -4300,6 +4364,12 @@ async function main() {
       break;
     case 'hook':
       handleHook(args[1]);
+      break;
+    case 'lambda-render':
+      await handleLambdaRender(args);
+      break;
+    case 'music':
+      await handleMusic(args);
       break;
     default:
       logError(`Unknown command: "${command}"`);

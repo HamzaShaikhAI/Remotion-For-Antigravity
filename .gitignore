@@ -44,3 +44,8 @@ funk music/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Binaries & scratch renders
+bin/ffmpeg/
+hyperframes-reel/
+test-frame.jpeg

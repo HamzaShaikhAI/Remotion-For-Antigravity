@@ -17,3 +17,4 @@ export * from './SpectralDenoiseCleaner';
 export * from './LraMastering';
 export * from './GranularTimeStretcher';
 export * from './SubBassHarmonicExciter';
+export * from './AiMusicGenerator';
