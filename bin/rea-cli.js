@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * REA CLI - Remotion Engine for Antigravity (v2.0.0-rc.1)
+ * REA CLI - Remotion Engine for Antigravity (v2.3.0-rc.1)
  * Enterprise-grade orchestration, video rendering, procedural SFX synthesis,
  * AI voiceover generation, and FFmpeg multimedia engine built exclusively
  * for Google Antigravity 2.0.
@@ -12,7 +12,7 @@ const path = require('path');
 const os = require('os');
 const { spawn, execSync } = require('child_process');
 
-const VERSION = '2.2.0-rc.1';
+const VERSION = '2.3.0-rc.1';
 
 // ANSI terminal colors
 const colors = {
