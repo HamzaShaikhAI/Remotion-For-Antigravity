@@ -4089,6 +4089,49 @@ async function handleMusic(args) {
   }
 }
 
+async function handleTrainMultistep(args) {
+  const prompt = args[1];
+  if (!prompt || prompt.startsWith('-')) {
+    logError('Prompt required: rea train-multistep "<prompt>" [--archetype=tech] [--ratio=9:16] [--out=path.tsx]');
+    process.exit(1);
+  }
+
+  const archArg = args.find((a) => a.startsWith('--archetype='))?.split('=')[1] || 'tech';
+  const ratioArg = args.find((a) => a.startsWith('--ratio='))?.split('=')[1] || '9:16';
+  const outArg = args.find((a) => a.startsWith('--out='))?.split('=')[1];
+
+  try {
+    const { MultiStepTrainer } = require('../src/engines/backend');
+    await MultiStepTrainer.executeTrainingLoop(prompt, {
+      archetype: archArg,
+      ratio: ratioArg,
+      out: outArg,
+    });
+  } catch (err) {
+    logError(`Multi-step training loop error: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+async function handleSfxAlign(args) {
+  const target = args[1];
+  if (!target || target.startsWith('-')) {
+    logError('Target required: rea sfx-align <comp-id | component.tsx | script.json> [out.json] [--fps=60]');
+    process.exit(1);
+  }
+
+  const outReport = args[2] && !args[2].startsWith('-') ? args[2] : undefined;
+  const fpsArg = args.find((a) => a.startsWith('--fps='))?.split('=')[1] || '60';
+
+  try {
+    const { PrecisionSfxAligner } = require('../src/engines/backend');
+    PrecisionSfxAligner.alignCompositionSfx(target, outReport, parseInt(fpsArg, 10));
+  } catch (err) {
+    logError(`SFX alignment error: ${err.message}`);
+    process.exit(1);
+  }
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -4109,6 +4152,7 @@ ${colors.bold}EDITORIAL INTUITION & TASTE COMMANDS (V2.2):${colors.reset}
   ${colors.green}intuition-fork${colors.reset}                        Platform Forks: Tailor for TikTok (15s), Shorts (30s) & Reels (20s)
 
 ${colors.bold}NEXT-GEN GENERATIVE & INTERACTIVE COMMANDS (V2.3):${colors.reset}
+  ${colors.green}train-multistep "<prompt>" [--archetype=...]${colors.reset} 4-Phase Iterative Refinement Loop (Blueprint->Draft->Audit->AST Patch)
   ${colors.green}generate "<prompt>" [--archetype=...]${colors.reset}       Freeform: Prompt-to-Remotion component synthesizer (saas|data|tech|abstract)
   ${colors.green}tweak <component.tsx> "<instruction>"${colors.reset}         Interactive: Conversational fine-tuning loop (timing, typography, colors)
   ${colors.green}diagram <flowchart|code|chart> [out.tsx]${colors.reset}      Technical: Dynamic SVG self-drawing paths & architecture diagrams
@@ -4140,6 +4184,7 @@ ${colors.bold}DECENTRALIZED ENGINES COMMANDS (V2.2):${colors.reset}
   ${colors.green}fleet "<!edit combat Zenitsu audio=...>"${colors.reset}      Fleet Commander: Real-time autonomous bot command dispatcher
 
 ${colors.bold}AUDIO & SOUND DESIGN COMMANDS (V2):${colors.reset}
+  ${colors.green}sfx-align <comp.tsx|script.json> [out.json]${colors.reset}   Precision Keyframe-Locked SFX Engine (Zero-drift spring alignment)
   ${colors.green}music "<prompt>" [-d 30] [-o out.mp3] [--provider=lyria]${colors.reset} Google Lyria 3.5 & Cloud Music Engine (@google/genai)
   ${colors.green}install-skill${colors.reset}                                    Install skill globally into ~/.gemini/config/skills/
   ${colors.green}sfx <whoosh|pop|riser|typewriter> [out.wav]${colors.reset}      Deterministic 44.1 kHz WAV procedural sound synthesis
@@ -4375,6 +4420,12 @@ async function main() {
       break;
     case 'music':
       await handleMusic(args);
+      break;
+    case 'train-multistep':
+      await handleTrainMultistep(args);
+      break;
+    case 'sfx-align':
+      await handleSfxAlign(args);
       break;
     default:
       logError(`Unknown command: "${command}"`);

@@ -1,0 +1,96 @@
+{
+  "prompt": "The Death of Cloud Computing: Why Local AI is Winning",
+  "timestamp": "2026-11-14T18:41:06.144Z",
+  "blueprint": {
+    "title": "TheDeathOfCloudComputingWhyLoc",
+    "archetype": "tech",
+    "aspectRatio": "9:16",
+    "fps": 60,
+    "totalDurationFrames": 1800,
+    "scenes": [
+      {
+        "id": "scene_01_hook",
+        "startFrame": 0,
+        "durationFrames": 360,
+        "headline": "THE DEATH OF CLOUD COMPUTING",
+        "emphasisWord": "DEATH",
+        "motionIntensity": "explosive",
+        "sfxTrigger": "sfx/whoosh-impact.wav"
+      },
+      {
+        "id": "scene_02_tension",
+        "startFrame": 360,
+        "durationFrames": 540,
+        "headline": "LOCAL AI RUNS AT ZERO LATENCY",
+        "emphasisWord": "ZERO LATENCY",
+        "motionIntensity": "high",
+        "sfxTrigger": "sfx/whoosh.wav"
+      },
+      {
+        "id": "scene_03_climax",
+        "startFrame": 900,
+        "durationFrames": 540,
+        "headline": "TOTAL PRIVACY. INSTANT SCALE.",
+        "emphasisWord": "TOTAL PRIVACY",
+        "motionIntensity": "explosive",
+        "sfxTrigger": "sfx/whoosh-impact.wav"
+      },
+      {
+        "id": "scene_04_call_to_action",
+        "startFrame": 1440,
+        "durationFrames": 360,
+        "headline": "SHIP ON CLAUDE WITH REA",
+        "emphasisWord": "SHIP",
+        "motionIntensity": "medium",
+        "sfxTrigger": "sfx/whoosh.wav"
+      }
+    ],
+    "audioBed": "public/audio/active-phonk.mp3",
+    "safeZones": {
+      "bottomClearancePx": 280,
+      "rightActionBarMarginPx": 140
+    }
+  },
+  "draftComponentPath": "C:\\Users\\win10\\Documents\\antigravity-remotion-skills\\src\\compositions\\LocalAiVsCloud.tsx",
+  "finalComponentPath": "C:\\Users\\win10\\Documents\\antigravity-remotion-skills\\src\\compositions\\LocalAiVsCloud.tsx",
+  "auditPass1": {
+    "score": 82,
+    "grade": "B",
+    "velocityScore": 78,
+    "textCrowdingScore": 88,
+    "rhythmScore": 84,
+    "safeZoneCompliance": true,
+    "detectedFlaws": [
+      "Spring tension is slightly loose; recommend stiffness: 220, damping: 11 for snappy Claude-grade pop.",
+      "Scene 1 headline could utilize dynamic KaTeX-grade mathematical scaling on emphasis word.",
+      "Bottom watermark is within 80px; need full 280px clearance for TikTok action bar safety."
+    ],
+    "astPatches": [
+      {
+        "target": "spring stiffness",
+        "adjustment": "stiffness: 220, damping: 11, mass: 0.8"
+      },
+      {
+        "target": "headline scaling",
+        "adjustment": "transform: `scale(${springVal})`"
+      },
+      {
+        "target": "bottom clearance",
+        "adjustment": "marginBottom: 280"
+      }
+    ]
+  },
+  "auditPass2": {
+    "score": 96,
+    "grade": "A+",
+    "velocityScore": 97,
+    "textCrowdingScore": 95,
+    "rhythmScore": 96,
+    "safeZoneCompliance": true,
+    "detectedFlaws": [],
+    "astPatches": []
+  },
+  "iterations": 2,
+  "certifiedGrade": "A+",
+  "readyToRender": true
+}

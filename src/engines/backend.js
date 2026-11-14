@@ -1075,6 +1075,12 @@ async function generateAiSoundtrack(prompt, durationSec = 30, bpm = 128, outPath
   return AiMusicGenerator.fetchCloudSoundtrack(prompt, durationSec, outPath);
 }
 
+// --- 30. Precision Keyframe-Locked SFX Engine ---
+const { PrecisionSfxAligner } = require('./audio/PrecisionSfxAligner.ts');
+
+// --- 31. Multi-Step Iterative Training Loop ---
+const { MultiStepTrainer } = require('./orchestration/MultiStepTrainer.ts');
+
 module.exports = {
   extractActionSequences,
   separateStems,
@@ -1107,4 +1113,6 @@ module.exports = {
   generateAiSoundtrack,
   AiMusicGenerator,
   GoogleLyriaMusicEngine,
+  PrecisionSfxAligner,
+  MultiStepTrainer,
 };

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Verified Badge with Gradient and Checkmark -->
+  <defs>
+    <linearGradient id="verifiedGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#2563EB" />
+    </linearGradient>
+  </defs>
+  <!-- 12-Point Scalloped Rosette Badge -->
+  <path d="M50 8 L59 18 L72 17 L76 30 L88 35 L86 48 L93 58 L85 68 L86 81 L73 83 L66 94 L53 91 L43 98 L34 90 L21 91 L18 78 L6 73 L9 60 L2 50 L9 40 L6 27 L18 22 L21 9 L34 10 L43 2 Z" fill="url(#verifiedGrad)" />
+  <!-- Checkmark -->
+  <path d="M33 50 L45 62 L67 38" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

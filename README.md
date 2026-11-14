@@ -274,6 +274,51 @@ export const SynchronizedVisuals = () => {
 
 ---
 
+## ⚡ Claude-Level Smoothness & Architecture Upgrades
+
+### 1. The Multi-Step Iterative Training Loop (`rea train-multistep`)
+Instead of single-pass unmonitored code generation, REA enforces an autonomous 4-phase refinement pipeline:
+- **Phase 1 (Structural Blueprint):** Generates scene graphs, beat trigger offsets, duration maps, and safe-zone boundaries.
+- **Phase 2 (Draft Composition & Code):** Compiles the initial Remotion component with BrandAssets and Keyframe-Locked SFX.
+- **Phase 3 (Autonomous Director's Cut Audit):** Audits frame velocity, text crowding, and rhythm curves, generating a numerical score and flaw list.
+- **Phase 4 (Surgical JSON AST Patching):** Tightens spring tension (`stiffness: 220, damping: 11`), dynamic scaling, and safe-zone margins until certified at **Grade A (≥90/100)**.
+
+```bash
+# Execute 4-phase refinement loop
+node bin/rea-cli.js train-multistep "The Death of Cloud Computing: Why Local AI is Winning" --archetype=tech --ratio=9:16
+```
+
+### 2. Precision Keyframe-Locked SFX Engine (`KeyframeLockedSFX` & `rea sfx-align`)
+Eliminates loose audio drift by locking sound triggers directly to Remotion `spring()` progress values:
+
+```tsx
+import { KeyframeLockedSFX } from '../components/KeyframeLockedSFX';
+
+// Locks audio hit exactly when the visual spring hits its midpoint
+<KeyframeLockedSFX transitionFrame={360} sfxSrc="sfx/whoosh-impact.wav" volume={0.85} />
+```
+
+```bash
+# Scan composition keyframes and derive zero-drift SFX trigger manifests
+node bin/rea-cli.js sfx-align src/compositions/LocalAiVsCloud.tsx out-sfx.json
+```
+
+### 3. Guaranteed Brand Asset Registry (`src/assets/brand/`)
+Prevents AI hallucinations, corrupt emojis, and broken platform badges with verified vector SVGs:
+- **`claudeStar`:** Official Anthropic Claude terracotta starburst (`/assets/brand/claude-starburst.svg`).
+- **`terminalCursor`:** Glowing cyan developer prompt block (`/assets/brand/terminal-cursor.svg`).
+- **`verifiedCheck`:** Scalloped gradient verified checkmark (`/assets/brand/verified-check.svg`).
+
+```tsx
+import { BrandIcon } from '../assets/brand';
+
+<BrandIcon name="claudeStar" size={44} />
+<BrandIcon name="terminalCursor" size={40} />
+<BrandIcon name="verifiedCheck" size={28} />
+```
+
+---
+
 ## 🎨 Canvas Effects Matrix Showcase
 
 REA includes a zero-dependency, hardware-accelerated canvas filter engine in `src/engines/effects/CanvasEffectsMatrix.tsx` that replaces `@remotion/effects`:

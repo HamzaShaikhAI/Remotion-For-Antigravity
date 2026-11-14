@@ -3,315 +3,129 @@ import {
   AbsoluteFill,
   interpolate,
   spring,
-  staticFile,
   useCurrentFrame,
   useVideoConfig,
+  Audio,
+  staticFile,
 } from 'remotion';
-import { UniversalResponsiveContainer } from '../engines/multiformat/UniversalResponsiveContainer';
+import { BrandAssets, BrandIcon } from '../assets/brand';
+import { KeyframeLockedSFX } from '../components/KeyframeLockedSFX';
 
 export const LocalAiVsCloud: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
 
-  // Total Duration: 30 seconds = 900 frames @ 30fps (or 1800 frames @ 60fps)
-  // Normalizing timing using frame progress
-  const entrance = spring({
-    frame,
+  // Master 140 BPM Memphis Phonk Audio Track
+  const soundtrack = staticFile('audio/active-phonk.mp3');
+
+  // Scene timing thresholds
+  const s1End = 360;
+  const s2End = 900;
+  const s3End = 1440;
+
+  // Kinetic Camera Jitter on scene transitions
+  // Claude-grade Spring Dynamics with Kinetic Damping
+  const hookSpring = spring({
+    frame: frame % 360,
     fps,
-    config: { damping: 14, stiffness: 90 },
+    config: { damping: 11, stiffness: 220, mass: 0.8 },
   });
-
-  // Animated line chart progress (0 to 1 over frames 30 to 140)
-  const lineProgress = interpolate(frame, [30, 140], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-
-  // Phase 2: Telemetry Metrics reveal (frames 140 to 450)
-  const metricsEntrance = spring({
-    frame: Math.max(0, frame - 140),
-    fps,
-    config: { damping: 12, stiffness: 100 },
-  });
-
-  // Phase 3: Conclusion / Victory lockup (frames 450 to 900)
-  const conclusionEntrance = spring({
-    frame: Math.max(0, frame - 450),
-    fps,
-    config: { damping: 12, stiffness: 90 },
-  });
-
-  // Latency counters
-  const cloudLatency = Math.min(840, Math.floor(frame * 6));
-  const localLatency = Math.min(12, Math.floor(frame * 0.15) + 4);
 
   return (
-    <UniversalResponsiveContainer>
+    <AbsoluteFill
+      style={{
+        backgroundColor: '#090A0F',
+        fontFamily: "'Inter', -apple-system, sans-serif",
+        color: '#FFFFFF',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Background Audio */}
+      <Audio src={soundtrack} volume={0.8} />
+
+      {/* Keyframe-Locked Sound Effects */}
+      <KeyframeLockedSFX transitionFrame={0} sfxSrc="sfx/whoosh-impact.wav" volume={0.85} />
+      <KeyframeLockedSFX transitionFrame={360} sfxSrc="sfx/whoosh.wav" volume={0.8} />
+      <KeyframeLockedSFX transitionFrame={900} sfxSrc="sfx/whoosh-impact.wav" volume={0.9} />
+      <KeyframeLockedSFX transitionFrame={1440} sfxSrc="sfx/whoosh.wav" volume={0.85} />
+
+      {/* Rough Paper / Subtle Grain Grid Overlay */}
       <AbsoluteFill
         style={{
-          backgroundColor: '#f8fafc',
-          fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-          color: '#0f172a',
-          overflow: 'hidden',
+          opacity: 0.04,
+          backgroundImage: 'radial-gradient(circle at 1px 1px, #ffffff 1px, transparent 0)',
+          backgroundSize: '24px 24px',
         }}
-      >
-        {/* ------------------------------------------------------------- */}
-        {/* ROUGH PAPER TEXTURE OVERLAY                                   */}
-        {/* ------------------------------------------------------------- */}
-        <AbsoluteFill
-          style={{
-            opacity: 0.18,
-            mixBlendMode: 'multiply',
-            backgroundImage: `url(${staticFile('textures/paper-rough.png')})`,
-            backgroundSize: 'cover',
-            pointerEvents: 'none',
-          }}
-        />
+      />
 
-        {/* ------------------------------------------------------------- */}
-        {/* TOP HUD / SAFE-ZONE HEADER                                    */}
-        {/* ------------------------------------------------------------- */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 80,
-            left: 60,
-            right: 60,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            opacity: entrance,
-            zIndex: 40,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#2563eb', boxShadow: '0 0 10px #2563eb' }} />
-            <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: '0.12em', color: '#64748b', textTransform: 'uppercase' }}>
-              TECH DISRUPTION BRIEF · 2026
+      {/* SCENE 1: THE HOOK (0 - 6s) */}
+      {frame < s1End && (
+        <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', padding: '0 40px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 24 }}>
+            <BrandIcon name="claudeStar" size={44} />
+            <span style={{ fontSize: 24, letterSpacing: 4, textTransform: 'uppercase', color: '#D97757', fontWeight: 700 }}>
+              ANTHROPIC POWERED
             </span>
           </div>
-          <span style={{ fontSize: 13, fontWeight: 700, fontFamily: 'monospace', color: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)', padding: '4px 12px', borderRadius: 20 }}>
-            LOCAL NPU ERA
-          </span>
-        </div>
-
-        {/* ------------------------------------------------------------- */}
-        {/* ACCENT BLUE FLOW LINE & GRAPH                                 */}
-        {/* ------------------------------------------------------------- */}
-        <svg
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'none',
-            zIndex: 10,
-          }}
-        >
-          {/* Subtle Grid Lines */}
-          <line x1="80" y1="900" x2="1000" y2="900" stroke="#e2e8f0" strokeWidth="2" strokeDasharray="6 6" />
-          <line x1="80" y1="1200" x2="1000" y2="1200" stroke="#e2e8f0" strokeWidth="2" strokeDasharray="6 6" />
-
-          {/* Cloud Cost / Latency Ascending Line (Red) */}
-          <path
-            d="M 120 1250 Q 540 1150 960 750"
-            fill="none"
-            stroke="#ef4444"
-            strokeWidth="4"
-            strokeDasharray="2000"
-            strokeDashoffset={2000 * (1 - lineProgress)}
-            opacity="0.4"
-          />
-
-          {/* Local AI Efficiency Descending Curve (Electric Blue) */}
-          <path
-            d="M 120 750 Q 480 820 960 1320"
-            fill="none"
-            stroke="#2563eb"
-            strokeWidth="7"
-            strokeLinecap="round"
-            strokeDasharray="2000"
-            strokeDashoffset={2000 * (1 - lineProgress)}
-            filter="drop-shadow(0 6px 12px rgba(37, 99, 235, 0.35))"
-          />
-
-          {/* Dynamic Data Point Node on Blue Curve */}
-          {lineProgress > 0.05 && (
-            <circle
-              cx={120 + lineProgress * 840}
-              cy={750 + lineProgress * 570 + Math.sin(lineProgress * Math.PI) * 50}
-              r="10"
-              fill="#2563eb"
-              stroke="#ffffff"
-              strokeWidth="4"
-              filter="drop-shadow(0 4px 8px rgba(37, 99, 235, 0.5))"
-            />
-          )}
-        </svg>
-
-        {/* ------------------------------------------------------------- */}
-        {/* KINETIC DUAL-FONT TYPOGRAPHY & HERO SECTION                   */}
-        {/* ------------------------------------------------------------- */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '18%',
-            left: 70,
-            right: 140, // 15% right safe-zone buffer for TikTok/Shorts icons
-            transform: `translateY(${interpolate(entrance, [0, 1], [40, 0])}px)`,
-            opacity: entrance,
-            zIndex: 30,
-          }}
-        >
           <h1
             style={{
-              fontSize: 62,
+              transform: `scale(${interpolate(hookSpring, [0, 1], [0.88, 1.0])})`,
+              fontSize: 68,
+              lineHeight: 1.1,
               fontWeight: 900,
-              color: '#0f172a',
-              lineHeight: 1.12,
-              letterSpacing: '-0.03em',
+              textAlign: 'center',
+              textTransform: 'uppercase',
               margin: 0,
             }}
           >
-            The Death of{' '}
-            <span
-              style={{
-                fontFamily: 'Playfair Display, Georgia, serif',
-                fontStyle: 'italic',
-                fontWeight: 700,
-                color: '#2563eb',
-                textDecoration: 'underline',
-                textDecorationColor: 'rgba(37, 99, 235, 0.3)',
-              }}
-            >
-              Cloud AI.
-            </span>
+            THE <span style={{ color: '#D97757', fontStyle: 'italic', fontFamily: 'serif' }}>DEATH</span> OF CLOUD
           </h1>
+          <p style={{ fontSize: 28, color: '#94A3B8', marginTop: 20 }}>Why Local AI is Taking Over</p>
+        </AbsoluteFill>
+      )}
 
-          <p
-            style={{
-              fontSize: 26,
-              color: '#475569',
-              marginTop: 22,
-              lineHeight: 1.45,
-              fontWeight: 500,
-              maxWidth: 720,
-            }}
-          >
-            Why high-density local silicon is replacing centralized data centers forever.
-          </p>
-        </div>
-
-        {/* ------------------------------------------------------------- */}
-        {/* PHASE 2: TELEMETRY METRIC COMPARISON (Frames 140–450)         */}
-        {/* ------------------------------------------------------------- */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '46%',
-            left: 70,
-            right: 140,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 20,
-            transform: `translateY(${interpolate(metricsEntrance, [0, 1], [30, 0])}px)`,
-            opacity: metricsEntrance,
-            zIndex: 30,
-          }}
-        >
-          {/* Cloud API Card */}
-          <div
-            style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.85)',
-              border: '1px solid #e2e8f0',
-              borderRadius: 16,
-              padding: '20px 24px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.04)',
-            }}
-          >
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#ef4444', textTransform: 'uppercase' }}>
-                CENTRALIZED CLOUD API
-              </div>
-              <div style={{ fontSize: 24, fontWeight: 900, color: '#0f172a', marginTop: 4 }}>
-                {cloudLatency} ms Latency
-              </div>
-            </div>
-            <span style={{ fontSize: 28 }}>☁️ ❌</span>
+      {/* SCENE 2: TENSION & SPEED (6 - 15s) */}
+      {frame >= s1End && frame < s2End && (
+        <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', padding: '0 40px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+            <BrandIcon name="terminalCursor" size={40} />
+            <span style={{ fontSize: 26, color: '#00F5FF', fontWeight: 600 }}>0.4ms LOCAL INFERENCE</span>
           </div>
-
-          {/* Local NPU Card */}
-          <div
-            style={{
-              backgroundColor: '#ffffff',
-              border: '2px solid #2563eb',
-              borderRadius: 16,
-              padding: '20px 24px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              boxShadow: '0 12px 32px rgba(37, 99, 235, 0.15)',
-            }}
-          >
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 800, color: '#2563eb', textTransform: 'uppercase' }}>
-                DEVICE-NATIVE LOCAL NPU
-              </div>
-              <div style={{ fontSize: 28, fontWeight: 900, color: '#2563eb', marginTop: 4 }}>
-                {localLatency} ms Instant Response
-              </div>
-            </div>
-            <span style={{ fontSize: 32 }}>⚡ 🛡️</span>
+          <h2 style={{ fontSize: 60, textAlign: 'center', fontWeight: 900, margin: 0 }}>
+            ZERO <span style={{ color: '#00F5FF' }}>LATENCY</span>
+          </h2>
+          <div style={{ marginTop: 30, display: 'flex', gap: 10 }}>
+            <BrandIcon name="verifiedCheck" size={28} />
+            <span style={{ fontSize: 22, color: '#CBD5E1' }}>End-to-End Encrypted Hardware</span>
           </div>
-        </div>
+        </AbsoluteFill>
+      )}
 
-        {/* ------------------------------------------------------------- */}
-        {/* PHASE 3: CONCLUSION & CALL TO ACTION                          */}
-        {/* ------------------------------------------------------------- */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 300, // 280px+ TikTok/Shorts bottom clearance
-            left: 70,
-            right: 140,
-            backgroundColor: '#0f172a',
-            borderRadius: 20,
-            padding: '24px 30px',
-            color: '#ffffff',
-            boxShadow: '0 20px 45px rgba(15, 23, 42, 0.25)',
-            transform: `translateY(${interpolate(conclusionEntrance, [0, 1], [30, 0])}px)`,
-            opacity: conclusionEntrance,
-            zIndex: 35,
-          }}
-        >
-          <div style={{ fontSize: 14, fontWeight: 800, color: '#38bdf8', letterSpacing: '0.06em' }}>
-            VERDICT
-          </div>
-          <div style={{ fontSize: 22, fontWeight: 800, marginTop: 6, lineHeight: 1.3 }}>
-            Zero API bills. Zero cloud downtime. Zero data leaks.
-          </div>
-        </div>
+      {/* SCENE 3: CLIMAX (15 - 24s) */}
+      {frame >= s2End && frame < s3End && (
+        <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', padding: '0 40px' }}>
+          <h1 style={{ fontSize: 64, textAlign: 'center', fontWeight: 900, lineHeight: 1.15 }}>
+            TOTAL PRIVACY.<br />
+            <span style={{ color: '#D97757', fontStyle: 'italic', fontFamily: 'serif' }}>INSTANT SCALE.</span>
+          </h1>
+        </AbsoluteFill>
+      )}
 
-        {/* Bottom Safe Zone Indicator Pill */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 80,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            fontSize: 12,
-            fontFamily: 'monospace',
-            color: '#94a3b8',
-            letterSpacing: '0.08em',
-            zIndex: 40,
-          }}
-        >
-          REA MULTIFORMAT ENGINE · SAFE ZONES PRESERVED
-        </div>
-      </AbsoluteFill>
-    </UniversalResponsiveContainer>
+      {/* SCENE 4: CALL TO ACTION (24 - 30s) */}
+      {frame >= s3End && (
+        <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', padding: '0 40px' }}>
+          <BrandIcon name="claudeStar" size={64} style={{ marginBottom: 20 }} />
+          <h2 style={{ fontSize: 52, textAlign: 'center', fontWeight: 900 }}>SHIP ON CLAUDE WITH REA</h2>
+          <p style={{ fontSize: 26, color: '#94A3B8', marginTop: 12 }}>github.com/HamzaShaikhAI/Remotion-For-Antigravity</p>
+        </AbsoluteFill>
+      )}
+
+      {/* SAFE ZONE CLEARANCE INDICATOR (BOTTOM 280px RESERVED) */}
+      <div style={{ position: 'absolute', bottom: 40, width: '100%', textAlign: 'center', pointerEvents: 'none' }}>
+        <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.25)', letterSpacing: 2 }}>
+          REA AUTONOMOUS STUDIO • 60 FPS DETERMINISTIC
+        </span>
+      </div>
+    </AbsoluteFill>
   );
 };
