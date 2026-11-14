@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * REA CLI - Remotion Engine for Antigravity (v2.1.0)
+ * REA CLI - Remotion Engine for Antigravity (v2.0.0-rc.1)
  * Enterprise-grade orchestration, video rendering, procedural SFX synthesis,
  * AI voiceover generation, and FFmpeg multimedia engine built exclusively
  * for Google Antigravity 2.0.
@@ -12,7 +12,7 @@ const path = require('path');
 const os = require('os');
 const { spawn, execSync } = require('child_process');
 
-const VERSION = '2.1.0';
+const VERSION = '2.0.0-rc.1';
 
 // ANSI terminal colors
 const colors = {
@@ -134,7 +134,7 @@ function getFfprobePath() {
 }
 
 // ==========================================
-// PURE NODE.JS SOUND DESIGN ENGINE (V2.1)
+// PURE NODE.JS SOUND DESIGN ENGINE (V2)
 // ==========================================
 
 /**
@@ -663,30 +663,50 @@ function handleSfx(args) {
 
 // Command: voice
 async function handleVoice(args) {
-  const rawInput = args[1];
-  const outPath = args[2] && !args[2].startsWith('--') ? args[2] : path.join('public', 'audio', 'voiceover.mp3');
+  // Usage:
+  //   Single-speaker: rea voice "<script>" [out.wav] [--provider=edge|gemini] [--voice=Charon] [--style="..."] [--validate]
+  //   Multi-speaker:  rea voice --dialogue=script.json [out.wav] [--provider=gemini]
+  const dialogueArg = args.find((a) => a.startsWith('--dialogue='));
+  const dialogueFile = dialogueArg ? dialogueArg.split('=').slice(1).join('=') : null;
+
+  const rawInput = args[1] && !args[1].startsWith('--') ? args[1] : null;
+  const providerArg = args.find((a) => a.startsWith('--provider='));
+  const provider = providerArg
+    ? providerArg.split('=')[1].toLowerCase()
+    : dialogueFile
+      ? 'gemini'
+      : 'edge';
+
   const voiceArg = args.find((a) => a.startsWith('--voice='));
-  const voice = voiceArg ? voiceArg.split('=')[1] : 'en-US-AndrewNeural'; // Vox natural documentary tone
+  const styleArg = args.find((a) => a.startsWith('--style='));
+  const style = styleArg ? styleArg.split('=').slice(1).join('=') : undefined;
   const validateFlag = args.includes('--validate');
 
-  if (!rawInput || rawInput === '--help' || rawInput === '-h') {
-    logError('Usage: rea voice "<narration-text> | path/to/script.txt" [out.mp3] [--voice=en-US-AndrewNeural] [--validate]');
-    console.log('\nRecommended Voices:');
-    console.log('  en-US-AndrewNeural  - Warm, authoritative, conversational narrator (Vox / Documentary)');
-    console.log('  en-US-AvaNeural     - Crisp, energetic, modern presenter (SaaS Promo)');
-    console.log('  en-GB-RyanNeural    - Deep, cinematic, British AI voice (Cyberpunk Sci-Fi)');
-    console.log('  en-US-BrianNeural   - Punchy, high-clarity delivery (Shorts / Reels)\n');
+  // Resolve output path from positional args (skipping flags)
+  const positionalArgs = args.slice(1).filter((a) => !a.startsWith('--'));
+  const rawOutArg = dialogueFile ? positionalArgs[0] : positionalArgs[1];
+  const defaultExt = provider === 'gemini' ? 'wav' : 'mp3';
+  const outPath = rawOutArg || path.join('public', 'audio', `voiceover.${defaultExt}`);
+
+  if (!rawInput && !dialogueFile) {
+    logError('Usage: rea voice "<script>" [out.wav] [--provider=edge|gemini] [--voice=Charon] [--style="..."]');
+    console.log('   or: rea voice --dialogue=dialogue.json [out.wav]\n');
+    console.log('Recommended Gemini 3.8 Flash TTS Voices:');
+    console.log('  Charon / Rasalgethi - Vox / Measured documentary narrator');
+    console.log('  Orus / Alnilam      - Cyberpunk / Resonant sci-fi AI system voice');
+    console.log('  Zephyr / Puck       - Tech / Energetic product keynote');
+    console.log('  Sulafat / Aoede     - Conversational storytelling & explainer\n');
     process.exit(1);
   }
 
   // Support reading text directly or from a script file
   let text = rawInput;
-  if (fs.existsSync(path.resolve(process.cwd(), rawInput))) {
+  if (rawInput && fs.existsSync(path.resolve(process.cwd(), rawInput))) {
     text = fs.readFileSync(path.resolve(process.cwd(), rawInput), 'utf8');
   }
 
   // Validate script if requested or if editorial rules exist
-  if (validateFlag) {
+  if (validateFlag && text) {
     logInfo('Auditing narration against Vox editorial guardrails...');
     const editorialReport = auditScriptText(text);
     if (!editorialReport.valid) {
@@ -698,46 +718,114 @@ async function handleVoice(args) {
   }
 
   ensureDir(path.dirname(path.resolve(outPath)));
-  logInfo(`Synthesizing voiceover with voice "${voice}"...`);
 
-  let generated = false;
-
-  // 1. Primary engine: edge-tts (Python CLI)
   try {
-    const cmd = `edge-tts --text ${JSON.stringify(text)} --write-media "${path.resolve(outPath)}" --voice ${voice}`;
-    execSync(cmd, { stdio: 'pipe' });
-    generated = true;
-  } catch (err) {
-    // 2. Fallback engine: Windows SpeechSynthesizer (creates WAV then transcodes)
-    if (process.platform === 'win32') {
+    if (provider === 'gemini') {
+      if (!process.env.GEMINI_API_KEY) {
+        logError('Error: GEMINI_API_KEY environment variable is required for Gemini TTS.');
+        process.exit(1);
+      }
+
+      const { GoogleGenAI } = require('@google/genai');
+      const ai = new GoogleGenAI({
+        apiKey: process.env.GEMINI_API_KEY,
+        httpOptions: { apiVersion: 'v1beta' },
+      });
+
+      let contentBlocks = [];
+      let speechConfig;
+
+      if (dialogueFile) {
+        // Multi-speaker dialogue mode (up to 2 speakers)
+        const rawJson = fs.readFileSync(path.resolve(dialogueFile), 'utf8');
+        const dialogue = JSON.parse(rawJson);
+
+        if (!Array.isArray(dialogue.speakers) || dialogue.speakers.length === 0 || dialogue.speakers.length > 2) {
+          throw new Error('dialogue.json must define 1 or 2 entries in "speakers".');
+        }
+        if (!Array.isArray(dialogue.turns) || dialogue.turns.length === 0) {
+          throw new Error('dialogue.json must contain at least one turn in "turns".');
+        }
+
+        speechConfig = { speakers: dialogue.speakers };
+        contentBlocks = dialogue.turns.map((turn) => ({
+          type: 'text',
+          text: turn.text,
+          annotations: [
+            {
+              type: 'speech_metadata',
+              speaker: turn.speaker,
+              ...(turn.style ? { style: turn.style } : {}),
+            },
+          ],
+        }));
+      } else {
+        // Single-speaker mode
+        const selectedVoice = voiceArg ? voiceArg.split('=')[1] : 'Charon';
+        const inputItem = { type: 'text', text };
+        if (style) {
+          inputItem.annotations = [{ type: 'speech_metadata', style }];
+        }
+        contentBlocks = [inputItem];
+        speechConfig = [{ voice: selectedVoice }];
+      }
+
+      logInfo(`Synthesizing via gemini-3.8-flash-tts (${dialogueFile ? 'Multi-Speaker' : (voiceArg ? voiceArg.split('=')[1] : 'Charon')})...`);
+      const interaction = await ai.interactions.create({
+        model: 'gemini-3.8-flash-tts',
+        input: [{ type: 'user_input', content: contentBlocks }],
+        response_format: { type: 'audio' },
+        generation_config: { speech_config: speechConfig },
+      });
+
+      const audioBuffer = Buffer.from(interaction.output_audio.data, 'base64');
+      fs.writeFileSync(outPath, audioBuffer);
+      logSuccess(
+        dialogueFile
+          ? `Gemini Multi-Speaker Dialogue (${speechConfig.speakers.map((s) => s.speaker).join(' & ')}) -> ${outPath}`
+          : `Gemini TTS generated -> ${outPath}`
+      );
+    } else {
+      // Default zero-key Edge TTS
+      logInfo(`Synthesizing voiceover with Edge TTS...`);
+      const selectedVoice = voiceArg ? voiceArg.split('=')[1] : 'en-US-AndrewNeural';
+      let generated = false;
+
       try {
-        logWarn('Falling back to Windows system speech engine...');
-        const tempWav = path.resolve(outPath + '.temp.wav');
-        const script = `
+        const cmd = `edge-tts --text ${JSON.stringify(text)} --write-media "${path.resolve(outPath)}" --voice ${selectedVoice}`;
+        execSync(cmd, { stdio: 'pipe' });
+        generated = true;
+      } catch (err) {
+        if (process.platform === 'win32') {
+          try {
+            logWarn('Falling back to Windows system speech engine...');
+            const tempWav = path.resolve(outPath + '.temp.wav');
+            const script = `
 Add-Type -AssemblyName System.Speech
 $synth = New-Object System.Speech.Synthesis.SpeechSynthesizer
 $synth.SetOutputToWaveFile('${tempWav.replace(/'/g, "''")}')
 $synth.Speak(${JSON.stringify(text)})
 $synth.Dispose()
 `;
-        execSync(`powershell -NoProfile -Command "${script.replace(/\n/g, '; ')}"`, { stdio: 'pipe' });
-        if (fs.existsSync(tempWav)) {
-          const ffmpeg = getFfmpegPath();
-          execSync(`"${ffmpeg}" -y -i "${tempWav}" -c:a libmp3lame -q:a 2 "${path.resolve(outPath)}"`, { stdio: 'pipe' });
-          fs.unlinkSync(tempWav);
-          generated = true;
+            execSync(`powershell -NoProfile -Command "${script.replace(/\n/g, '; ')}"`, { stdio: 'pipe' });
+            if (fs.existsSync(tempWav)) {
+              const ffmpeg = getFfmpegPath();
+              execSync(`"${ffmpeg}" -y -i "${tempWav}" -c:a libmp3lame -q:a 2 "${path.resolve(outPath)}"`, { stdio: 'pipe' });
+              fs.unlinkSync(tempWav);
+              generated = true;
+            }
+          } catch (e2) {}
         }
-      } catch (e2) {}
+      }
+
+      if (!generated) {
+        logError('Voiceover synthesis failed.');
+        process.exit(1);
+      }
+      logSuccess(`Edge TTS (${selectedVoice}) generated -> ${outPath}`);
     }
-  }
 
-  if (!generated) {
-    logError('Voiceover synthesis failed. Ensure "pip install edge-tts" or native speech engine is accessible.');
-    process.exit(1);
-  }
-
-  // Probe exact audio duration via ffprobe
-  try {
+    // Probe exact audio duration via ffprobe
     const ffprobePath = getFfprobePath();
     const probeCmd = `"${ffprobePath}" -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${path.resolve(outPath)}"`;
     const durRaw = execSync(probeCmd, { encoding: 'utf8' }).trim();
@@ -745,13 +833,13 @@ $synth.Dispose()
     const frames30 = Math.ceil(durationSec * 30);
     const frames60 = Math.ceil(durationSec * 60);
 
-    logSuccess(`Voiceover saved: ${outPath}`);
     console.log(`\n${colors.bold}${colors.cyan}--- Audio Timing Telemetry ---${colors.reset}`);
     console.log(`  Duration:        ${durationSec.toFixed(2)} seconds`);
     console.log(`  Target Frames:   ${colors.green}${frames30} frames @ 30fps${colors.reset} | ${frames60} frames @ 60fps`);
     console.log(`  Remotion Sequence: <Series.Sequence durationInFrames={${frames30 + 15}}> (+15 frames dwell buffer)\n`);
   } catch (err) {
-    logSuccess(`Voiceover saved: ${outPath}`);
+    logError(`Voiceover generation failed (${provider}): ${err.message}`);
+    process.exit(1);
   }
 }
 
@@ -1385,10 +1473,11 @@ Enterprise-grade autonomous motion graphics, sound synthesis, and multimedia eng
 ${colors.bold}USAGE:${colors.reset}
   rea <command> [arguments...]
 
-${colors.bold}AUDIO & SOUND DESIGN COMMANDS (V2.1):${colors.reset}
+${colors.bold}AUDIO & SOUND DESIGN COMMANDS (V2):${colors.reset}
   ${colors.green}install-skill${colors.reset}                                    Install skill globally into ~/.gemini/config/skills/
   ${colors.green}sfx <whoosh|pop|riser|typewriter> [out.wav]${colors.reset}      Deterministic 44.1 kHz WAV procedural sound synthesis
-  ${colors.green}voice "<text>" [out.mp3] [--voice=...] [--validate]${colors.reset} Neural voiceover synthesis with exact frame calculations
+  ${colors.green}voice "<text>" [out.wav] [--provider=gemini|edge]${colors.reset} Dual-provider (Gemini 3.8 Flash TTS / Edge) speech engine
+  ${colors.green}voice --dialogue=script.json [out.wav]${colors.reset}             Gemini 2-speaker conversational dialogue synthesis
   ${colors.green}validate-script <text | file.txt>${colors.reset}                 Audit script against Vox editorial standards & banned clichés
 
 ${colors.bold}MULTIMEDIA & EDITING COMMANDS (FFmpeg-Powered):${colors.reset}

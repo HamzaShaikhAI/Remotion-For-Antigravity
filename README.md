@@ -3,6 +3,7 @@
 <div align="center">
 
 ![Antigravity Remotion Banner](https://img.shields.io/badge/Antigravity-2.0_Ready-00f5ff?style=for-the-badge&logo=google&logoColor=white)
+![Release](https://img.shields.io/badge/Release-v2.0.0--rc.1_(Pre--release)-00f5ff?style=for-the-badge&logo=github&logoColor=white)
 ![Remotion](https://img.shields.io/badge/Remotion-v4.0+-blueviolet?style=for-the-badge&logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict_Typing-blue?style=for-the-badge&logo=typescript&logoColor=white)
 ![FFmpeg](https://img.shields.io/badge/FFmpeg-Bundled_Zero--Config-green?style=for-the-badge&logo=ffmpeg&logoColor=white)
@@ -104,14 +105,27 @@ npm link
 rea <command> [arguments...]
 ```
 
-### 🎙️ Audio, Sound Design & Voiceover (V2.1)
+### 🎙️ Audio, Sound Design & Dual-Provider Voiceover (Version 2)
 
 | Command | Usage | Description |
 | :--- | :--- | :--- |
 | **`install-skill`** | `rea install-skill` | Automatically deploys bundled skill globally into `~/.gemini/config/skills/remotion-dastras`. |
 | **`sfx`** | `rea sfx <whoosh\|pop\|riser\|typewriter> [out.wav]` | Synthesizes deterministic broadcast 44.1 kHz 16-bit PCM WAV sound effects directly into `public/sfx/` with zero external dependencies. |
-| **`voice`** | `rea voice "<text>" [out.mp3] [--voice=...] [--validate]` | Synthesizes neural voiceover, audits against Vox editorial rules, and calculates exact Remotion frame counts for 30fps/60fps. |
+| **`voice`** | `rea voice "<text>" [out.wav] [--provider=gemini\|edge] [--voice=...] [--style="..."]` | Dual-engine voiceover: broadcast Google Gemini 3.8 Flash TTS (`gemini-3.8-flash-tts`) or zero-key Edge TTS. Computes exact Remotion frame counts for 30fps/60fps. |
+| **`voice (dialogue)`** | `rea voice --dialogue=script.json [out.wav] [--provider=gemini]` | Synthesizes conversational 2-person dialogues for podcasts, interviews, and audiograms with turn-by-turn style and speaker control. |
 | **`validate-script`** | `rea validate-script <text \| file.txt>` | Audits voiceover scripts against `rules/vox-editorial.md` for syllable density (3.8–4.5/sec) and bans cliché filler phrases. |
+
+#### 🗣️ Dual-Engine Voiceover & Multi-Speaker Dialogue
+REA equips Antigravity with broadcast-ready narration:
+- **Google Gemini 3.8 Flash TTS (`--provider=gemini`):** Synthesizes broadcast 24 kHz 16-bit PCM WAV audio using the official `@google/genai` SDK and `gemini-3.8-flash-tts`. Supports delivery styles via `--style="..."` and multi-speaker dialogues via `--dialogue=dialogue.json`.
+- **Zero-Key Edge TTS (Default):** Rapid neural narration with zero API keys required. Perfect for immediate offline-first agent workflows.
+
+| Aesthetic Style | Curated Voice | Recommended `--style` Delivery | Character |
+| :--- | :--- | :--- | :--- |
+| **Vox / Documentary** | `Charon` / `Rasalgethi` | `"warm, authoritative, measured documentary narrator"` | Informative, grounded, clear |
+| **Cyberpunk / Sci-Fi** | `Orus` / `Alnilam` | `"calm, futuristic, slightly resonant AI system voice"` | Resonant, firm, robotic |
+| **Tech / SaaS Launch** | `Zephyr` / `Puck` | `"energetic, upbeat, modern product keynote"` | Bright, high-clarity, confident |
+| **Storytelling / Explainer** | `Sulafat` / `Aoede` | `"warm, inviting, conversational storyteller"` | Breezy, friendly, engaging |
 
 ### 🎬 Remotion Studio & Rendering Commands
 

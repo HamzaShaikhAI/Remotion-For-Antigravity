@@ -82,3 +82,50 @@ export const ChromaKeyComposite: React.FC = () => {
   );
 };
 ```
+
+---
+
+## 6. AI Voiceover & Multi-Speaker Dialogue (`rea voice`)
+
+REA features a dual-engine speech synthesis pipeline supporting both zero-key free Edge TTS and broadcast-grade Google Gemini 3.8 Flash TTS (`gemini-3.8-flash-tts`).
+
+### 6.1 Provider Selection & Flags
+- **Edge TTS (Default, Zero-Key):** `rea voice "<script>" public/audio/scene1.mp3 --voice=en-US-AndrewNeural`
+- **Gemini TTS (Requires GEMINI_API_KEY):** `rea voice "<script>" public/audio/scene1.wav --provider=gemini --voice=Charon --style="warm documentary narrator"`
+
+### 6.2 Curated Gemini Prebuilt Voices & Delivery Styles
+| Video Style | Voice | Recommended `--style` Flag | Vocal Character |
+| :--- | :--- | :--- | :--- |
+| **Vox / Documentary** | `Charon` or `Rasalgethi` | `"warm, authoritative, measured documentary narrator"` | Informative, clear, grounded |
+| **Cyberpunk / Sci-Fi HUD** | `Orus` or `Alnilam` | `"calm, futuristic, slightly resonant AI system voice"` | Firm, deep, cinematic |
+| **Tech / SaaS Launch** | `Zephyr` or `Puck` | `"energetic, upbeat, modern product keynote"` | Bright, enthusiastic, crisp |
+| **Storytelling / Calm Explainer** | `Sulafat` or `Aoede` | `"warm, inviting, conversational storyteller"` | Warm, breezy, natural |
+
+> **Note on Verbatim Synthesis:** `gemini-3.8-flash-tts` synthesizes text strictly verbatim. Always pass delivery instructions in `--style="..."` rather than inside the script text so stage directions are never spoken aloud.
+
+### 6.3 Multi-Speaker 2-Person Dialogue Mode (`--dialogue=dialogue.json`)
+For podcast audiograms, interviews, or conversational explainers, pass a dialogue manifest:
+```json
+{
+  "speakers": [
+    { "speaker": "Alex", "voice": "Charon" },
+    { "speaker": "Maya", "voice": "Kore" }
+  ],
+  "turns": [
+    {
+      "speaker": "Alex",
+      "style": "curious, energetic podcast host",
+      "text": "Wait... <short pause> did Antigravity just compile that entire ten-second motion graphic without a single render crash?"
+    },
+    {
+      "speaker": "Maya",
+      "style": "calm, confident systems architect",
+      "text": "Every frame. The pre-render hook audited all static assets before Chromium even booted."
+    }
+  ]
+}
+```
+Run:
+```bash
+rea voice --dialogue=dialogue.json public/audio/podcast-dialogue.wav
+```
