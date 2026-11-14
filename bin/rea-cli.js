@@ -3707,24 +3707,76 @@ function handleUpscale(args) {
   }
 }
 
-// Command: upscale-4k (V4.0 Neural Vision: Temporal Super-Resolution 4K Remastering)
+// Command: upscale-4k (V4.0 Neural Vision: Real-ESRGAN Temporal Super-Resolution 4K Remastering)
 function handleUpscale4k(args) {
-  const inVideo = args[1];
-  const outVideo = (args[2] && !args[2].startsWith('--')) ? args[2] : (inVideo ? inVideo.replace(/\.[^/.]+$/, '_4k.mp4') : null);
+  // Usage: rea upscale-4k <in.mp4> <out.mp4> [--model=realesrgan-x4plus-anime] [--scale=4] [--tile=512]
+  const inputPath = args[1];
+  const outputPath = args[2];
+  const modelArg = args.find(a => a && a.startsWith('--model='));
+  const model = modelArg ? modelArg.split('=')[1] : 'realesrgan-x4plus-anime';
   const scaleArg = args.find(a => a && a.startsWith('--scale='));
   const scale = scaleArg ? parseInt(scaleArg.split('=')[1], 10) : 4;
+  const tileArg = args.find(a => a && a.startsWith('--tile='));
+  const tile = tileArg ? parseInt(tileArg.split('=')[1], 10) : 512;
 
-  if (!inVideo) {
-    logError('Usage: rea upscale-4k <in.mp4> [out.mp4] [--scale=4]');
+  if (!inputPath || !outputPath) {
+    logError('Usage: rea upscale-4k <in.mp4> <out.mp4> [--model=realesrgan-x4plus-anime] [--scale=4] [--tile=512]');
     process.exit(1);
   }
 
-  const { upscaleTo4k } = require('../src/engines/backend');
-  const plan = upscaleTo4k(inVideo, outVideo, scale);
-  logSuccess(`Neural Vision: Temporal Super-Resolution 4K Engine:`);
-  console.log(`  Source: ${inVideo}`);
-  console.log(`  Target 4K Output: ${plan.output} (${plan.targetResolution[0]}x${plan.targetResolution[1]})`);
-  console.log(`  Model: ${plan.model} (Scale: ${plan.scale}x Edge-Directed Super-Resolution)`);
+  if (!fs.existsSync(inputPath)) {
+    logError(`Source video not found: ${inputPath}`);
+    process.exit(1);
+  }
+
+  const ffmpeg = getFfmpegPath();
+  const framesInDir = path.resolve(process.cwd(), 'temp_raw_frames');
+  const framesOutDir = path.resolve(process.cwd(), 'temp_4k_frames');
+
+  console.log(`\n🔍 Initializing 4K Neural Remastering for ${path.basename(inputPath)}...`);
+  fs.mkdirSync(framesInDir, { recursive: true });
+  fs.mkdirSync(framesOutDir, { recursive: true });
+
+  try {
+    // 1. Extract raw frames losslessly at native framerate
+    console.log(`⏳ Step 1/3: Extracting source frames...`);
+    execSync(`"${ffmpeg}" -y -i "${inputPath}" -q:v 1 "${path.join(framesInDir, '%08d.png')}"`, { stdio: 'inherit' });
+
+    // 2. Check for Real-ESRGAN NCNN Vulkan binary
+    let hasEsrgan = false;
+    try {
+      execSync(process.platform === 'win32' ? 'where realesrgan-ncnn-vulkan' : 'which realesrgan-ncnn-vulkan', { stdio: 'ignore' });
+      hasEsrgan = true;
+    } catch (e) {
+      hasEsrgan = false;
+    }
+
+    if (hasEsrgan) {
+      console.log(`\n🧠 Step 2/3: Neural Super-Resolution Upscaling (Model: ${model}, Scale: ${scale}x, Tile: ${tile})...`);
+      const esrganCmd = `realesrgan-ncnn-vulkan -i "${framesInDir}" -o "${framesOutDir}" -n "${model}" -s ${scale} -t ${tile} -f png`;
+      execSync(esrganCmd, { stdio: 'inherit' });
+    } else {
+      logWarn(`realesrgan-ncnn-vulkan not found in system PATH. Deploying high-fidelity Lanczos edge-directed super-resolution filter fallback (${scale}x 4K)...`);
+      execSync(`"${ffmpeg}" -y -framerate 60 -i "${path.join(framesInDir, '%08d.png')}" -vf "scale=iw*${scale}:ih*${scale}:flags=lanczos" "${path.join(framesOutDir, '%08d.png')}"`, { stdio: 'inherit' });
+    }
+
+    // 3. Re-encode 4K frames back into master file with preserved audio
+    console.log(`\n🎬 Step 3/3: Re-encoding 4K master asset with FFmpeg...`);
+    const outDir = path.dirname(path.resolve(outputPath));
+    if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+
+    const ffmpegCmd = `"${ffmpeg}" -y -framerate 60 -i "${path.join(framesOutDir, '%08d.png')}" -i "${inputPath}" -c:v libx264 -crf 14 -preset slow -pix_fmt yuv420p -map 0:v:0 -map 1:a? -shortest "${outputPath}"`;
+    execSync(ffmpegCmd, { stdio: 'inherit' });
+
+    console.log(`\n✅ 4K Remaster Complete: ${outputPath}`);
+  } catch (err) {
+    console.error(`\n❌ Upscaling failed: ${err.message}`);
+    process.exit(1);
+  } finally {
+    // Cleanup temporary frame directories
+    if (fs.existsSync(framesInDir)) fs.rmSync(framesInDir, { recursive: true, force: true });
+    if (fs.existsSync(framesOutDir)) fs.rmSync(framesOutDir, { recursive: true, force: true });
+  }
 }
 
 // Command: key-match (V4.0 Psychoacoustic: Harmonic Camelot Key Matching)
