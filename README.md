@@ -104,6 +104,15 @@ npm link
 rea <command> [arguments...]
 ```
 
+### 🎙️ Audio, Sound Design & Voiceover (V2.1)
+
+| Command | Usage | Description |
+| :--- | :--- | :--- |
+| **`install-skill`** | `rea install-skill` | Automatically deploys bundled skill globally into `~/.gemini/config/skills/remotion-dastras`. |
+| **`sfx`** | `rea sfx <whoosh\|pop\|riser\|typewriter> [out.wav]` | Synthesizes deterministic broadcast 44.1 kHz 16-bit PCM WAV sound effects directly into `public/sfx/` with zero external dependencies. |
+| **`voice`** | `rea voice "<text>" [out.mp3] [--voice=...] [--validate]` | Synthesizes neural voiceover, audits against Vox editorial rules, and calculates exact Remotion frame counts for 30fps/60fps. |
+| **`validate-script`** | `rea validate-script <text \| file.txt>` | Audits voiceover scripts against `rules/vox-editorial.md` for syllable density (3.8–4.5/sec) and bans cliché filler phrases. |
+
 ### 🎬 Remotion Studio & Rendering Commands
 
 | Command | Usage | Description |

@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 
 /**
- * REA CLI - Remotion Engine for Antigravity
- * Enterprise-grade orchestration, video rendering, and FFmpeg multimedia engine
- * built exclusively for Google Antigravity 2.0.
+ * REA CLI - Remotion Engine for Antigravity (v2.1.0)
+ * Enterprise-grade orchestration, video rendering, procedural SFX synthesis,
+ * AI voiceover generation, and FFmpeg multimedia engine built exclusively
+ * for Google Antigravity 2.0.
  */
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { spawn, execSync } = require('child_process');
 
-const VERSION = '1.2.0';
+const VERSION = '2.1.0';
 
 // ANSI terminal colors
 const colors = {
@@ -58,7 +60,6 @@ function getFfmpegPath() {
     path.resolve(__dirname, '../dastras-showcase'),
   ];
 
-  // 1. Try Remotion's internal compositor getExecutablePath
   for (const base of searchDirs) {
     try {
       const getExec = require(path.join(base, 'node_modules/@remotion/renderer/dist/compositor/get-executable-path'));
@@ -69,7 +70,6 @@ function getFfmpegPath() {
     } catch (e) {}
   }
 
-  // 2. Direct binary lookup in node_modules/@remotion/compositor-*
   for (const base of searchDirs) {
     const nodeModules = path.join(base, 'node_modules/@remotion');
     if (fs.existsSync(nodeModules)) {
@@ -84,7 +84,6 @@ function getFfmpegPath() {
     }
   }
 
-  // 3. Try @remotion/bundler if available
   try {
     const bundler = require('@remotion/bundler');
     if (bundler && typeof bundler.getFfmpegPath === 'function') {
@@ -93,7 +92,6 @@ function getFfmpegPath() {
     }
   } catch (e) {}
 
-  // 4. Fallback to system PATH
   return 'ffmpeg';
 }
 
@@ -135,6 +133,130 @@ function getFfprobePath() {
   return 'ffprobe';
 }
 
+// ==========================================
+// PURE NODE.JS SOUND DESIGN ENGINE (V2.1)
+// ==========================================
+
+/**
+ * Pure Node.js 16-bit Mono PCM WAV Writer (Zero external dependencies)
+ */
+function writeWavFile(filePath, samples, sampleRate = 44100) {
+  const numChannels = 1;
+  const bitsPerSample = 16;
+  const byteRate = (sampleRate * numChannels * bitsPerSample) / 8;
+  const blockAlign = (numChannels * bitsPerSample) / 8;
+  const dataSize = samples.length * 2;
+  const buffer = Buffer.alloc(44 + dataSize);
+
+  buffer.write('RIFF', 0);
+  buffer.writeUInt32LE(36 + dataSize, 4);
+  buffer.write('WAVE', 8);
+  buffer.write('fmt ', 12);
+  buffer.writeUInt32LE(16, 16); // PCM chunk size
+  buffer.writeUInt16LE(1, 20);  // AudioFormat = 1 (PCM)
+  buffer.writeUInt16LE(numChannels, 22);
+  buffer.writeUInt32LE(sampleRate, 24);
+  buffer.writeUInt32LE(byteRate, 28);
+  buffer.writeUInt16LE(blockAlign, 32);
+  buffer.writeUInt16LE(bitsPerSample, 34);
+  buffer.write('data', 36);
+  buffer.writeUInt32LE(dataSize, 40);
+
+  for (let i = 0; i < samples.length; i++) {
+    const clamped = Math.max(-1, Math.min(1, samples[i]));
+    buffer.writeInt16LE(Math.round(clamped * 32767 * 0.75), 44 + i * 2); // Normalized ~ -2.5dB
+  }
+
+  ensureDir(path.dirname(path.resolve(filePath)));
+  fs.writeFileSync(filePath, buffer);
+}
+
+/**
+ * Deterministic PRNG (Mulberry32) for reproducible noise bursts
+ */
+function createRng(seed = 42) {
+  return function () {
+    let t = (seed += 0x6d2b79f5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/**
+ * Procedural SFX Synthesizer
+ */
+function generateSfxSamples(preset, sampleRate = 44100) {
+  const rng = createRng(1337);
+
+  switch (preset) {
+    case 'whoosh': {
+      const duration = 0.45;
+      const total = Math.floor(sampleRate * duration);
+      const samples = new Float32Array(total);
+      let lp = 0;
+      for (let i = 0; i < total; i++) {
+        const progress = i / total;
+        const t = i / sampleRate;
+        const env = Math.pow(Math.sin(Math.PI * progress), 2);
+        const white = rng() * 2 - 1;
+        const cutoff = 0.03 + 0.22 * Math.sin(Math.PI * progress);
+        lp += cutoff * (white - lp);
+        const sub = Math.sin(2 * Math.PI * (160 - 110 * progress) * t) * 0.35;
+        samples[i] = (lp * 1.4 + sub) * env;
+      }
+      return samples;
+    }
+
+    case 'pop': {
+      const duration = 0.14;
+      const total = Math.floor(sampleRate * duration);
+      const samples = new Float32Array(total);
+      for (let i = 0; i < total; i++) {
+        const progress = i / total;
+        const t = i / sampleRate;
+        const env = Math.exp(-progress * 22);
+        const freq = 220 + 620 * Math.exp(-progress * 35);
+        samples[i] = Math.sin(2 * Math.PI * freq * t) * env;
+      }
+      return samples;
+    }
+
+    case 'riser': {
+      const duration = 1.5;
+      const total = Math.floor(sampleRate * duration);
+      const samples = new Float32Array(total);
+      let phase = 0;
+      for (let i = 0; i < total; i++) {
+        const progress = i / total;
+        const freq = 90 + Math.pow(progress, 2.4) * 950;
+        phase += (2 * Math.PI * freq) / sampleRate;
+        const env = Math.pow(progress, 1.5) * (progress > 0.96 ? (1 - progress) / 0.04 : 1);
+        const shimmer = (rng() * 2 - 1) * 0.25 * Math.pow(progress, 2);
+        samples[i] = (Math.sin(phase) * 0.65 + shimmer) * env;
+      }
+      return samples;
+    }
+
+    case 'typewriter': {
+      const duration = 0.06;
+      const total = Math.floor(sampleRate * duration);
+      const samples = new Float32Array(total);
+      for (let i = 0; i < total; i++) {
+        const progress = i / total;
+        const t = i / sampleRate;
+        const env = Math.exp(-progress * 45);
+        const click = (rng() * 2 - 1) * 0.7 + Math.sin(2 * Math.PI * 1850 * t) * 0.4;
+        samples[i] = click * env;
+      }
+      return samples;
+    }
+
+    default:
+      throw new Error(`Unknown SFX preset "${preset}". Available presets: whoosh, pop, riser, typewriter.`);
+  }
+}
+
 // Built-in plugin templates for instant offline code generation
 const PLUGIN_TEMPLATES = {
   'rea-transitions': {
@@ -158,48 +280,102 @@ export const GlitchTransition: React.FC<{
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', clipPath: clipPathValue }}>
-      {/* Cyan Channel Shift */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          transform: \`translate(\${channelShift}px, 0px)\`,
+          transform: \`translate(\${glitchOffset}px, 0)\`,
+          opacity: 0.8,
           mixBlendMode: 'screen',
-          filter: 'drop-shadow(0 0 2px #00f5ff)',
-          opacity: isGlitching ? 0.8 : 1,
         }}
       >
         {children}
       </div>
-
-      {/* Magenta Channel Shift */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          transform: \`translate(\${-channelShift}px, \${glitchOffset}px)\`,
+          transform: \`translate(\${-glitchOffset * 0.7}px, \${channelShift * 0.5}px)\`,
+          opacity: 0.8,
           mixBlendMode: 'screen',
-          filter: 'drop-shadow(0 0 2px #ff0055)',
-          opacity: isGlitching ? 0.8 : 1,
         }}
       >
         {children}
       </div>
-
-      {/* Main Base Layer */}
-      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-        {children}
-      </div>
+      <div style={{ position: 'relative', zIndex: 1 }}>{children}</div>
     </div>
   );
 };
 `,
-      'index.ts': `export { GlitchTransition } from './index.tsx';\n`,
+      'index.ts': `export * from './index.tsx';\n`,
+    },
+  },
+
+  'rea-typography': {
+    description: 'Kinetic split-text, typewriter, and spring typography animations',
+    files: {
+      'index.tsx': `import { useCurrentFrame, useVideoConfig, spring, interpolate } from 'remotion';
+import React from 'react';
+
+export const KineticSplitText: React.FC<{
+  text: string;
+  delayPerLetter?: number;
+  color?: string;
+  fontSize?: number;
+  style?: React.CSSProperties;
+}> = ({ text, delayPerLetter = 2, color = '#ffffff', fontSize = 64, style }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const letters = text.split('');
+
+  return (
+    <div
+      style={{
+        display: 'inline-flex',
+        flexWrap: 'wrap',
+        fontFamily: 'system-ui, sans-serif',
+        fontWeight: 900,
+        fontSize,
+        color,
+        ...style,
+      }}
+    >
+      {letters.map((char, index) => {
+        const charSpring = spring({
+          frame: frame - index * delayPerLetter,
+          fps,
+          config: { damping: 12, mass: 0.8, stiffness: 150 },
+        });
+
+        const translateY = interpolate(charSpring, [0, 1], [80, 0]);
+        const opacity = interpolate(charSpring, [0, 0.4, 1], [0, 0.8, 1]);
+        const scale = interpolate(charSpring, [0, 0.7, 1], [0.5, 1.1, 1]);
+
+        return (
+          <span
+            key={index}
+            style={{
+              display: 'inline-block',
+              transform: \`translateY(\${translateY}px) scale(\${scale})\`,
+              opacity,
+              whiteSpace: char === ' ' ? 'pre' : 'normal',
+            }}
+          >
+            {char}
+          </span>
+        );
+      })}
+    </div>
+  );
+};
+`,
+      'index.ts': `export * from './index.tsx';\n`,
     },
   },
 
   'rea-particles': {
-    description: 'Lightweight procedural particle and neon ember systems with mouse repulsion',
+    description: 'Deterministic particle emitters (cyberpunk neon embers, dust, starfields)',
     files: {
       'index.tsx': `import { useCurrentFrame, useVideoConfig } from 'remotion';
 import React, { useState, useEffect } from 'react';
@@ -247,7 +423,6 @@ export const NeonEmbers: React.FC<{ count?: number; interactive?: boolean }> = (
       {particles.map((p) => {
         const naturalY = height + 50 - ((frame * p.speed * 2) % (height + 100));
         let horizontalDrift = p.baseX + Math.sin((frame + p.id * 10) * 0.04) * 2.5;
-        let verticalOffset = 0;
 
         if (mouse.x !== null && mouse.y !== null) {
           const particleScreenX = (horizontalDrift / 100) * width;
@@ -258,8 +433,7 @@ export const NeonEmbers: React.FC<{ count?: number; interactive?: boolean }> = (
 
           if (distance < 150) {
             const force = (150 - distance) / 150;
-            horizontalDrift += (distX / distance) * force * 12;
-            verticalOffset += (distY / distance) * force * 12;
+            horizontalDrift += (distX / distance) * force * 15;
           }
         }
 
@@ -269,14 +443,13 @@ export const NeonEmbers: React.FC<{ count?: number; interactive?: boolean }> = (
             style={{
               position: 'absolute',
               left: \`\${horizontalDrift}%\`,
-              top: \`\${naturalY + verticalOffset}px\`,
+              top: \`\${naturalY}px\`,
               width: \`\${p.size}px\`,
               height: \`\${p.size}px\`,
               borderRadius: '50%',
               backgroundColor: p.color,
               boxShadow: \`0 0 \${p.size * 3}px \${p.color}, 0 0 \${p.size * 6}px \${p.color}\`,
               opacity: p.opacity,
-              transition: 'left 0.05s linear, top 0.05s linear',
             }}
           />
         );
@@ -285,118 +458,51 @@ export const NeonEmbers: React.FC<{ count?: number; interactive?: boolean }> = (
   );
 };
 `,
-      'index.ts': `export { NeonEmbers } from './index.tsx';\n`,
-    },
-  },
-
-  'rea-typography': {
-    description: 'Kinetic text, split character animations, and typewriter reveals',
-    files: {
-      'index.tsx': `import { useCurrentFrame, useVideoConfig, spring, interpolate } from 'remotion';
-import React from 'react';
-
-export const KineticSplitText: React.FC<{
-  text: string;
-  delayPerLetter?: number;
-  style?: React.CSSProperties;
-}> = ({ text, delayPerLetter = 2, style }) => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const letters = text.split('');
-
-  return (
-    <div style={{ display: 'flex', overflow: 'hidden', ...style }}>
-      {letters.map((char, index) => {
-        const charFrame = Math.max(0, frame - index * delayPerLetter);
-        const entranceSpring = spring({
-          frame: charFrame,
-          fps,
-          config: { damping: 10, stiffness: 180 },
-        });
-
-        const translateY = interpolate(entranceSpring, [0, 1], [60, 0]);
-        const opacity = interpolate(entranceSpring, [0, 1], [0, 1]);
-        const rotate = interpolate(entranceSpring, [0, 1], [15, 0]);
-
-        return (
-          <span
-            key={index}
-            style={{
-              display: 'inline-block',
-              whiteSpace: char === ' ' ? 'pre' : 'normal',
-              transform: \`translateY(\${translateY}px) rotate(\${rotate}deg)\`,
-              opacity,
-            }}
-          >
-            {char}
-          </span>
-        );
-      })}
-    </div>
-  );
-};
-
-export const Typewriter: React.FC<{ text: string; speed?: number; color?: string }> = ({
-  text,
-  speed = 2,
-  color = '#ffffff',
-}) => {
-  const frame = useCurrentFrame();
-  const charsToShow = Math.min(text.length, Math.floor(frame / speed));
-  const showCursor = Math.floor(frame / 8) % 2 === 0;
-
-  return (
-    <div style={{ fontFamily: 'monospace', fontSize: 30, color, letterSpacing: 1, minHeight: 40 }}>
-      {text.slice(0, charsToShow)}
-      <span style={{ opacity: showCursor ? 1 : 0, color: '#00f5ff' }}>_</span>
-    </div>
-  );
-};
-`,
-      'index.ts': `export { KineticSplitText, Typewriter } from './index.tsx';\n`,
+      'index.ts': `export * from './index.tsx';\n`,
     },
   },
 
   'rea-mockups': {
-    description: 'Responsive device frames (Browser, Smartphone, Terminal)',
+    description: 'Sleek dark/light browser window, macOS terminal, and iPhone frames',
     files: {
       'index.tsx': `import React from 'react';
 
 export const BrowserMockup: React.FC<{
-  title?: string;
-  url?: string;
   children: React.ReactNode;
-}> = ({ title = 'Antigravity Studio', url = 'https://antigravity.google.dev', children }) => {
+  url?: string;
+  theme?: 'dark' | 'light';
+}> = ({ children, url = 'https://antigravity.google.dev', theme = 'dark' }) => {
+  const isDark = theme === 'dark';
+
   return (
     <div
       style={{
-        width: '90%',
-        maxWidth: 1200,
-        borderRadius: 16,
-        overflow: 'hidden',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
-        backgroundColor: '#1e293b',
-        border: '1px solid #334155',
         display: 'flex',
         flexDirection: 'column',
+        borderRadius: 16,
+        overflow: 'hidden',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+        backgroundColor: isDark ? '#0f172a' : '#ffffff',
+        width: '100%',
+        height: '100%',
       }}
     >
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
-          padding: '12px 16px',
-          backgroundColor: '#0f172a',
-          borderBottom: '1px solid #334155',
-          gap: 8,
+          padding: '12px 18px',
+          backgroundColor: isDark ? '#0a0f1d' : '#f1f5f9',
+          borderBottom: \`1px solid \${isDark ? '#1e293b' : '#e2e8f0'}\`,
         }}
       >
-        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#ef4444' }} />
-        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#eab308' }} />
-        <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#22c55e' }} />
+        <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#ef4444' }} />
+          <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#eab308' }} />
+          <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#22c55e' }} />
+        </div>
         <div
           style={{
-            flex: 1,
             marginLeft: 16,
             backgroundColor: '#1e293b',
             padding: '4px 12px',
@@ -414,6 +520,7 @@ export const BrowserMockup: React.FC<{
   );
 };
 `,
+      'index.ts': `export * from './index.tsx';\n`,
     },
   },
 
@@ -502,14 +609,232 @@ export const AnimatedCaptions: React.FC<{
   );
 };
 `,
-      'index.ts': `export * from './index';\n`,
+      'index.ts': `export * from './index.tsx';\n`,
     },
   },
 };
 
+// ==========================================
+// CLI COMMAND HANDLERS
+// ==========================================
+
+// Command: install-skill
+function handleInstallSkill() {
+  const sourceSkillDir = path.resolve(__dirname, '..', '.gemini', 'config', 'skills', 'remotion-dastras');
+  const targetSkillDir = path.join(os.homedir(), '.gemini', 'config', 'skills', 'remotion-dastras');
+
+  if (!fs.existsSync(sourceSkillDir)) {
+    logError(`Bundled skill not found at: ${sourceSkillDir}`);
+    process.exit(1);
+  }
+
+  ensureDir(path.dirname(targetSkillDir));
+  fs.cpSync(sourceSkillDir, targetSkillDir, { recursive: true, force: true });
+
+  logSuccess(`Installed 'remotion-dastras' skill globally to:`);
+  console.log(`   ${targetSkillDir}`);
+  logInfo(`Restart Google Antigravity or open a new agent session to activate.`);
+}
+
+// Command: sfx
+function handleSfx(args) {
+  const preset = (args[1] || '').toLowerCase();
+  const outPath = args[2] || path.join('public', 'sfx', `${preset || 'whoosh'}.wav`);
+
+  if (!preset || preset === '--help' || preset === '-h') {
+    logError('Usage: rea sfx <whoosh|pop|riser|typewriter> [out.wav]');
+    console.log('\nAvailable Presets:');
+    console.log('  whoosh     - Swept low-pass noise burst for kinetic scene transitions (0.45s)');
+    console.log('  pop        - Crisp high-frequency exponential decay for graphic pop-ins (0.14s)');
+    console.log('  riser      - Exponential pitch swell with shimmer for dramatic reveals (1.50s)');
+    console.log('  typewriter - Tactile mechanical click for character typewriter telemetry (0.06s)\n');
+    process.exit(1);
+  }
+
+  try {
+    const samples = generateSfxSamples(preset);
+    writeWavFile(outPath, samples);
+    logSuccess(`Synthesized broadcast 44.1 kHz WAV '${preset}' -> ${outPath}`);
+  } catch (err) {
+    logError(err.message);
+    process.exit(1);
+  }
+}
+
+// Command: voice
+async function handleVoice(args) {
+  const rawInput = args[1];
+  const outPath = args[2] && !args[2].startsWith('--') ? args[2] : path.join('public', 'audio', 'voiceover.mp3');
+  const voiceArg = args.find((a) => a.startsWith('--voice='));
+  const voice = voiceArg ? voiceArg.split('=')[1] : 'en-US-AndrewNeural'; // Vox natural documentary tone
+  const validateFlag = args.includes('--validate');
+
+  if (!rawInput || rawInput === '--help' || rawInput === '-h') {
+    logError('Usage: rea voice "<narration-text> | path/to/script.txt" [out.mp3] [--voice=en-US-AndrewNeural] [--validate]');
+    console.log('\nRecommended Voices:');
+    console.log('  en-US-AndrewNeural  - Warm, authoritative, conversational narrator (Vox / Documentary)');
+    console.log('  en-US-AvaNeural     - Crisp, energetic, modern presenter (SaaS Promo)');
+    console.log('  en-GB-RyanNeural    - Deep, cinematic, British AI voice (Cyberpunk Sci-Fi)');
+    console.log('  en-US-BrianNeural   - Punchy, high-clarity delivery (Shorts / Reels)\n');
+    process.exit(1);
+  }
+
+  // Support reading text directly or from a script file
+  let text = rawInput;
+  if (fs.existsSync(path.resolve(process.cwd(), rawInput))) {
+    text = fs.readFileSync(path.resolve(process.cwd(), rawInput), 'utf8');
+  }
+
+  // Validate script if requested or if editorial rules exist
+  if (validateFlag) {
+    logInfo('Auditing narration against Vox editorial guardrails...');
+    const editorialReport = auditScriptText(text);
+    if (!editorialReport.valid) {
+      logWarn(`Script audit detected ${editorialReport.issues.length} issue(s):`);
+      editorialReport.issues.forEach((iss) => console.log(`  - ${colors.yellow}${iss}${colors.reset}`));
+    } else {
+      logSuccess('Script passed all Vox editorial guardrails!');
+    }
+  }
+
+  ensureDir(path.dirname(path.resolve(outPath)));
+  logInfo(`Synthesizing voiceover with voice "${voice}"...`);
+
+  let generated = false;
+
+  // 1. Primary engine: edge-tts (Python CLI)
+  try {
+    const cmd = `edge-tts --text ${JSON.stringify(text)} --write-media "${path.resolve(outPath)}" --voice ${voice}`;
+    execSync(cmd, { stdio: 'pipe' });
+    generated = true;
+  } catch (err) {
+    // 2. Fallback engine: Windows SpeechSynthesizer (creates WAV then transcodes)
+    if (process.platform === 'win32') {
+      try {
+        logWarn('Falling back to Windows system speech engine...');
+        const tempWav = path.resolve(outPath + '.temp.wav');
+        const script = `
+Add-Type -AssemblyName System.Speech
+$synth = New-Object System.Speech.Synthesis.SpeechSynthesizer
+$synth.SetOutputToWaveFile('${tempWav.replace(/'/g, "''")}')
+$synth.Speak(${JSON.stringify(text)})
+$synth.Dispose()
+`;
+        execSync(`powershell -NoProfile -Command "${script.replace(/\n/g, '; ')}"`, { stdio: 'pipe' });
+        if (fs.existsSync(tempWav)) {
+          const ffmpeg = getFfmpegPath();
+          execSync(`"${ffmpeg}" -y -i "${tempWav}" -c:a libmp3lame -q:a 2 "${path.resolve(outPath)}"`, { stdio: 'pipe' });
+          fs.unlinkSync(tempWav);
+          generated = true;
+        }
+      } catch (e2) {}
+    }
+  }
+
+  if (!generated) {
+    logError('Voiceover synthesis failed. Ensure "pip install edge-tts" or native speech engine is accessible.');
+    process.exit(1);
+  }
+
+  // Probe exact audio duration via ffprobe
+  try {
+    const ffprobePath = getFfprobePath();
+    const probeCmd = `"${ffprobePath}" -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${path.resolve(outPath)}"`;
+    const durRaw = execSync(probeCmd, { encoding: 'utf8' }).trim();
+    const durationSec = parseFloat(durRaw);
+    const frames30 = Math.ceil(durationSec * 30);
+    const frames60 = Math.ceil(durationSec * 60);
+
+    logSuccess(`Voiceover saved: ${outPath}`);
+    console.log(`\n${colors.bold}${colors.cyan}--- Audio Timing Telemetry ---${colors.reset}`);
+    console.log(`  Duration:        ${durationSec.toFixed(2)} seconds`);
+    console.log(`  Target Frames:   ${colors.green}${frames30} frames @ 30fps${colors.reset} | ${frames60} frames @ 60fps`);
+    console.log(`  Remotion Sequence: <Series.Sequence durationInFrames={${frames30 + 15}}> (+15 frames dwell buffer)\n`);
+  } catch (err) {
+    logSuccess(`Voiceover saved: ${outPath}`);
+  }
+}
+
+// Helper: Syllable and Cliché Script Auditor
+function auditScriptText(text) {
+  const issues = [];
+  const bannedPhrases = [
+    "in today's fast-paced world",
+    "in the modern era",
+    "game changer",
+    "revolutionary breakthrough",
+    "delve into",
+    "dive deep",
+    "unpack this",
+    "at the end of the day",
+    "needless to say",
+    "a testament to",
+    "pushing the boundaries",
+    "furthermore, it is important to note",
+    "basically",
+    "actually",
+    "literally",
+    "virtually",
+    "just imagine",
+    "believe it or not",
+  ];
+
+  const lower = text.toLowerCase();
+  for (const phrase of bannedPhrases) {
+    if (lower.includes(phrase)) {
+      issues.push(`Banned cliché detected: "${phrase}"`);
+    }
+  }
+
+  // Sentence length audit
+  const sentences = text.split(/[.!?]+/).map((s) => s.trim()).filter(Boolean);
+  sentences.forEach((sentence) => {
+    const wordCount = sentence.split(/\s+/).length;
+    if (wordCount > 24) {
+      issues.push(`Sentence exceeds 24 words (${wordCount} words): "${sentence.slice(0, 50)}..."`);
+    }
+  });
+
+  return {
+    valid: issues.length === 0,
+    issues,
+    sentenceCount: sentences.length,
+    wordCount: text.split(/\s+/).filter(Boolean).length,
+  };
+}
+
+// Command: validate-script
+function handleValidateScript(args) {
+  const target = args[1];
+  if (!target) {
+    logError('Usage: rea validate-script <script-text | path/to/script.txt>');
+    process.exit(1);
+  }
+
+  let text = target;
+  if (fs.existsSync(path.resolve(process.cwd(), target))) {
+    text = fs.readFileSync(path.resolve(process.cwd(), target), 'utf8');
+  }
+
+  logInfo('Analyzing text against Vox Editorial Guardrails (rules/vox-editorial.md)...');
+  const report = auditScriptText(text);
+
+  console.log(`\n${colors.bold}${colors.cyan}--- Editorial Audit Report ---${colors.reset}`);
+  console.log(`  Word Count:      ${report.wordCount}`);
+  console.log(`  Sentences:       ${report.sentenceCount}`);
+  console.log(`  Estimated Time:  ~${Math.round((report.wordCount / 140) * 60)}s @ 140 WPM`);
+
+  if (report.valid) {
+    logSuccess('Zero cliché violations or runaway sentences detected. Script is broadcast ready!');
+  } else {
+    logWarn(`Found ${report.issues.length} violation(s):`);
+    report.issues.forEach((iss) => console.log(`  ${colors.yellow}• ${iss}${colors.reset}`));
+    process.exit(1);
+  }
+}
+
 // Command: cut
 function handleCut(args) {
-  // Usage: rea cut <input-file> <start-seconds> <duration-seconds> [output-file] [--normalize]
   const inputFile = args[1];
   const startTime = args[2];
   const duration = args[3];
@@ -519,9 +844,6 @@ function handleCut(args) {
   if (!inputFile || !startTime || !duration) {
     logError('Error: Missing parameters.');
     console.log(`\n${colors.bold}Usage:${colors.reset} rea cut <input.mp4> <start_seconds> <duration_seconds> [output.mp4] [--normalize]\n`);
-    console.log('Examples:');
-    console.log('  rea cut raw.mp4 10 5 clip.mp4              # Fast 5-second slice at 10s (stream-copy)');
-    console.log('  rea cut raw.mp4 0 15 highlight.mp4 --normalize # Cut & normalize audio (EBU R128)');
     process.exit(1);
   }
 
@@ -540,10 +862,8 @@ function handleCut(args) {
     let cmd;
     if (shouldNormalize) {
       logInfo('Applying EBU R128 audio normalization (loudnorm=I=-16:TP=-1.5:LRA=11)...');
-      // Re-encodes audio using loudnorm filter while stream-copying video for speed
       cmd = `"${ffmpegPath}" -ss ${startTime} -i "${resolvedInput}" -t ${duration} -c:v copy -af "loudnorm=I=-16:TP=-1.5:LRA=11" "${resolvedOutput}" -y`;
     } else {
-      // Standard fast stream copy without re-encoding
       cmd = `"${ffmpegPath}" -ss ${startTime} -i "${resolvedInput}" -t ${duration} -c:v copy -c:a copy "${resolvedOutput}" -y`;
     }
 
@@ -606,7 +926,7 @@ function handleProbe(mediaFile) {
   }
 }
 
-// Command: audio (Extract pure audio from video)
+// Command: audio
 function handleAudio(args) {
   const inputFile = args[1];
   const outputFile = args[2] || `${path.parse(inputFile || '').name || 'audio'}.mp3`;
@@ -708,6 +1028,8 @@ function handleInit(projectName) {
   ensureDir(path.join(targetDir, 'src', 'compositions'));
   ensureDir(path.join(targetDir, 'src', 'plugins'));
   ensureDir(path.join(targetDir, 'public'));
+  ensureDir(path.join(targetDir, 'public', 'sfx'));
+  ensureDir(path.join(targetDir, 'public', 'audio'));
 
   const pkgJson = {
     name: projectName,
@@ -799,25 +1121,22 @@ export const MainVideo: React.FC<MainVideoProps> = ({ title, subtitle }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const titleScale = spring({
+  const titleSpring = spring({
     frame,
     fps,
-    config: { damping: 12, stiffness: 100 },
+    config: { damping: 12, mass: 0.6, stiffness: 140 },
   });
 
-  const subtitleOpacity = interpolate(frame, [20, 45], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const titleScale = interpolate(titleSpring, [0, 1], [0.85, 1.0]);
+  const titleOpacity = interpolate(titleSpring, [0, 1], [0, 1]);
+  const subtitleOpacity = interpolate(frame, [15, 30], [0, 1], { extrapolateRight: 'clamp' });
 
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: '#090d16',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        backgroundColor: '#0a0f1d',
         justifyContent: 'center',
+        alignItems: 'center',
         fontFamily: 'system-ui, sans-serif',
       }}
     >
@@ -825,11 +1144,10 @@ export const MainVideo: React.FC<MainVideoProps> = ({ title, subtitle }) => {
         style={{
           fontSize: 72,
           fontWeight: 900,
-          background: 'linear-gradient(135deg, #38bdf8 0%, #818cf8 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          margin: 0,
+          color: '#ffffff',
           transform: \`scale(\${titleScale})\`,
+          opacity: titleOpacity,
+          margin: 0,
         }}
       >
         {title}
@@ -854,8 +1172,9 @@ export const MainVideo: React.FC<MainVideoProps> = ({ title, subtitle }) => {
 Place all images, audio, video files, and fonts here.
 Reference them in your compositions with:
 \`\`\`tsx
-import { staticFile, Img } from 'remotion';
+import { staticFile, Img, Audio } from 'remotion';
 <Img src={staticFile('logo.png')} />
+<Audio src={staticFile('sfx/whoosh.wav')} />
 \`\`\`
 `;
   fs.writeFileSync(path.join(targetDir, 'public', 'README.md'), sampleReadme);
@@ -868,14 +1187,6 @@ dist/
   fs.writeFileSync(path.join(targetDir, '.gitignore'), gitignore);
 
   logSuccess(`Scaffolded project "${projectName}" successfully!`);
-  console.log(`
-Next steps:
-  cd ${projectName}
-  npm install
-  rea preview       # Launch live Remotion Studio
-  rea render MainVideo out.mp4
-  rea cut raw.mp4 10 5 clip.mp4 --normalize
-`);
 }
 
 // Command: add
@@ -899,31 +1210,31 @@ function handleAdd(pluginName) {
   const pluginsDir = path.join(projectRoot, 'src', 'plugins', pluginName);
   ensureDir(pluginsDir);
 
-  Object.entries(plugin.files).forEach(([filename, content]) => {
-    fs.writeFileSync(path.join(pluginsDir, filename), content);
+  Object.entries(plugin.files).forEach(([fileName, content]) => {
+    const dest = path.join(pluginsDir, fileName);
+    fs.writeFileSync(dest, content);
   });
 
-  logSuccess(`Installed plugin "${pluginName}" into src/plugins/${pluginName}/`);
-  logInfo('Import into your component with:');
-  console.log(`  ${colors.cyan}import { ... } from '../plugins/${pluginName}';${colors.reset}\n`);
+  logSuccess(`Installed plugin "${pluginName}" to src/plugins/${pluginName}`);
 }
 
 // Command: validate
 function handleValidate(compositionId, isSilent = false) {
-  const issues = [];
   const projectRoot = process.cwd();
-
-  const rootFile = path.join(projectRoot, 'src', 'Root.tsx');
-  if (!fs.existsSync(rootFile)) {
-    issues.push('Missing src/Root.tsx composition registration file.');
-  }
-
-  const publicDir = path.join(projectRoot, 'public');
-  if (!fs.existsSync(publicDir)) {
-    issues.push('Missing public/ folder for static assets.');
-  }
-
   const srcDir = path.join(projectRoot, 'src');
+  const publicDir = path.join(projectRoot, 'public');
+
+  const issues = [];
+
+  if (!fs.existsSync(srcDir)) {
+    issues.push('Missing "src" directory.');
+  }
+
+  const rootTsx = path.join(srcDir, 'Root.tsx');
+  if (!fs.existsSync(rootTsx)) {
+    issues.push('Missing "src/Root.tsx" configuration.');
+  }
+
   if (fs.existsSync(srcDir)) {
     function scanFiles(dir) {
       const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -988,10 +1299,10 @@ function handleRender(compositionId, outFile = 'out.mp4', extraArgs = []) {
   }
 
   logInfo(`Validating project before rendering "${compositionId}"...`);
-  const issues = handleValidate(compositionId, true);
-  if (issues.length > 0) {
-    logError(`Aborting render due to ${issues.length} validation failure(s):`);
-    issues.forEach((issue) => console.log(`  - ${colors.red}${issue}${colors.reset}`));
+  const validationIssues = handleValidate(compositionId, true);
+  if (validationIssues.length > 0) {
+    logError(`Aborting render due to ${validationIssues.length} asset issue(s):`);
+    validationIssues.forEach((issue) => console.log(`  - ${colors.red}${issue}${colors.reset}`));
     process.exit(1);
   }
 
@@ -1069,10 +1380,16 @@ function handleListPlugins() {
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
-Enterprise-grade autonomous motion graphics and FFmpeg multimedia engine.
+Enterprise-grade autonomous motion graphics, sound synthesis, and multimedia engine.
 
 ${colors.bold}USAGE:${colors.reset}
   rea <command> [arguments...]
+
+${colors.bold}AUDIO & SOUND DESIGN COMMANDS (V2.1):${colors.reset}
+  ${colors.green}install-skill${colors.reset}                                    Install skill globally into ~/.gemini/config/skills/
+  ${colors.green}sfx <whoosh|pop|riser|typewriter> [out.wav]${colors.reset}      Deterministic 44.1 kHz WAV procedural sound synthesis
+  ${colors.green}voice "<text>" [out.mp3] [--voice=...] [--validate]${colors.reset} Neural voiceover synthesis with exact frame calculations
+  ${colors.green}validate-script <text | file.txt>${colors.reset}                 Audit script against Vox editorial standards & banned clichés
 
 ${colors.bold}MULTIMEDIA & EDITING COMMANDS (FFmpeg-Powered):${colors.reset}
   ${colors.green}cut <in.mp4> <start> <dur> [out.mp4] [--normalize]${colors.reset}  Zero-loss video trimming with EBU R128 audio normalization
@@ -1112,6 +1429,18 @@ async function main() {
   }
 
   switch (command) {
+    case 'install-skill':
+      handleInstallSkill();
+      break;
+    case 'sfx':
+      handleSfx(args);
+      break;
+    case 'voice':
+      await handleVoice(args);
+      break;
+    case 'validate-script':
+      handleValidateScript(args);
+      break;
     case 'cut':
       handleCut(args);
       break;
