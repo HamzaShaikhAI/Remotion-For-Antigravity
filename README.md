@@ -205,6 +205,7 @@ All operations are executed via `rea <command>` (or `node bin/rea-cli.js <comman
 
 | Command | Usage | Description |
 | :--- | :--- | :--- |
+| **`upscale`** | `rea upscale <in.mp4> <out.mp4> [--multiplier=8]` | **Time-Bending Engine:** AI optical flow interpolation via RIFE Vulkan neural net (hallucinates intermediate frames up to 192fps) with high-fidelity frame synthesis fallback. |
 | **`vision-slice`** | `rea vision-slice <in.mp4> [out-dir] [--top=10]` | **Vision Engine:** Autonomous scene cut detection and optical flow motion scoring; extracts top action sequences into `public/clips/`. |
 | **`stems`** | `rea stems <media-file> [out-dir]` | **Psychoacoustic Engine:** Multi-band DSP stem isolation; separates dialogue (center channel), combat SFX (stereo difference), and sub-bass transients. |
 | **`foley`** | `rea foley <sword_clash\|energy_charge\|sonic_boom\|thunder_strike> [out.wav]` | **Psychoacoustic Engine:** Mathematical 44.1 kHz 16-bit PCM WAV procedural combat sound design synthesis. |

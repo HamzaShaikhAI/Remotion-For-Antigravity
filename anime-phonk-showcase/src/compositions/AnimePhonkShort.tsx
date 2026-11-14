@@ -18,6 +18,7 @@ import { ChadEmojiOverlay } from '../plugins/rea-chad-overlay';
 import { NeonEmbers } from '../plugins/rea-particles';
 import { GlitchTransition } from '../plugins/rea-transitions';
 import { KineticSplitText } from '../plugins/rea-typography';
+import { BackgroundGameplay } from '../plugins/rea-gameplay';
 
 // 1. Zod Schema for live sidebar tweaking in Remotion Studio
 export const animePhonkShortSchema = z.object({
@@ -29,6 +30,8 @@ export const animePhonkShortSchema = z.object({
   dropCaption: z.string().min(1).max(30),
   accentColor: zColor(),
   useExternalClips: z.boolean(),
+  gameplayMode: z.enum(['none', 'split', 'underlay', 'pip']).default('none'),
+  gameplayFile: z.string().optional(),
 });
 
 export type AnimePhonkShortProps = z.infer<typeof animePhonkShortSchema>;
@@ -154,6 +157,8 @@ export const AnimePhonkShort: React.FC<AnimePhonkShortProps> = ({
   dropCaption = 'COLDEST MOMENT',
   accentColor = '#00f5ff',
   useExternalClips = false,
+  gameplayMode = 'none',
+  gameplayFile,
 }) => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
@@ -178,6 +183,8 @@ export const AnimePhonkShort: React.FC<AnimePhonkShortProps> = ({
         })
       : 1.0;
 
+  const isSplitScreen = gameplayMode === 'split';
+
   return (
     <AbsoluteFill style={{ backgroundColor: '#050814', overflow: 'hidden' }}>
       {/* Master Phonk Audio Track */}
@@ -190,8 +197,26 @@ export const AnimePhonkShort: React.FC<AnimePhonkShortProps> = ({
         </Sequence>
       )}
 
+      {/* Background Gameplay Underlay Layer */}
+      {gameplayMode === 'underlay' && (
+        <BackgroundGameplay
+          mode="underlay"
+          videoSrc={gameplayFile}
+          opacity={0.35}
+          blur={6}
+          accentColor={accentColor}
+        />
+      )}
+
       {/* Seamless Loop Transform Container */}
-      <AbsoluteFill style={{ transform: `scale(${loopZoom})` }}>
+      <AbsoluteFill
+        style={{
+          transform: `scale(${loopZoom})`,
+          height: isSplitScreen ? '52%' : '100%',
+          overflow: 'hidden',
+          zIndex: 1,
+        }}
+      >
         {/* Beat-Drop Freeze Frame + Manga Halftone + Bass Camera Shake */}
         <ImpactFreezeFrame
           triggerFrame={dropFrame}
@@ -337,6 +362,23 @@ export const AnimePhonkShort: React.FC<AnimePhonkShortProps> = ({
           accentColor={accentColor}
         />
       </AbsoluteFill>
+
+      {/* Satisfying Viral Gameplay Split Screen / PiP Layer */}
+      {gameplayMode === 'split' && (
+        <BackgroundGameplay
+          mode="split"
+          splitRatio={0.52}
+          videoSrc={gameplayFile}
+          accentColor={accentColor}
+        />
+      )}
+      {gameplayMode === 'pip' && (
+        <BackgroundGameplay
+          mode="pip"
+          videoSrc={gameplayFile}
+          accentColor={accentColor}
+        />
+      )}
     </AbsoluteFill>
   );
 };

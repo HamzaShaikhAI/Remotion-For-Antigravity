@@ -1,53 +1,93 @@
 import React from 'react';
-import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
+import {
+  AbsoluteFill,
+  OffthreadVideo,
+  interpolate,
+  useCurrentFrame,
+  useVideoConfig,
+  Easing,
+} from 'remotion';
 
 export interface SuperSlowMoTensionProps {
-  children: React.ReactNode;
-  slowMoStartFrame: number;
-  slowMoDurationFrames: number; // e.g. 240 frames (4.0s @ 60fps)
-  speedMultiplier?: number; // 0.125 (1/8th speed)
+  videoSrc?: string; // The 192fps RIFE-upscaled video
+  durationInFrames: number;
+  children?: React.ReactNode;
+  slowMoStartFrame?: number;
+  slowMoDurationFrames?: number;
+  speedMultiplier?: number;
 }
 
 /**
- * 1000fps Super-Slow-Mo Tension Curve
+ * SuperSlowMoTension - Non-linear "Bullet Time" Velocity Curve
  *
- * Simulates ultra-high-speed phantom cameras by applying non-linear optical flow
- * time deceleration to a brief 0.5s swing, extending it into 4 seconds of tension.
+ * Eases from normal speed (100%) down to 12.5% right at the apex of the action (75% mark),
+ * paired with a subliminal heartbeat vignette and golden aura apex shift, snapping
+ * forward violently into impact.
  */
 export const SuperSlowMoTension: React.FC<SuperSlowMoTensionProps> = ({
+  videoSrc,
+  durationInFrames,
   children,
-  slowMoStartFrame,
-  slowMoDurationFrames,
-  speedMultiplier = 0.125,
 }) => {
   const frame = useCurrentFrame();
 
-  const isSlowMo = frame >= slowMoStartFrame && frame < slowMoStartFrame + slowMoDurationFrames;
-  if (!isSlowMo) {
-    return <>{children}</>;
-  }
+  // Create a U-shaped tension curve (1.0 -> 0.125 -> 1.2)
+  // The apex of the slow-motion occurs at 75% of the sequence, forcing the viewer to wait for the hit.
+  const tensionApexFrame = durationInFrames * 0.75;
 
-  const localFrame = frame - slowMoStartFrame;
-  const progress = localFrame / slowMoDurationFrames;
-
-  // Parabolic suspension curve: slows down to minimum at peak apex (progress = 0.5)
-  const currentSpeed = interpolate(
-    progress,
-    [0, 0.4, 0.6, 1.0],
-    [1.0, speedMultiplier, speedMultiplier * 0.8, 1.0]
+  const playbackRate = interpolate(
+    frame,
+    [0, tensionApexFrame * 0.5, tensionApexFrame, durationInFrames],
+    [1.0, 0.4, 0.125, 1.2], // Normal -> Slowing -> Suspended -> Snap-forward
+    {
+      easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    }
   );
 
-  // Subtle camera drift during suspension
-  const driftY = Math.sin(progress * Math.PI) * 12;
+  // Subliminal heartbeat pulse tied to the extreme slow-motion phase
+  const isDeepSlowMo = playbackRate < 0.25;
+  const heartbeatVignetteOpacity = isDeepSlowMo
+    ? Math.abs(Math.sin(frame * 0.15)) * 0.6
+    : 0;
+
+  // A slight push-in zoom to magnify the tension
+  const scale = interpolate(frame, [0, durationInFrames], [1.0, 1.15]);
 
   return (
-    <AbsoluteFill
-      style={{
-        transform: `translateY(${driftY}px)`,
-        filter: `contrast(${1.0 + (1 - currentSpeed) * 0.25})`,
-      }}
-    >
-      {children}
+    <AbsoluteFill style={{ backgroundColor: '#000' }}>
+      <AbsoluteFill style={{ transform: `scale(${scale})` }}>
+        {videoSrc ? (
+          <OffthreadVideo
+            src={videoSrc}
+            playbackRate={playbackRate}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        ) : (
+          children
+        )}
+      </AbsoluteFill>
+
+      {/* Tension Heartbeat Vignette */}
+      <AbsoluteFill
+        style={{
+          pointerEvents: 'none',
+          background: `radial-gradient(circle, transparent 40%, rgba(0, 0, 0, ${heartbeatVignetteOpacity}))`,
+          transition: 'background 0.1s ease-out',
+        }}
+      />
+
+      {/* High-Contrast Color Shift during Apex */}
+      {isDeepSlowMo && (
+        <AbsoluteFill
+          style={{
+            mixBlendMode: 'overlay',
+            backgroundColor: 'rgba(255, 215, 0, 0.15)', // Golden aura tint
+            filter: 'contrast(150%) grayscale(40%)',
+          }}
+        />
+      )}
     </AbsoluteFill>
   );
 };
