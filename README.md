@@ -215,6 +215,8 @@ All operations are executed via `rea <command>` (or `node bin/rea-cli.js <comman
 | **`master-audio`** | `rea master-audio <input-file> [output-file] [--lufs=-14]` | **Pro-Tier Visual/Audio:** EBU R128 broadcast true peak mastering (`-14.0 LUFS`, `-1.0 dBFS` TP); prevents social platform dynamic compression. |
 | **`thumbnails`** | `rea thumbnails [dropFrame]` | **Scale Engine:** Synthesizes 4 distinct split-test thumbnail variants (Climax, Stare, Manga Screentone, Silhouette). |
 | **`dmca-shield`**| `rea dmca-shield [intensity=standard]` | **Scale Engine:** Generates safe anti-fingerprinting profile (+0.8% micro-pitch shift, 1.025× micro-crop zoom, temporal drift). |
+| **`art-director`** | `rea art-director [comp-id] [props.json] [--render]` | **Studio Engine:** "Mean Art Director" Multimodal VLM QA auto-correction loop; audits keyframes via Gemini 2.5 Pro Vision and applies automated JSON patches. |
+| **`loop-bait`** | `rea loop-bait [charA] [charB] [--topic=...]` | **Subliminal Loop-Bait Engine:** Infinite Moebius strip replay engine; calculates recursive narrative sentence splits, kinetic match-cuts, and APV boosts. |
 | **`fleet`** | `rea fleet "<!edit combat Zenitsu audio=... duration=30>"` | **Fleet Commander:** Real-time bot command dispatcher; converts chat prompts into strongly-typed Remotion execution plans. |
 
 ### 🎙️ 3. Audio, Sound Design & Neural Voiceover

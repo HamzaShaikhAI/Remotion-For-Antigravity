@@ -32,6 +32,10 @@ export * from './restraint/TransitionFatigueLimiter';
 export * from './restraint/KillYourDarlingsAgent';
 
 export * from './neurochemistry/DopamineWaveSequencer';
+export * from './neurochemistry/LoopBaitSyntaxBridge';
+
+export * from './timebending/SubliminalLoopBait';
+export * from './timebending/SuperSlowMoTension';
 
 export * from './studio/MeanArtDirectorQa';
 export * from './studio/CrossNichePortingEngine';

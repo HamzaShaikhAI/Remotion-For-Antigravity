@@ -476,6 +476,9 @@ function generateProceduralFoley(preset = 'sword_clash', outputPath = 'public/sf
 }
 
 // --- 12. Studio Engine: "Mean Art Director" QA Critique ---
+const { runArtDirectorQA, runHeuristicArtDirectorQA } = require('./studio/mean-art-director');
+const { generateLoopBaitScript, auditLoopSeamlessness } = require('./neurochemistry/loop-bait-bridge');
+
 function critiqueByArtDirector(metrics = {}) {
   const hook = metrics.hookSpeedSec ?? 1.4;
   const vfx = metrics.totalVfxScore ?? 110;
@@ -603,6 +606,10 @@ module.exports = {
   getDmcaProtectionProfile,
   generateProceduralFoley,
   critiqueByArtDirector,
+  runArtDirectorQA,
+  runHeuristicArtDirectorQA,
+  generateLoopBaitScript,
+  auditLoopSeamlessness,
   portNichePacing,
   getDopamineWave,
 };
