@@ -4025,7 +4025,7 @@ function handleCloudCost(args) {
 async function handleLambdaRender(args) {
   const compId = args[1];
   if (!compId || compId.startsWith('-')) {
-    logError('Composition ID required: rea lambda-render <compositionId> -b <bucketName> [-r <region>]');
+    logError('Composition ID required: rea lambda-render <compositionId> -b <bucketName> [-r <region>] [--concurrency=50] [--serve-url=<url>]');
     process.exit(1);
   }
 
@@ -4046,12 +4046,21 @@ async function handleLambdaRender(args) {
     region = args[regionIdx].includes('=') ? args[regionIdx].split('=')[1] : args[regionIdx + 1];
   }
 
+  const serveUrlArg = args.find((a) => a.startsWith('--serve-url='))?.split('=')[1];
+  const concurrencyArg = args.find((a) => a.startsWith('--concurrency='))?.split('=')[1];
+  const framesPerLambdaArg = args.find((a) => a.startsWith('--frames-per-worker='))?.split('=')[1];
+  const regionsArg = args.find((a) => a.startsWith('--regions='))?.split('=')[1]?.split(',');
+
   try {
     const { deployAndRenderLambda } = require('../src/engines/backend');
     await deployAndRenderLambda({
       compositionId: compId,
       bucketName: bucket,
       region,
+      regions: regionsArg,
+      serveUrl: serveUrlArg,
+      concurrency: concurrencyArg ? parseInt(concurrencyArg, 10) : undefined,
+      framesPerLambda: framesPerLambdaArg ? parseInt(framesPerLambdaArg, 10) : undefined,
     }, {});
   } catch (err) {
     logError(`Lambda render error: ${err.message}`);
@@ -4100,6 +4109,8 @@ async function handleTrainMultistep(args) {
 
   let compositionName = arg2 ? arg1 : 'ClaudeCodeShowcase';
   let prompt = arg2 ? arg2 : arg1;
+  const styleArg = args.find((a) => a.startsWith('--style='))?.split('=')[1];
+  const archetypeArg = args.find((a) => a.startsWith('--archetype='))?.split('=')[1];
 
   try {
     let MultiStepTrainer;
@@ -4108,7 +4119,7 @@ async function handleTrainMultistep(args) {
     } catch {
       MultiStepTrainer = require('../src/engines/backend').MultiStepTrainer;
     }
-    await MultiStepTrainer.executePipeline(compositionName, prompt);
+    await MultiStepTrainer.executePipeline(compositionName, prompt, { style: styleArg, archetype: archetypeArg });
   } catch (err) {
     logError(`Multi-step training loop error: ${err.message}`);
     process.exit(1);

@@ -21,10 +21,25 @@ import { LocalAiVsCloud } from './compositions/LocalAiVsCloud';
 import { ParadoxOfFocus } from './compositions/ParadoxOfFocus';
 import { ZhangHengSeismoscopeShort } from './compositions/ZhangHengSeismoscopeShort';
 import { NeutronStarExplainer } from './compositions/NeutronStarExplainer';
+import { PaperStyleEngine } from './compositions/PaperStyleEngine';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* 9:16 Viral 2.5D Paper Style Short (Cutting Mat, Sticker Cutouts & 16fps Throttle) */}
+      <Composition
+        id="PaperStyleEngine"
+        component={PaperStyleEngine}
+        durationInFrames={480}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={{
+          titleText: "THE 2.5D PAPER REVOLUTION",
+          subtitleText: "Stop-motion jitter, tactile cutting mats, and sticker borders",
+        }}
+      />
+
       {/* 16:9 Kurzgesagt-Inspired 2D Explainer (Neutron Stars · 60s @ 60fps) */}
       <Composition
         id="NeutronStarExplainer"

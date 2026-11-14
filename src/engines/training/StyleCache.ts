@@ -1,0 +1,152 @@
+import fs from 'fs';
+import path from 'path';
+
+export interface StyleBlueprint {
+  name: string;
+  archetype: 'tech' | 'paper-2.5d' | 'saas' | 'cinematic' | 'abstract';
+  springPhysics: {
+    damping: number;
+    stiffness: number;
+    mass?: number;
+  };
+  fpsThrottle?: number;
+  typography: {
+    fontPrimary: string;
+    fontAccent?: string;
+    headlineWeight: number;
+    letterSpacing?: number;
+  };
+  safeZones: {
+    bottomClearancePx: number;
+    rightMarginPx: number;
+  };
+  palette: {
+    background: string;
+    surface: string;
+    border?: string;
+    shadow?: string;
+    accentColor?: string;
+  };
+  certifiedGrade: 'A+' | 'A';
+  cachedAt: string;
+}
+
+const BUILTIN_STYLES: Record<string, StyleBlueprint> = {
+  'tech-claude': {
+    name: 'tech-claude',
+    archetype: 'tech',
+    springPhysics: { damping: 11, stiffness: 220, mass: 0.8 },
+    typography: {
+      fontPrimary: "'Inter', -apple-system, sans-serif",
+      fontAccent: "'Playfair Display', serif",
+      headlineWeight: 900,
+      letterSpacing: 2,
+    },
+    safeZones: { bottomClearancePx: 280, rightMarginPx: 140 },
+    palette: {
+      background: '#090A0F',
+      surface: 'rgba(255, 255, 255, 0.05)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      accentColor: '#D97757',
+    },
+    certifiedGrade: 'A+',
+    cachedAt: new Date().toISOString(),
+  },
+  'paper-2.5d': {
+    name: 'paper-2.5d',
+    archetype: 'paper-2.5d',
+    springPhysics: { damping: 10, stiffness: 200, mass: 1.0 },
+    fpsThrottle: 16,
+    typography: {
+      fontPrimary: "'Inter', sans-serif",
+      fontAccent: 'monospace',
+      headlineWeight: 900,
+    },
+    safeZones: { bottomClearancePx: 240, rightMarginPx: 80 },
+    palette: {
+      background: '#E4DFD5',
+      surface: '#FAF7F2',
+      border: '6px solid #EF4444',
+      shadow: '8px 8px 0px #0F172A',
+      accentColor: '#EF4444',
+    },
+    certifiedGrade: 'A+',
+    cachedAt: new Date().toISOString(),
+  },
+  'cinematic-editorial': {
+    name: 'cinematic-editorial',
+    archetype: 'cinematic',
+    springPhysics: { damping: 14, stiffness: 120, mass: 1.0 },
+    typography: {
+      fontPrimary: "'Inter', sans-serif",
+      fontAccent: "'Georgia', serif",
+      headlineWeight: 800,
+    },
+    safeZones: { bottomClearancePx: 200, rightMarginPx: 80 },
+    palette: {
+      background: '#0D0E15',
+      surface: '#181A24',
+      border: '1px solid rgba(255, 255, 255, 0.08)',
+      accentColor: '#38BDF8',
+    },
+    certifiedGrade: 'A+',
+    cachedAt: new Date().toISOString(),
+  },
+};
+
+export class StyleCache {
+  private static cacheDir = path.resolve(process.cwd(), 'src/styles');
+
+  /**
+   * Retrieves a pre-certified style blueprint by name (built-in or from cache directory).
+   */
+  static getStyleBlueprint(name: string): StyleBlueprint {
+    if (BUILTIN_STYLES[name]) {
+      return BUILTIN_STYLES[name];
+    }
+
+    const customPath = path.join(this.cacheDir, `${name}.style.json`);
+    if (fs.existsSync(customPath)) {
+      try {
+        return JSON.parse(fs.readFileSync(customPath, 'utf-8'));
+      } catch (err: any) {
+        console.warn(`⚠️ Failed to parse custom style "${name}": ${err.message}. Falling back to "tech-claude".`);
+      }
+    }
+
+    return BUILTIN_STYLES['tech-claude'];
+  }
+
+  static load(name: string): StyleBlueprint {
+    return this.getStyleBlueprint(name);
+  }
+
+  /**
+   * Saves a newly fine-tuned AST and physics configuration into the reusable style cache.
+   */
+  static saveStyleBlueprint(blueprint: StyleBlueprint): string {
+    if (!fs.existsSync(this.cacheDir)) {
+      fs.mkdirSync(this.cacheDir, { recursive: true });
+    }
+    const targetPath = path.join(this.cacheDir, `${blueprint.name}.style.json`);
+    fs.writeFileSync(targetPath, JSON.stringify(blueprint, null, 2));
+    console.log(`💾 [StyleCache] Reusable style blueprint saved: ${blueprint.name} -> ${targetPath}`);
+    return targetPath;
+  }
+
+  static save(blueprint: StyleBlueprint): string {
+    return this.saveStyleBlueprint(blueprint);
+  }
+
+  /**
+   * Lists all available certified style blueprints.
+   */
+  static listAvailableStyles(): string[] {
+    const custom: string[] = [];
+    if (fs.existsSync(this.cacheDir)) {
+      const files = fs.readdirSync(this.cacheDir).filter((f) => f.endsWith('.style.json'));
+      custom.push(...files.map((f) => f.replace(/\.style\.json$/, '')));
+    }
+    return Array.from(new Set([...Object.keys(BUILTIN_STYLES), ...custom]));
+  }
+}
