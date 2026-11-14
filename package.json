@@ -6,6 +6,14 @@
   "bin": {
     "rea": "./bin/rea-cli.js"
   },
+  "files": [
+    "bin",
+    "src",
+    ".gemini/config/skills/remotion-dastras",
+    "README.md",
+    "LICENSE",
+    "AGENTS.md"
+  ],
   "scripts": {
     "postinstall": "node ./bin/rea-cli.js install-skill",
     "test": "node bin/rea-cli.js --help",

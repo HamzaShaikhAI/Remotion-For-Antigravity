@@ -1,0 +1,35 @@
+name: 🚀 Feature Request / Proposal
+description: Propose a new motion graphics plugin, sonic algorithm, or AI workflow for REA
+title: "[FEATURE]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea to make Remotion for Antigravity even more powerful? Suggest it here!
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem or limitation?
+      description: A clear and concise description of the limitation or workflow hurdle.
+      placeholder: "Currently, doing X requires manually writing Y..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution or Architectural Change
+      description: Explain the design, CLI command syntax, or React/Remotion component interface.
+      placeholder: "Introduce `rea ...` which interfaces with ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions Considered
+      description: Any other approaches or existing workarounds you evaluated.
+    validations:
+      required: false

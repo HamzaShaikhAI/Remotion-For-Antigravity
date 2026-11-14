@@ -1,0 +1,58 @@
+name: Publish to npm Registry
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish-core:
+    name: Publish antigravity-remotion-skills
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Verify TypeScript Typecheck
+        run: npx tsc --noEmit
+
+      - name: Run Unit Tests
+        run: npm test
+
+      - name: Publish Core Package to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-installer:
+    name: Publish create-remotion-antigravity
+    runs-on: ubuntu-latest
+    needs: publish-core
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Verify Installer CLI
+        working-directory: ./packages/create-remotion-antigravity
+        run: node bin/index.js --help
+
+      - name: Publish Installer Package to npm
+        working-directory: ./packages/create-remotion-antigravity
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

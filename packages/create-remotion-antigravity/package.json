@@ -1,0 +1,26 @@
+{
+  "name": "create-remotion-antigravity",
+  "version": "1.0.0",
+  "description": "One-click starter generator for Remotion for Antigravity (REA) video studios",
+  "main": "bin/index.js",
+  "bin": {
+    "create-remotion-antigravity": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "node bin/index.js --help"
+  },
+  "keywords": [
+    "antigravity",
+    "remotion",
+    "create-remotion",
+    "create-remotion-antigravity",
+    "video-generator",
+    "ai-agent",
+    "rea"
+  ],
+  "author": "Hamza Shaikh",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
