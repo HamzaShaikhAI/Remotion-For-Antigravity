@@ -1079,7 +1079,7 @@ async function generateAiSoundtrack(prompt, durationSec = 30, bpm = 128, outPath
 const { PrecisionSfxAligner } = require('./audio/PrecisionSfxAligner.ts');
 
 // --- 31. Multi-Step Iterative Training Loop ---
-const { MultiStepTrainer } = require('./orchestration/MultiStepTrainer.ts');
+const { MultiStepTrainer } = require('./training/MultiStepTrainer.ts');
 
 module.exports = {
   extractActionSequences,

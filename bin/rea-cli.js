@@ -4090,23 +4090,25 @@ async function handleMusic(args) {
 }
 
 async function handleTrainMultistep(args) {
-  const prompt = args[1];
-  if (!prompt || prompt.startsWith('-')) {
-    logError('Prompt required: rea train-multistep "<prompt>" [--archetype=tech] [--ratio=9:16] [--out=path.tsx]');
+  const arg1 = args[1];
+  const arg2 = args[2] && !args[2].startsWith('-') ? args[2] : null;
+
+  if (!arg1 || arg1.startsWith('-')) {
+    logError('Usage: rea train-multistep <compositionName> <prompt> OR rea train-multistep "<prompt>" [--out=path.tsx]');
     process.exit(1);
   }
 
-  const archArg = args.find((a) => a.startsWith('--archetype='))?.split('=')[1] || 'tech';
-  const ratioArg = args.find((a) => a.startsWith('--ratio='))?.split('=')[1] || '9:16';
-  const outArg = args.find((a) => a.startsWith('--out='))?.split('=')[1];
+  let compositionName = arg2 ? arg1 : 'ClaudeCodeShowcase';
+  let prompt = arg2 ? arg2 : arg1;
 
   try {
-    const { MultiStepTrainer } = require('../src/engines/backend');
-    await MultiStepTrainer.executeTrainingLoop(prompt, {
-      archetype: archArg,
-      ratio: ratioArg,
-      out: outArg,
-    });
+    let MultiStepTrainer;
+    try {
+      MultiStepTrainer = require('../src/engines/training/MultiStepTrainer.ts').MultiStepTrainer;
+    } catch {
+      MultiStepTrainer = require('../src/engines/backend').MultiStepTrainer;
+    }
+    await MultiStepTrainer.executePipeline(compositionName, prompt);
   } catch (err) {
     logError(`Multi-step training loop error: ${err.message}`);
     process.exit(1);
