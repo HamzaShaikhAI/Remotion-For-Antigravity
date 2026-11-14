@@ -1,0 +1,40 @@
+{
+  "clip_id": "public/clips/wide_clash.mp4",
+  "frames": [
+    {
+      "frame": 0,
+      "momentum_x": 0.0,
+      "momentum_y": 0.0,
+      "momentum_dir": "static",
+      "eyeline": "looking_left"
+    },
+    {
+      "frame": 1,
+      "momentum_x": 0.0,
+      "momentum_y": 0.0,
+      "momentum_dir": "static",
+      "eyeline": "looking_left"
+    },
+    {
+      "frame": 2,
+      "momentum_x": 0.0,
+      "momentum_y": 0.0,
+      "momentum_dir": "static",
+      "eyeline": "looking_left"
+    },
+    {
+      "frame": 3,
+      "momentum_x": 0.0,
+      "momentum_y": 0.0,
+      "momentum_dir": "static",
+      "eyeline": "looking_left"
+    },
+    {
+      "frame": 4,
+      "momentum_x": 0.0,
+      "momentum_y": 0.0,
+      "momentum_dir": "static",
+      "eyeline": "looking_left"
+    }
+  ]
+}

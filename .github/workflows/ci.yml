@@ -24,6 +24,12 @@ jobs:
       - name: Install Workspace Dependencies
         run: npm install
 
+      - name: Verify TypeScript Typecheck
+        run: npx tsc --noEmit
+
+      - name: Test REA CLI Help Menu
+        run: npm test
+
       - name: Test 'rea install-skill' Global Copy
         run: |
           node bin/rea-cli.js install-skill
@@ -109,6 +115,8 @@ jobs:
 
       - name: Project Asset Validation Dry-Run
         run: |
+          # Ensure starter audio asset exists before validation
+          node bin/rea-cli.js pick-track --mood=aggressive
           # Pre-flight asset check to catch missing staticFile references
           node bin/rea-cli.js validate
 

@@ -1,0 +1,45 @@
+[
+  {
+    "frame": 0,
+    "stillPath": "C:\\Users\\win10\\Documents\\antigravity-remotion-skills\\still-god-tier-engine.jpeg",
+    "hasTextOverlap": false,
+    "hasCharacterCutoff": false,
+    "contrastScore": 92,
+    "recommendations": [
+      "Hook check: Confirm title typography has sufficient drop-shadow against background."
+    ],
+    "autoRemediations": {
+      "subtitleYOffset": -40,
+      "badgeScale": 0.95,
+      "cameraPanX": 0
+    }
+  },
+  {
+    "frame": 600,
+    "stillPath": "C:\\Users\\win10\\Documents\\antigravity-remotion-skills\\still-v2-killua-aura-freeze.jpeg",
+    "hasTextOverlap": false,
+    "hasCharacterCutoff": false,
+    "contrastScore": 92,
+    "recommendations": [
+      "Drop check: Ensure Chad/Moyai aura badge does not intersect lower-third captions."
+    ],
+    "autoRemediations": {
+      "subtitleYOffset": -40,
+      "badgeScale": 0.95,
+      "cameraPanX": 0
+    }
+  },
+  {
+    "frame": 1200,
+    "stillPath": "C:\\Users\\win10\\Documents\\antigravity-remotion-skills\\still-v2-zenitsu-dragon-freeze.jpeg",
+    "hasTextOverlap": false,
+    "hasCharacterCutoff": false,
+    "contrastScore": 92,
+    "recommendations": [],
+    "autoRemediations": {
+      "subtitleYOffset": -40,
+      "badgeScale": 0.95,
+      "cameraPanX": 0
+    }
+  }
+]

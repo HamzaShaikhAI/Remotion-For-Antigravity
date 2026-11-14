@@ -14,6 +14,7 @@ build/
 **/.rea-chunks/
 out-*.mp4
 *.mp4
+!assets/videos/*.mp4
 *.mov
 *.mp3
 *.wav
@@ -23,8 +24,22 @@ out-*.mp4
 # Raw footage and render caches
 raw_clips/
 **/raw_clips/
+raw_frames/
+**/raw_frames/
+fine_frames/
+**/fine_frames/
+*_contact_sheet.jpg
+**/*_contact_sheet.jpg
+layout_test_*.jpg
+**/layout_test_*.jpg
 public/clips/*.mp4
+**/public/clips/*.mp4
 public/*.mp4
+**/public/*.mp4
+funk music/
+"funk music/"
+*.m4a
+*.aac
 
 # OS files
 .DS_Store

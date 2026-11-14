@@ -1,0 +1,50 @@
+{
+  "source": "gemini_generated_video_d890421f.mp4",
+  "durationSeconds": 32.037333000000004,
+  "durationFrames": 1922,
+  "fps": 60,
+  "aspectRatio": "9:16 (1080x1920)",
+  "retentionStrategy": {
+    "hookDuration": "0.0s - 1.2s",
+    "hookVisual": "High-contrast character standoff with immediate Japanese kanji typography",
+    "swipeAwayTarget": "< 22%",
+    "apvTarget": "> 130%",
+    "beatDropFreezeFrames": [
+      {
+        "time": "9.0s",
+        "frames": 48,
+        "effect": "Manga Halftone Screentone + Moyai/Chad Aura Counter (+999,999 AURA)"
+      },
+      {
+        "time": "21.0s",
+        "frames": 50,
+        "effect": "Fiery Screentone Halftone + Dragon Aura Counter (+1,000,000 AURA)"
+      }
+    ],
+    "replayLoopMechanism": "15-frame whip-zoom velocity blur seamlessly matching Frame 0 opening silhouette"
+  },
+  "metadata": {
+    "highCtrTitle": "WHO HAS MORE AURA? ⚡ GEMINI GENERATED VIDEO D890421F (60FPS Battle Edit)",
+    "curiosityHook": "Can the assassin outspeed the lightning dragon? Watch till the beat drop 💀",
+    "searchKeywords": [
+      "anime edit 4k",
+      "phonk battle edit",
+      "60fps phonk edit",
+      "aura points",
+      "beat drop freeze frame",
+      "demon slayer",
+      "hunter x hunter",
+      "zenitsu vs killua",
+      "brazilian phonk bass drop"
+    ],
+    "geoSeoTags": [
+      "#animeedit",
+      "#brazilianphonk",
+      "#phonk",
+      "#fyp",
+      "#viral",
+      "#demonslayer",
+      "#hxh"
+    ]
+  }
+}

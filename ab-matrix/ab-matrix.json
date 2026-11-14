@@ -1,0 +1,1702 @@
+[
+  {
+    "variationId": "var_001",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -4,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_002",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": -3,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_003",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": -2,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_004",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -1,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_005",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 0,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_006",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 1,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_007",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": 2,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_008",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 3,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_009",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 4,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_010",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -4,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_011",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": -3,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_012",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": -2,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_013",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -1,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_014",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 0,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_015",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 1,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_016",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": 2,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_017",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 3,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_018",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 4,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_019",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -4,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_020",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": -3,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_021",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": -2,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_022",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -1,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_023",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 0,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_024",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 1,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_025",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": 2,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_026",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 3,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_027",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 4,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_028",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -4,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_029",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": -3,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_030",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": -2,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_031",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -1,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_032",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 0,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_033",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 1,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_034",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": 2,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_035",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 3,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_036",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 4,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_037",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -4,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_038",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": -3,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_039",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": -2,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_040",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -1,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_041",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 0,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_042",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 1,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_043",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": 2,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_044",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 3,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_045",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 4,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_046",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -4,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_047",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": -3,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_048",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": -2,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_049",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -1,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_050",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 0,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_051",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 1,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_052",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": 2,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_053",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 3,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_054",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 4,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_055",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -4,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_056",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": -3,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_057",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": -2,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_058",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -1,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_059",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 0,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_060",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 1,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_061",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": 2,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_062",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 3,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_063",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 4,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_064",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -4,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_065",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": -3,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_066",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": -2,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_067",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -1,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_068",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 0,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_069",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 1,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_070",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": 2,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_071",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 3,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_072",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 4,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_073",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -4,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_074",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": -3,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_075",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": -2,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_076",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -1,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_077",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 0,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_078",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 1,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_079",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": 2,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_080",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 3,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_081",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 4,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_082",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -4,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_083",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": -3,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_084",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": -2,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_085",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -1,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_086",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 0,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_087",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 1,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_088",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": 2,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_089",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 3,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_090",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 4,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_091",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -4,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_092",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": -3,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_093",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": -2,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_094",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -1,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_095",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 0,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  },
+  {
+    "variationId": "var_096",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 1,
+    "pacingCutDurationSec": 0.4,
+    "audioTrack": "phonk_track_1.mp3"
+  },
+  {
+    "variationId": "var_097",
+    "mood": "aggressive",
+    "colorPalette": {
+      "primary": "#FFE600",
+      "secondary": "#FF2A00",
+      "accent": "#00F0FF"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": 2,
+    "pacingCutDurationSec": 0.5,
+    "audioTrack": "phonk_track_2.mp3"
+  },
+  {
+    "variationId": "var_098",
+    "mood": "dark-drift",
+    "colorPalette": {
+      "primary": "#00F0FF",
+      "secondary": "#9D00FF",
+      "accent": "#FFE600"
+    },
+    "typography": {
+      "fontFamily": "Cinzel, Georgia, serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.1
+    },
+    "dropFrameOffset": 3,
+    "pacingCutDurationSec": 0.6,
+    "audioTrack": "phonk_track_3.mp3"
+  },
+  {
+    "variationId": "var_099",
+    "mood": "hyper-kinetic",
+    "colorPalette": {
+      "primary": "#FF0055",
+      "secondary": "#7900FF",
+      "accent": "#00FFA3"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1.2
+    },
+    "dropFrameOffset": 4,
+    "pacingCutDurationSec": 0.7,
+    "audioTrack": "phonk_track_4.mp3"
+  },
+  {
+    "variationId": "var_100",
+    "mood": "minimal-stoic",
+    "colorPalette": {
+      "primary": "#FFFFFF",
+      "secondary": "#888888",
+      "accent": "#FF3333"
+    },
+    "typography": {
+      "fontFamily": "Montserrat, Impact, sans-serif",
+      "uppercase": true,
+      "scaleMultiplier": 1
+    },
+    "dropFrameOffset": -4,
+    "pacingCutDurationSec": 0.8,
+    "audioTrack": "phonk_track_5.mp3"
+  }
+]

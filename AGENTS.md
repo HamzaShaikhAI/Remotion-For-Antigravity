@@ -28,3 +28,13 @@ This file defines the mandatory engineering standards and execution policies for
 ## 4. Pre-Render Validation Gate
 - Always run `rea validate` before initiating a video render.
 - The `hooks/pre-render.json` lifecycle hook intercepts all `run_command` executions matching `rea render` to verify that all assets and entry points are intact before Chromium workers are launched.
+
+---
+
+## 5. Mandatory Pre-Edit Inspection & Viral Planning Protocol
+- Before authoring any Remotion composition or editing raw footage, execute the pre-edit protocol (`rea plan <raw-video> [audio-track]` or manual media telemetry).
+- Inspect raw video for subject locations (avoiding the 9:16 vertical cropping trap), narrative beats, and scene cuts.
+- Analyze audio transients (sub-bass 808 drops, cowbells, and silence breaths) to calculate frame-accurate drop offsets.
+- Formulate the audience retention plan (0.8s hook, tension arc, aura freeze-frames, dopamine release, and seamless replay loop).
+- Generate high-CTR titles, curiosity-gap hooks, and SEO/GEO keyword metadata before compiling.
+- For rich 30s raw battle footage, target 25–40s (1,500–2,400 frames @ 60fps) with beat-drop aura freeze-frames and bass-reactive aura counters. Do not rush or over-compress narrative climaxes.

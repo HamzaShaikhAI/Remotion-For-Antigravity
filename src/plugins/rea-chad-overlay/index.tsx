@@ -3,6 +3,7 @@ import {
   AbsoluteFill,
   interpolate,
   spring,
+  staticFile,
   useCurrentFrame,
   useVideoConfig,
 } from 'remotion';
@@ -33,7 +34,7 @@ export const ChadEmojiOverlay: React.FC<ChadEmojiOverlayProps> = ({
   variant = 'chad',
   caption = 'COLDEST MOMENT',
   bassReactive = true,
-  audioSrc,
+  audioSrc = staticFile('audio/active-phonk.mp3'),
   accentColor = '#00f5ff',
 }) => {
   const frame = useCurrentFrame();

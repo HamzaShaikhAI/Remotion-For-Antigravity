@@ -10,3 +10,9 @@ export { GlitchTransition } from './plugins/rea-transitions';
 export { KineticSplitText } from './plugins/rea-typography';
 export { ImpactFreezeFrame } from './plugins/rea-impact-freeze';
 export { ChadEmojiOverlay } from './plugins/rea-chad-overlay';
+
+// Editorial Intuition, Restraint & Pacing
+export * from './utils/RetentionPredictor';
+export * from './context/VFXBudgetContext';
+export * from './components/SeamlessTransition';
+export * from './intuition/logic/FlawlessLogicEngine';

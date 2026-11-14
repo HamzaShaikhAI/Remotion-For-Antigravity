@@ -1,0 +1,635 @@
+{
+  "clip_id": "C:/Users/win10/Documents/antigravity-remotion-skills/public/clips/clip_02_zenitsu_charge.mp4",
+  "frames": [
+    {
+      "frame": 0,
+      "momentum_x": 4.1,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 1,
+      "momentum_x": 4.0863,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 2,
+      "momentum_x": 4.0727,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 3,
+      "momentum_x": 4.059,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 4,
+      "momentum_x": 4.0453,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 5,
+      "momentum_x": 4.0317,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 6,
+      "momentum_x": 4.018,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 7,
+      "momentum_x": 4.0043,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 8,
+      "momentum_x": 3.9907,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 9,
+      "momentum_x": 3.977,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 10,
+      "momentum_x": 3.9633,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 11,
+      "momentum_x": 3.9497,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 12,
+      "momentum_x": 3.936,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 13,
+      "momentum_x": 3.9223,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 14,
+      "momentum_x": 3.9087,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 15,
+      "momentum_x": 3.895,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 16,
+      "momentum_x": 3.8813,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 17,
+      "momentum_x": 3.8677,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 18,
+      "momentum_x": 3.854,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 19,
+      "momentum_x": 3.8403,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 20,
+      "momentum_x": 3.8267,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 21,
+      "momentum_x": 3.813,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 22,
+      "momentum_x": 3.7993,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 23,
+      "momentum_x": 3.7857,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 24,
+      "momentum_x": 3.772,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 25,
+      "momentum_x": 3.7583,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 26,
+      "momentum_x": 3.7447,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 27,
+      "momentum_x": 3.731,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 28,
+      "momentum_x": 3.7173,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 29,
+      "momentum_x": 3.7037,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 30,
+      "momentum_x": 3.69,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 31,
+      "momentum_x": 3.6763,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 32,
+      "momentum_x": 3.6627,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 33,
+      "momentum_x": 3.649,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 34,
+      "momentum_x": 3.6353,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 35,
+      "momentum_x": 3.6217,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 36,
+      "momentum_x": 3.608,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 37,
+      "momentum_x": 3.5943,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 38,
+      "momentum_x": 3.5807,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 39,
+      "momentum_x": 3.567,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 40,
+      "momentum_x": 3.5533,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 41,
+      "momentum_x": 3.5397,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 42,
+      "momentum_x": 3.526,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 43,
+      "momentum_x": 3.5123,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 44,
+      "momentum_x": 3.4987,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 45,
+      "momentum_x": 3.485,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 46,
+      "momentum_x": 3.4713,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 47,
+      "momentum_x": 3.4577,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 48,
+      "momentum_x": 3.444,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 49,
+      "momentum_x": 3.4303,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 50,
+      "momentum_x": 3.4167,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 51,
+      "momentum_x": 3.403,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 52,
+      "momentum_x": 3.3893,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 53,
+      "momentum_x": 3.3757,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 54,
+      "momentum_x": 3.362,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 55,
+      "momentum_x": 3.3483,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 56,
+      "momentum_x": 3.3347,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 57,
+      "momentum_x": 3.321,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 58,
+      "momentum_x": 3.3073,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 59,
+      "momentum_x": 3.2937,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 60,
+      "momentum_x": 3.28,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 61,
+      "momentum_x": 3.2663,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 62,
+      "momentum_x": 3.2527,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 63,
+      "momentum_x": 3.239,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 64,
+      "momentum_x": 3.2253,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 65,
+      "momentum_x": 3.2117,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 66,
+      "momentum_x": 3.198,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 67,
+      "momentum_x": 3.1843,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 68,
+      "momentum_x": 3.1707,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 69,
+      "momentum_x": 3.157,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 70,
+      "momentum_x": 3.1433,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 71,
+      "momentum_x": 3.1297,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 72,
+      "momentum_x": 3.116,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 73,
+      "momentum_x": 3.1023,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 74,
+      "momentum_x": 3.0887,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 75,
+      "momentum_x": 3.075,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 76,
+      "momentum_x": 3.0613,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 77,
+      "momentum_x": 3.0477,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 78,
+      "momentum_x": 3.034,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 79,
+      "momentum_x": 3.0203,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 80,
+      "momentum_x": 3.0067,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 81,
+      "momentum_x": 2.993,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 82,
+      "momentum_x": 2.9793,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 83,
+      "momentum_x": 2.9657,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 84,
+      "momentum_x": 2.952,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 85,
+      "momentum_x": 2.9383,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 86,
+      "momentum_x": 2.9247,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 87,
+      "momentum_x": 2.911,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 88,
+      "momentum_x": 2.8973,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    },
+    {
+      "frame": 89,
+      "momentum_x": 2.8837,
+      "momentum_y": 0.0,
+      "momentum_dir": "pan_right",
+      "eyeline": "looking_right"
+    }
+  ]
+}
