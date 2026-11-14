@@ -1032,6 +1032,53 @@ const OutroSection: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) 
 };
 
 // ---------------------------------------------------------------------
+// DYNAMIC AUDIO EQUALIZER VISUALIZER (140 BPM BASS WAVE)
+// ---------------------------------------------------------------------
+const AudioEqualizerBars: React.FC<{ frame: number }> = ({ frame }) => {
+  // 140 BPM beat cycle (every 25.71 frames at 60fps)
+  const beatProg = (frame % 25.71) / 25.71;
+  const kickPulse = Math.sin(beatProg * Math.PI);
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 140,
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        gap: 8,
+        paddingBottom: 24,
+        pointerEvents: 'none',
+        zIndex: 40,
+        opacity: 0.7,
+      }}
+    >
+      {Array.from({ length: 48 }).map((_, i) => {
+        const offset = Math.sin(frame * 0.15 + i * 0.3) * 0.5 + 0.5;
+        const barHeight = 12 + (offset * 85 + kickPulse * 45) * (1 - Math.abs(i - 24) / 24);
+        const hue = (i * 7 + frame * 2) % 360;
+        return (
+          <div
+            key={i}
+            style={{
+              width: 14,
+              height: barHeight,
+              borderRadius: '6px 6px 0 0',
+              background: `linear-gradient(180deg, hsl(${hue}, 95%, 65%) 0%, hsl(${hue}, 80%, 40%) 100%)`,
+              boxShadow: `0 0 16px hsl(${hue}, 90%, 55%)`,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
+// ---------------------------------------------------------------------
 // MASTER COMPOSITION: KINETIC LYRIC VIDEO
 // ---------------------------------------------------------------------
 export const KineticLyricVideo: React.FC = () => {
@@ -1064,8 +1111,11 @@ export const KineticLyricVideo: React.FC = () => {
         color: '#ffffff',
       }}
     >
-      {/* Deterministic Master Soundtrack */}
-      <Audio src={staticFile('audio/kinetic_master_soundtrack.mp3')} />
+      {/* Deterministic Master Soundtrack (Upgraded AI Music v2.4) */}
+      <Audio src={staticFile('audio/kinetic_master_v2.mp3')} />
+
+      {/* Dynamic 140 BPM Reactive Audio Equalizer */}
+      <AudioEqualizerBars frame={frame} />
 
       {/* Effects Matrix & Post-Processing */}
       <CanvasEffectsMatrix effects={effects} style={{ width: '100%', height: '100%' }}>
