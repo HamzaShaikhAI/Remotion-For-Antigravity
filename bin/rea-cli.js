@@ -4062,7 +4062,7 @@ async function handleLambdaRender(args) {
 async function handleMusic(args) {
   const prompt = args[1];
   if (!prompt || prompt.startsWith('-')) {
-    logError('Prompt required: rea music "<prompt>" [-d <duration>] [-o <outPath>]');
+    logError('Prompt required: rea music "<prompt>" [-d <duration>] [-o <outPath>] [--provider=lyria|cloud|studio]');
     process.exit(1);
   }
 
@@ -4072,6 +4072,9 @@ async function handleMusic(args) {
   const outArg = args.find((a) => a.startsWith('-o=') || a.startsWith('--out='))?.split('=')[1] ||
     (args.includes('-o') ? args[args.indexOf('-o') + 1] : args.includes('--out') ? args[args.indexOf('--out') + 1] : 'public/audio/soundtrack.mp3');
 
+  const providerArg = args.find((a) => a.startsWith('--provider='))?.split('=')[1] ||
+    (args.includes('--provider') ? args[args.indexOf('--provider') + 1] : 'auto');
+
   try {
     let AiMusicGenerator;
     try {
@@ -4079,7 +4082,7 @@ async function handleMusic(args) {
     } catch {
       AiMusicGenerator = require('../src/engines/backend').AiMusicGenerator;
     }
-    await AiMusicGenerator.fetchCloudSoundtrack(prompt, Number(durArg), outArg);
+    await AiMusicGenerator.fetchCloudSoundtrack(prompt, Number(durArg), outArg, { provider: providerArg });
   } catch (err) {
     logError(`Music generation error: ${err.message}`);
     process.exit(1);
@@ -4137,7 +4140,7 @@ ${colors.bold}DECENTRALIZED ENGINES COMMANDS (V2.2):${colors.reset}
   ${colors.green}fleet "<!edit combat Zenitsu audio=...>"${colors.reset}      Fleet Commander: Real-time autonomous bot command dispatcher
 
 ${colors.bold}AUDIO & SOUND DESIGN COMMANDS (V2):${colors.reset}
-  ${colors.green}music "<prompt>" [-d 30] [-o out.mp3]${colors.reset}          Fetch or generate background soundtrack via lightweight cloud APIs
+  ${colors.green}music "<prompt>" [-d 30] [-o out.mp3] [--provider=lyria]${colors.reset} Google Lyria 3.5 & Cloud Music Engine (@google/genai)
   ${colors.green}install-skill${colors.reset}                                    Install skill globally into ~/.gemini/config/skills/
   ${colors.green}sfx <whoosh|pop|riser|typewriter> [out.wav]${colors.reset}      Deterministic 44.1 kHz WAV procedural sound synthesis
   ${colors.green}voice "<text>" [out.wav] [--provider=gemini|edge]${colors.reset} Dual-provider (Gemini 3.8 Flash TTS / Edge) speech engine

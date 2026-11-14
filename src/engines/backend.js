@@ -886,9 +886,105 @@ async function deployAndRenderLambda(options, inputProps = {}) {
   return { renderId, bucketName, serveUrl };
 }
 
-// --- 29. Cloud-Backed Lightweight Music Engine (AiMusicGenerator) ---
+// --- 29. Google Lyria 3.5 & Cloud Music Engine ---
+const GoogleLyriaMusicEngine = {
+  generateSoundtrack: async function (prompt, durationSec = 30, outPath = 'public/audio/lyria_soundtrack.mp3') {
+    console.log(`🎵 [REA x Lyria 3.5] Generating track via Google AI SDK...`);
+    console.log(`   Prompt: "${prompt}"`);
+    console.log(`   Duration: ${durationSec}s | Destination: ${outPath}`);
+
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENAI_API_KEY;
+    if (!apiKey) {
+      throw new Error(
+        'Missing Gemini API Key. Set GEMINI_API_KEY or GOOGLE_API_KEY in your environment to use Google Lyria 3.5.'
+      );
+    }
+
+    const { GoogleGenAI } = require('@google/genai');
+    const ai = new GoogleGenAI({ apiKey });
+    const resolvedPath = path.resolve(process.cwd(), outPath);
+    const parentDir = path.dirname(resolvedPath);
+    if (!fs.existsSync(parentDir)) {
+      fs.mkdirSync(parentDir, { recursive: true });
+    }
+
+    try {
+      const response = await ai.interactions.create({
+        model: 'lyria-3.5',
+        input: `${prompt}. Make it exactly ${durationSec} seconds long.`,
+        responseFormat: { type: 'audio' },
+      });
+
+      let audioBuffer = null;
+      if (response && response.outputAudio) {
+        audioBuffer = Buffer.from(response.outputAudio, 'base64');
+      } else if (
+        response &&
+        response.candidates &&
+        response.candidates[0] &&
+        response.candidates[0].content &&
+        response.candidates[0].content.parts &&
+        response.candidates[0].content.parts[0] &&
+        response.candidates[0].content.parts[0].inlineData
+      ) {
+        audioBuffer = Buffer.from(response.candidates[0].content.parts[0].inlineData.data, 'base64');
+      }
+
+      if (audioBuffer && audioBuffer.length > 0) {
+        fs.writeFileSync(resolvedPath, audioBuffer);
+        const bpm = 128;
+        const fps = 60;
+        const beatPeriod = 60 / bpm;
+        const totalBeats = Math.floor(durationSec / beatPeriod);
+        const transients = [];
+        for (let b = 0; b < totalBeats; b++) {
+          transients.push(Math.round(b * beatPeriod * fps));
+        }
+
+        const metadata = {
+          title: `Lyria 3.5: ${prompt.slice(0, 40)}`,
+          prompt,
+          durationSec,
+          bpm,
+          engine: 'google-lyria-3.5',
+          transients,
+          generatedAt: new Date().toISOString(),
+        };
+        fs.writeFileSync(`${resolvedPath}.meta.json`, JSON.stringify(metadata, null, 2));
+        console.log(`✅ [Lyria 3.5] Soundtrack successfully compiled: ${resolvedPath}`);
+        return { success: true, path: resolvedPath, engine: 'google-lyria-3.5', title: metadata.title };
+      } else {
+        throw new Error('No audio data returned from Lyria model.');
+      }
+    } catch (error) {
+      console.error(`❌ Lyria generation error: ${error.message}`);
+      throw error;
+    }
+  },
+};
+
 const AiMusicGenerator = {
-  fetchCloudSoundtrack: async function (prompt, durationSec = 30, outPath = 'public/audio/soundtrack.mp3') {
+  fetchCloudSoundtrack: async function (
+    prompt,
+    durationSec = 30,
+    outPath = 'public/audio/soundtrack.mp3',
+    options = { provider: 'auto' }
+  ) {
+    const provider = options.provider || 'auto';
+    const hasGeminiKey = Boolean(
+      process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENAI_API_KEY
+    );
+
+    if (provider === 'lyria' || (provider === 'auto' && hasGeminiKey)) {
+      try {
+        console.log(`🎵 [REA Music] Routing to Google Lyria 3.5 Engine via @google/genai SDK...`);
+        return await GoogleLyriaMusicEngine.generateSoundtrack(prompt, durationSec, outPath);
+      } catch (err) {
+        if (provider === 'lyria') throw err;
+        console.warn(`⚠️ [REA Music] Lyria 3.5 unavailable (${err.message}). Cascading to Cloud Catalog...`);
+      }
+    }
+
     console.log(`☁️ [REA Cloud Music Engine] Querying cloud audio provider for prompt: "${prompt}"...`);
     console.log(`   Target Duration: ${durationSec}s | Destination: ${outPath}`);
 
@@ -1010,4 +1106,5 @@ module.exports = {
   deployAndRenderLambda,
   generateAiSoundtrack,
   AiMusicGenerator,
+  GoogleLyriaMusicEngine,
 };

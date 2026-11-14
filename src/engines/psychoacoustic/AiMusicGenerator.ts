@@ -1,7 +1,9 @@
 import fs from 'fs-extra';
 import path from 'path';
 import axios from 'axios';
-import { execSync } from 'child_process';
+import { GoogleLyriaMusicEngine, LyriaMusicResult } from './GoogleLyriaMusicEngine';
+
+export { GoogleLyriaMusicEngine };
 
 export interface CloudMusicResult {
   success: boolean;
@@ -9,20 +11,55 @@ export interface CloudMusicResult {
   title?: string;
   engine?: string;
   bpm?: number;
+  durationSec?: number;
   transients?: number[];
   error?: string;
 }
 
+export interface MusicOptions {
+  provider?: 'lyria' | 'cloud' | 'studio' | 'auto';
+  bpm?: number;
+}
+
 export class AiMusicGenerator {
   /**
-   * Fetches or generates a background soundtrack via lightweight cloud APIs or zero-key public track libraries.
+   * Fetches or generates a background soundtrack via Google Lyria 3.5 or lightweight cloud audio APIs.
    * Eliminates local hardware load and integrates with serverless pipelines.
    */
   static async fetchCloudSoundtrack(
     prompt: string,
     durationSec: number = 30,
-    outPath: string = 'public/audio/soundtrack.mp3'
+    outPath: string = 'public/audio/soundtrack.mp3',
+    options: MusicOptions = { provider: 'auto' }
   ): Promise<CloudMusicResult> {
+    const provider = options.provider || 'auto';
+    const hasGeminiKey = Boolean(
+      process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENAI_API_KEY
+    );
+
+    // 1. Google Lyria 3.5 Engine Route
+    if (provider === 'lyria' || (provider === 'auto' && hasGeminiKey)) {
+      try {
+        console.log(`🎵 [REA Music] Routing to Google Lyria 3.5 Engine via @google/genai SDK...`);
+        const result = await GoogleLyriaMusicEngine.generateSoundtrack(prompt, durationSec, outPath);
+        return {
+          success: true,
+          path: result.path,
+          title: result.title,
+          engine: result.engine,
+          bpm: result.bpm,
+          durationSec: result.durationSec,
+        };
+      } catch (err: any) {
+        if (provider === 'lyria') {
+          console.error(`❌ [REA Music] Google Lyria generation failed: ${err.message}`);
+          throw err;
+        }
+        console.warn(`⚠️ [REA Music] Lyria 3.5 unavailable (${err.message}). Cascading to Cloud Catalog...`);
+      }
+    }
+
+    // 2. Cloud Audio Provider Route
     console.log(`☁️ [REA Cloud Music Engine] Querying cloud audio provider for prompt: "${prompt}"...`);
     console.log(`   Target Duration: ${durationSec}s | Destination: ${outPath}`);
 
@@ -32,7 +69,6 @@ export class AiMusicGenerator {
     const cloudApiUrl = process.env.CLOUD_MUSIC_API_URL || 'https://api.freetouse.com/v3/tracks';
 
     try {
-      // Connect to lightweight cloud audio API with a 6-second timeout
       const response = await axios.get(cloudApiUrl, {
         params: { search: prompt, limit: 1 },
         timeout: 6000,
@@ -69,14 +105,14 @@ export class AiMusicGenerator {
         fs.writeFileSync(`${resolvedPath}.meta.json`, JSON.stringify(metadata, null, 2));
 
         console.log(`✅ Soundtrack successfully saved to: ${resolvedPath}`);
-        return { success: true, path: resolvedPath, title: track.title, engine: 'cloud-api' };
+        return { success: true, path: resolvedPath, title: track.title, engine: 'cloud-api', bpm, durationSec };
       } else {
         throw new Error('No matching cloud track found for the given prompt.');
       }
     } catch (error: any) {
       console.warn(`⚠️ Cloud music fetch failed: ${error.message}. Activating resilient fallback...`);
 
-      // Resilient Fallback: Select an authentic studio track from local library instead of writing corrupt 0-byte file
+      // 3. Resilient Fallback: Select an authentic studio track from local library instead of writing corrupt 0-byte file
       const studioTrack = path.resolve(process.cwd(), 'public/audio/active-phonk.mp3');
       const backupTrack = path.resolve(process.cwd(), 'public/music/phonk/dastras-aggressive-phonk-140bpm.wav');
 
@@ -137,6 +173,6 @@ export class AiMusicGenerator {
     bpm: number = 128,
     outPath: string = 'public/audio/custom_soundtrack.mp3'
   ) {
-    return this.fetchCloudSoundtrack(prompt, durationSec, outPath);
+    return this.fetchCloudSoundtrack(prompt, durationSec, outPath, { bpm });
   }
 }

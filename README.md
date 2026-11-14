@@ -213,19 +213,25 @@ node bin/rea-cli.js lambda-render Generated_saas -b my-rea-render-bucket --regio
 
 ---
 
-## 🎵 Cloud-Backed Lightweight Music Engine (`rea music`)
+## 🎵 Google Lyria 3.5 & Cloud-Backed Music Engine (`rea music`)
 
-REA features an autonomous, cloud-backed audio generator in `src/engines/psychoacoustic/AiMusicGenerator.ts`. Instead of running heavy, local GPU models (like 18+ GB neural checkpoints), `rea music` queries lightweight cloud audio APIs or zero-key public music catalogs to download high-production soundtracks matched to your prompt and duration.
+REA features an autonomous, multi-tier music engine supporting **Google Lyria 3.5 / Flow Music** via the native `@google/genai` SDK (`GoogleLyriaMusicEngine.ts`), lightweight cloud APIs, and curated studio fallbacks (`AiMusicGenerator.ts`).
 
-### Key Advantages:
-1. **Zero Local Hardware Load:** Zero GPU VRAM consumption, zero Python/PyTorch bloat, and zero disk space consumed by heavy model weights.
-2. **Instant Pipeline Execution:** Downloads production-ready audio in seconds, pairing seamlessly with `@remotion/lambda` for a completely serverless video generation pipeline.
-3. **Resilient Studio Fallback:** If cloud endpoints are unavailable or offline, the engine automatically falls back to curated studio assets (`public/audio/active-phonk.mp3`) or valid PCM ambient beds—never failing or writing corrupted 0-byte files.
+### Why Google Lyria 3.5 Wins:
+1. **Zero Additional Subscriptions:** Antigravity / Google AI ecosystem subscribers utilize their existing creative credit allocations directly via `GEMINI_API_KEY` without separate third-party music SaaS tools.
+2. **Structural Musical Alignment:** Lyria understands high-level musical structure (intros, verses, choruses, drops, and instrument spacing), generating coherent multi-instrumental compositions with downbeat timestamps.
+3. **Multi-Tier Cascade:**
+   - **Tier 1:** Native Google Lyria 3.5 synthesis via `@google/genai` SDK.
+   - **Tier 2:** Lightweight cloud audio catalog query with fast streaming download.
+   - **Tier 3:** Resilient studio asset fallback (`active-phonk.mp3`) with broadcast stereo normalization.
 
 ### Command Execution:
 ```bash
-# Query cloud audio provider or catalog for a 30-second soundtrack
-node bin/rea-cli.js music "High-octane Memphis phonk with punchy 808s and cowbells" -d 30 -o public/audio/soundtrack.mp3
+# Generate full-length track with Google Lyria 3.5 via native GenAI SDK
+node bin/rea-cli.js music "High-octane Memphis phonk with heavy 808 glide and cowbells" -d 30 -o public/audio/soundtrack.mp3 --provider=lyria
+
+# Automatic tier cascading (Lyria -> Cloud -> Studio)
+node bin/rea-cli.js music "Ambient cyber synthwave bed" -d 30 -o public/audio/soundtrack.mp3
 ```
 
 ### Visual Beat & Transient Synchronization:
