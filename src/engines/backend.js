@@ -745,6 +745,44 @@ function applyTweak(filePath, instruction, dryRun = false) {
   return { filePath, success: changes.length > 0, changes };
 }
 
+// --- 20. Real-Time Remotion Docs Engine ---
+const REMOTION_DOCS = {
+  spring: {
+    title: 'spring()',
+    sig: 'spring({ frame, fps, config: { damping, mass, stiffness } })',
+    desc: 'Deterministic physics-based spring animation calculated directly from frame number.',
+    tip: 'Avoid linear CSS; use spring() for all UI entries.',
+  },
+  interpolate: {
+    title: 'interpolate()',
+    sig: 'interpolate(frame, [0, 30], [0, 1], { extrapolateRight: "clamp" })',
+    desc: 'Maps input frame range to output coordinates with strict clamping.',
+    tip: 'Always set extrapolateLeft: "clamp" and extrapolateRight: "clamp".',
+  },
+  sequence: {
+    title: '<Sequence>',
+    sig: '<Sequence from={30} durationInFrames={90}>',
+    desc: 'Time-shifts child layers so frame 0 starts at "from".',
+    tip: 'Use layout="none" when positioning children manually.',
+  },
+  staticfile: {
+    title: 'staticFile()',
+    sig: 'staticFile("path/to/asset.png")',
+    desc: 'Resolves relative assets inside public/ for both dev preview and production renders.',
+    tip: 'Never use relative string paths like "../public/img.png".',
+  },
+};
+
+function lookupRemotionDocs(query) {
+  const q = (query || '').toLowerCase().replace(/[^a-z]/g, '');
+  for (const [k, v] of Object.entries(REMOTION_DOCS)) {
+    if (k.includes(q) || q.includes(k) || v.title.toLowerCase().includes(q)) {
+      return v;
+    }
+  }
+  return null;
+}
+
 module.exports = {
   extractActionSequences,
   separateStems,
@@ -770,4 +808,5 @@ module.exports = {
   compileScriptToStoryboard,
   synthesizeComponent,
   applyTweak,
+  lookupRemotionDocs,
 };

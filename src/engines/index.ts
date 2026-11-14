@@ -62,3 +62,15 @@ export * from './diagramming';
 // Engine XII: Universal Multi-Format Responsive Engine
 export * from './multiformat';
 
+// Engine XIII: Geographic Route & Map Animations
+export * from './geo';
+
+// Engine XIV: Vector Morphing & Lottie Integration
+export * from './vector';
+
+// Engine XV: 3D Graphics & WebGL Isometric Showcases
+export * from './three';
+
+// Engine XVI: Rough Hand-Drawn Annotations
+export * from './annotations';
+

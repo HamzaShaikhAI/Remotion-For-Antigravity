@@ -10,10 +10,42 @@ import { GodTierEngineShowcase } from './compositions/GodTierEngineShowcase';
 import { HollywoodIntuitionMaster } from './compositions/HollywoodIntuitionMaster';
 import { DiagramComposition } from './compositions/Diagram_flowchart';
 import { GeneratedSAASComposition } from './compositions/Generated_saas';
+import { KineticMapRoute } from './engines/geo';
+import { IsometricTechShowcase } from './engines/three';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* 16:9 Landscape Interactive Map & Flight Route */}
+      <Composition
+        id="GeographicMapRoute"
+        component={KineticMapRoute}
+        durationInFrames={150}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={{
+          origin: { lat: 37.7749, lng: -122.4194, name: 'San Francisco' },
+          destination: { lat: 35.6762, lng: 139.6503, name: 'Tokyo' },
+          title: 'Trans-Pacific AI Pipeline Latency',
+        }}
+      />
+
+      {/* 1:1 Square 3D Isometric Core Showcase */}
+      <Composition
+        id="Isometric3dCore"
+        component={IsometricTechShowcase}
+        durationInFrames={180}
+        fps={30}
+        width={1080}
+        height={1080}
+        defaultProps={{
+          cubeSize: 240,
+          neonColor: '#38bdf8',
+          label: 'REA 3D INFERENCE',
+        }}
+      />
+
       {/* 16:9 Landscape SVG Architecture & Data Flow */}
       <Composition
         id="ArchitectureFlowchart"

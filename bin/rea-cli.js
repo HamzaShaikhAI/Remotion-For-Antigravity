@@ -3901,6 +3901,21 @@ function handleReframe(args) {
   console.log(`  Safe Zones:          Dynamic padding auto-calculated from ASPECT_PRESETS.`);
 }
 
+function handleDocs(args) {
+  const query = args[1] || 'spring';
+  const { lookupRemotionDocs } = require('../src/engines/backend');
+  const doc = lookupRemotionDocs(query);
+
+  if (doc) {
+    logSuccess(`Remotion Official Docs [${doc.title}]:`);
+    console.log(`  Signature:     ${colors.cyan}${doc.sig}${colors.reset}`);
+    console.log(`  Summary:       ${doc.desc}`);
+    console.log(`  Best Practice: ${colors.yellow}${doc.tip}${colors.reset}`);
+  } else {
+    logWarn(`No local doc entry found for "${query}". Try: spring, interpolate, sequence, staticfile`);
+  }
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -3925,6 +3940,7 @@ ${colors.bold}NEXT-GEN GENERATIVE & INTERACTIVE COMMANDS (V2.3):${colors.reset}
   ${colors.green}tweak <component.tsx> "<instruction>"${colors.reset}         Interactive: Conversational fine-tuning loop (timing, typography, colors)
   ${colors.green}diagram <flowchart|code|chart> [out.tsx]${colors.reset}      Technical: Dynamic SVG self-drawing paths & architecture diagrams
   ${colors.green}reframe <component.tsx> --to=16:9|9:16${colors.reset}        Responsive: Universal responsive container & safe-zone adapter
+  ${colors.green}docs <query>${colors.reset}                                 Real-Time: Official Remotion API docs & best-practice lookup
 
 ${colors.bold}ENTERPRISE AUTONOMOUS STUDIO COMMANDS (V4.0):${colors.reset}
   ${colors.green}upscale-4k <in.mp4> [out.mp4] [--scale=4]${colors.reset}       Neural Vision: Real-ESRGAN edge-directed 4K super-resolution
@@ -4113,6 +4129,9 @@ async function main() {
       break;
     case 'reframe':
       handleReframe(args);
+      break;
+    case 'docs':
+      handleDocs(args);
       break;
     case 'port-niche':
       handlePortNiche(args);

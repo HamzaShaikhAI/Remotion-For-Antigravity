@@ -77,4 +77,5 @@ export * from './studio/CrossNichePortingEngine';
 export * from './generative/DynamicComponentSynthesizer';
 export * from './interactive/ConversationalTweakEngine';
 export * from './multiformat/AspectPresets';
+export * from './docs/RemotionDocsLookup';
 
