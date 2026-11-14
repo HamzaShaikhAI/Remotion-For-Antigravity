@@ -37,3 +37,27 @@ declare module '../plugins/rea-captions' {
     fontSize?: number;
   }>;
 }
+
+declare module '../plugins/rea-impact-freeze' {
+  export const ImpactFreezeFrame: React.FC<{
+    children: React.ReactNode;
+    triggerFrame: number;
+    durationInFrames?: number;
+    shakeIntensity?: number;
+    mangaContrast?: boolean;
+    flashColor?: string;
+    audioSrc?: string;
+  }>;
+}
+
+declare module '../plugins/rea-chad-overlay' {
+  export const ChadEmojiOverlay: React.FC<{
+    triggerFrame: number;
+    durationInFrames?: number;
+    variant?: 'chad' | 'skull' | 'fire' | 'sigma';
+    caption?: string;
+    bassReactive?: boolean;
+    audioSrc?: string;
+    accentColor?: string;
+  }>;
+}

@@ -42,10 +42,10 @@ Explore animated examples generated programmatically by Antigravity using the RE
 
 <br/>
 
-| 5. Vertical Social Short Reel (9:16) |
-| :---: |
-| [![Vertical Short Reel](assets/vertical-reel-demo.gif)](assets/vertical-reel-demo.gif) |
-| *10s @ 30fps • 1080×1920 • Camera zoom & terminal typing* |
+| 5. Vertical Social Short Reel (9:16) | 6. Viral Anime / Brazilian Phonk Short (9:16 @ 60fps) |
+| :---: | :---: |
+| [![Vertical Short Reel](assets/vertical-reel-demo.gif)](assets/vertical-reel-demo.gif) | [![Viral Anime Phonk Short](assets/anime-phonk-preview.gif)](assets/anime-phonk-poster.jpeg) |
+| *10s @ 30fps • 1080×1920 • Camera zoom & terminal typing* | *12s @ 60fps • 1080×1920 • Beat-drop freeze, manga halftone, GigaChad overlay* |
 
 </div>
 
@@ -79,7 +79,9 @@ REA bridges programmatic React motion graphics and autonomous AI agents through 
         │  • rea-transitions     │                │  Stream Telemetry Probing    │
         │  • rea-typography      │                │  High-Res Still Posters      │
         │  • rea-captions        │                │  Lossless Concat Demuxer     │
-        │  • rea-mockups         │                └──────────────────────────────┘
+        │  • rea-mockups         │                │  Non-Repeating Track Select  │
+        │  • rea-impact-freeze   │                │  Automatic Drop Detection    │
+        │  • rea-chad-overlay    │                └──────────────────────────────┘
         └─────────────┬──────────┘
                       │
         ┌─────────────┴──────────────────────────────────────────────────────────┐
@@ -124,6 +126,7 @@ Execute all operations via `rea <command>` (or `node bin/rea-cli.js <command>`):
 | **`sfx`** | `rea sfx <whoosh\|pop\|riser\|typewriter> [out.wav]` | Synthesizes deterministic 44.1 kHz 16-bit PCM WAV sound effects directly into `public/sfx/` with zero external dependencies. |
 | **`voice`** | `rea voice "<text>" [out.wav] [--provider=gemini\|edge] [--voice=...] [--style="..."]` | Dual-engine voiceover: broadcast Google Gemini 3.8 Flash TTS (`gemini-3.8-flash-tts`) or zero-key Edge TTS. Calculates exact Remotion frame counts. |
 | **`voice (dialogue)`** | `rea voice --dialogue=script.json [out.wav] [--provider=gemini]` | Synthesizes conversational 2-person dialogues for podcasts and audiograms with turn-by-turn speaker annotations. |
+| **`pick-track`** | `rea pick-track [--dir=...] [--mood=aggressive\|dark\|velocity\|drift] [--out=...]` | Non-repeating music track selector with `.rea-track-history.json` rotation and automated FFmpeg beat-drop timestamp detection. |
 | **`validate-script`** | `rea validate-script <text \| file.txt>` | Audits voiceover scripts against `rules/vox-editorial.md` for syllable density (3.8–4.5/sec) and flags cliché phrases. |
 
 ### 🎬 2. Remotion Studio & Rendering Commands
@@ -190,6 +193,29 @@ REA enforces a **Manifest-Driven Multi-Act Architecture** in `src/Root.tsx`:
 
 ```bash
 rea render-long --auto final-documentary.mp4
+```
+
+---
+
+### 4. Viral Anime & Brazilian Phonk 9:16 Pipeline (60fps High-Retention)
+
+Engineered specifically for algorithmic delivery on YouTube Shorts, Instagram Reels, and TikTok based on the cognitive research codified in [`anime_phonk_research.md`](./anime_phonk_research.md) and [`rules/anime-phonk-edits.md`](./rules/anime-phonk-edits.md):
+
+- **Zero-Repeat Music Rotation (`rea pick-track`):** Automatically selects unplayed tracks from `public/music/phonk/`, logs history to `.rea-track-history.json`, filters by mood (`aggressive`, `dark`, `velocity`, `drift`), and detects primary sub-bass drops via FFmpeg `astats`.
+- **Beat-Drop Impact Formula (`<ImpactFreezeFrame>`):** Triggers a 4-frame sensory flash, freezes action into high-contrast black-and-white manga halftone screen-tone, punches camera scale via high-stiffness spring (`damping: 9, stiffness: 280`), projects 64 deterministic polar speedlines, and applies sub-bass-boosted directional camera shake.
+- **Cultural Symbology Reaction Badge (`<ChadEmojiOverlay>`):** Slams in high-contrast reaction badges (`🗿`, `💀`, `🔥`, `⚡`) with real-time chromatic RGB channel splitting, neon drop-shadows, and sub-bass pulse scaling.
+- **Seamless 12-Frame Loop Physics:** Accelerates viewport velocity ($1.0 \to 1.55\times$) during the final 12 frames to achieve an undetectable loop back into Frame 0, driving Average Percentage Viewed (AVD) above $110\%-130\%$.
+
+```bash
+# Select track with mood filtering and automatic beat-drop detection:
+rea pick-track --mood=aggressive
+
+# Synthesize anticipatory riser SFX:
+rea sfx riser public/sfx/riser.wav
+
+# Validate and compile 60fps vertical master:
+rea validate AnimePhonkShort
+rea render AnimePhonkShort out-anime-phonk.mp4
 ```
 
 ---

@@ -612,6 +612,332 @@ export const AnimatedCaptions: React.FC<{
       'index.ts': `export * from './index.tsx';\n`,
     },
   },
+
+  'rea-impact-freeze': {
+    description: 'Anime beat-drop freeze frame with manga halftone, SVG speedlines, and bass camera shake',
+    files: {
+      'index.tsx': `import React, { useMemo } from 'react';
+import {
+  AbsoluteFill,
+  Freeze,
+  interpolate,
+  spring,
+  useCurrentFrame,
+  useVideoConfig,
+} from 'remotion';
+import { useAudioData, visualizeAudio } from '@remotion/media-utils';
+
+export interface ImpactFreezeFrameProps {
+  children: React.ReactNode;
+  triggerFrame: number;
+  durationInFrames?: number;
+  shakeIntensity?: number;
+  mangaContrast?: boolean;
+  flashColor?: string;
+  audioSrc?: string;
+}
+
+export const ImpactFreezeFrame: React.FC<ImpactFreezeFrameProps> = ({
+  children,
+  triggerFrame,
+  durationInFrames = 45,
+  shakeIntensity = 18,
+  mangaContrast = true,
+  flashColor = '#ffffff',
+  audioSrc,
+}) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const audioData = useAudioData(audioSrc ?? '');
+
+  const isFrozen = frame >= triggerFrame && frame < triggerFrame + durationInFrames;
+  const localFrame = Math.max(0, frame - triggerFrame);
+
+  let bassEnergy = 0;
+  if (audioData && isFrozen) {
+    const spectrum = visualizeAudio({
+      fps,
+      frame,
+      audioData,
+      numberOfSamples: 32,
+    });
+    bassEnergy = (spectrum[0] + spectrum[1] + spectrum[2] + spectrum[3]) / 4;
+  }
+
+  const zoomSpring = spring({
+    frame: localFrame,
+    fps,
+    config: { damping: 9, stiffness: 280, mass: 0.7 },
+  });
+  const baseScale = isFrozen ? interpolate(zoomSpring, [0, 1], [1.0, 1.24]) : 1;
+  const totalScale = baseScale + bassEnergy * 0.14;
+
+  const decay = isFrozen ? Math.exp(-localFrame * 0.12) : 0;
+  const activeShake = isFrozen ? shakeIntensity * (decay + bassEnergy * 0.85) : 0;
+  const shakeX = Math.sin(localFrame * 2.9) * activeShake;
+  const shakeY = Math.cos(localFrame * 3.7) * activeShake;
+  const shakeRot = Math.sin(localFrame * 2.1) * (activeShake * 0.12);
+
+  const flashOpacity = isFrozen
+    ? interpolate(localFrame, [0, 4], [0.9, 0], { extrapolateRight: 'clamp' })
+    : 0;
+
+  const speedlines = useMemo(() => {
+    return Array.from({ length: 64 }).map((_, i) => {
+      const angleDeg = (i * 360) / 64 + ((i * 17) % 5) - 2.5;
+      const innerRadius = 34 + ((i * 29) % 18);
+      const strokeWidth = 1.5 + ((i * 13) % 4);
+      return { id: i, angleDeg, innerRadius, strokeWidth };
+    });
+  }, []);
+
+  const renderTransformedContent = () => (
+    <AbsoluteFill
+      style={{
+        transform: \`translate(\${shakeX}px, \${shakeY}px) scale(\${totalScale}) rotate(\${shakeRot}deg)\`,
+        filter:
+          isFrozen && mangaContrast
+            ? 'grayscale(100%) contrast(215%) brightness(1.08)'
+            : 'none',
+      }}
+    >
+      {children}
+    </AbsoluteFill>
+  );
+
+  return (
+    <AbsoluteFill style={{ overflow: 'hidden', backgroundColor: '#000000' }}>
+      {isFrozen ? (
+        <Freeze frame={triggerFrame}>{renderTransformedContent()}</Freeze>
+      ) : (
+        renderTransformedContent()
+      )}
+
+      {isFrozen && mangaContrast && (
+        <AbsoluteFill
+          style={{
+            pointerEvents: 'none',
+            mixBlendMode: 'overlay',
+            opacity: 0.42,
+            backgroundImage:
+              'radial-gradient(circle, #000000 1.35px, transparent 1.45px)',
+            backgroundSize: '6px 6px',
+            transform: \`translate(\${(localFrame % 2) * 1.5}px, \${(localFrame % 3) * 1.5}px)\`,
+          }}
+        />
+      )}
+
+      {isFrozen && (
+        <AbsoluteFill style={{ pointerEvents: 'none' }}>
+          <svg
+            viewBox="-50 -50 100 100"
+            preserveAspectRatio="none"
+            style={{ width: '100%', height: '100%' }}
+          >
+            {speedlines.map((ray) => {
+              const rad = (ray.angleDeg * Math.PI) / 180;
+              const pulse = Math.sin(localFrame * 0.9 + ray.id) * 4;
+              const r1 = ray.innerRadius + pulse;
+              const r2 = 85;
+              return (
+                <line
+                  key={ray.id}
+                  x1={Math.cos(rad) * r1}
+                  y1={Math.sin(rad) * r1}
+                  x2={Math.cos(rad) * r2}
+                  y2={Math.sin(rad) * r2}
+                  stroke="#ffffff"
+                  strokeWidth={ray.strokeWidth * 0.18}
+                  strokeOpacity={0.85}
+                />
+              );
+            })}
+          </svg>
+        </AbsoluteFill>
+      )}
+
+      {flashOpacity > 0 && (
+        <AbsoluteFill
+          style={{
+            backgroundColor: flashColor,
+            opacity: flashOpacity,
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+    </AbsoluteFill>
+  );
+};
+`,
+      'index.ts': `export * from './index.tsx';\n`,
+    },
+  },
+
+  'rea-chad-overlay': {
+    description: 'Sigma / GigaChad / Skull reaction overlay with chromatic RGB split and bass pulse',
+    files: {
+      'index.tsx': `import React from 'react';
+import {
+  AbsoluteFill,
+  interpolate,
+  spring,
+  useCurrentFrame,
+  useVideoConfig,
+} from 'remotion';
+import { useAudioData, visualizeAudio } from '@remotion/media-utils';
+
+export type ChadVariant = 'chad' | 'skull' | 'fire' | 'sigma';
+
+export interface ChadEmojiOverlayProps {
+  triggerFrame: number;
+  durationInFrames?: number;
+  variant?: ChadVariant;
+  caption?: string;
+  bassReactive?: boolean;
+  audioSrc?: string;
+  accentColor?: string;
+}
+
+const VARIANT_GLYPHS: Record<ChadVariant, string> = {
+  chad: '🗿',
+  skull: '💀',
+  fire: '🔥',
+  sigma: '⚡',
+};
+
+export const ChadEmojiOverlay: React.FC<ChadEmojiOverlayProps> = ({
+  triggerFrame,
+  durationInFrames = 60,
+  variant = 'chad',
+  caption = 'COLDEST MOMENT',
+  bassReactive = true,
+  audioSrc,
+  accentColor = '#00f5ff',
+}) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const audioData = useAudioData(audioSrc ?? '');
+
+  if (frame < triggerFrame || frame >= triggerFrame + durationInFrames) {
+    return null;
+  }
+
+  const localFrame = frame - triggerFrame;
+
+  let bassScaleBoost = 0;
+  if (bassReactive && audioData) {
+    const spectrum = visualizeAudio({
+      fps,
+      frame,
+      audioData,
+      numberOfSamples: 32,
+    });
+    const subBass = (spectrum[0] + spectrum[1] + spectrum[2]) / 3;
+    bassScaleBoost = subBass * 0.32;
+  }
+
+  const slamSpring = spring({
+    frame: localFrame,
+    fps,
+    config: { damping: 8, stiffness: 260, mass: 0.65 },
+  });
+  const exitOpacity = interpolate(
+    localFrame,
+    [durationInFrames - 8, durationInFrames],
+    [1, 0],
+    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+  );
+
+  const scale = interpolate(slamSpring, [0, 1], [2.4, 1.0]) + bassScaleBoost;
+  const tiltDeg = Math.sin(localFrame * 0.45) * 4;
+  const rgbOffset = Math.max(0, 8 - localFrame * 0.8) + bassScaleBoost * 18;
+  const glyph = VARIANT_GLYPHS[variant];
+
+  return (
+    <AbsoluteFill
+      style={{
+        pointerEvents: 'none',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        paddingBottom: 240,
+        opacity: exitOpacity,
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          transform: \`scale(\${scale}) rotate(\${tiltDeg}deg)\`,
+        }}
+      >
+        <div style={{ position: 'relative', fontSize: 150, lineHeight: 1 }}>
+          <span
+            style={{
+              position: 'absolute',
+              left: -rgbOffset,
+              top: 0,
+              opacity: 0.75,
+              filter: 'drop-shadow(0 0 18px #00f5ff)',
+            }}
+          >
+            {glyph}
+          </span>
+          <span
+            style={{
+              position: 'absolute',
+              left: rgbOffset,
+              top: 0,
+              opacity: 0.75,
+              filter: 'drop-shadow(0 0 18px #ff0055)',
+            }}
+          >
+            {glyph}
+          </span>
+          <span
+            style={{
+              position: 'relative',
+              filter: 'grayscale(100%) contrast(160%) drop-shadow(0 12px 24px rgba(0,0,0,0.9))',
+            }}
+          >
+            {glyph}
+          </span>
+        </div>
+
+        {caption && (
+          <div
+            style={{
+              marginTop: 18,
+              padding: '8px 26px',
+              backgroundColor: '#050814',
+              border: \`3px solid \${accentColor}\`,
+              boxShadow: \`0 0 24px \${accentColor}, 6px 6px 0px #000000\`,
+              transform: 'skewX(-8deg)',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'Impact, Anton, Poppins, sans-serif',
+                fontWeight: 900,
+                fontSize: 46,
+                letterSpacing: 3,
+                color: '#ffffff',
+                textTransform: 'uppercase',
+                WebkitTextStroke: '1.5px #000000',
+              }}
+            >
+              {caption}
+            </span>
+          </div>
+        )}
+      </div>
+    </AbsoluteFill>
+  );
+};
+`,
+      'index.ts': `export * from './index.tsx';\n`,
+    },
+  },
 };
 
 // ==========================================
@@ -919,6 +1245,187 @@ function handleValidateScript(args) {
     report.issues.forEach((iss) => console.log(`  ${colors.yellow}• ${iss}${colors.reset}`));
     process.exit(1);
   }
+}
+
+// Helper: Synthesize a fallback 140 BPM Dark Phonk Cowbell + 808 WAV loop if library is empty
+function generateFallbackPhonkWav(outPath, sampleRate = 44100) {
+  const bpm = 140;
+  const beatDur = 60 / bpm; // ~0.428s per beat
+  const duration = 12.0; // 28 beats (7 bars)
+  const total = Math.floor(sampleRate * duration);
+  const samples = new Float32Array(total);
+  const rng = createRng(808);
+
+  // Classic Memphis/Phonk 808 cowbell frequencies (Hz)
+  const cowbellNotes = [587.33, 587.33, 880.0, 587.33, 698.46, 587.33, 523.25, 440.0];
+
+  for (let i = 0; i < total; i++) {
+    const t = i / sampleRate;
+    const beatIndex = Math.floor(t / beatDur);
+    const beatProgress = (t % beatDur) / beatDur;
+    const isDropSection = t >= 3.42; // Beat 8 drop (around frame 205 @ 60fps)
+
+    // 1. Sub-808 Kick & Bass
+    let bass = 0;
+    if (isDropSection && beatIndex % 2 === 0) {
+      const pitchEnv = 115 * Math.exp(-beatProgress * 18) + 42;
+      const ampEnv = Math.exp(-beatProgress * 4.5);
+      bass = Math.tanh(Math.sin(2 * Math.PI * pitchEnv * t) * 2.4) * ampEnv * 0.75;
+    }
+
+    // 2. Crisp 808 Cowbell Melody (muffled before drop, bright after drop)
+    const step = Math.floor(t / (beatDur / 2));
+    const stepProg = (t % (beatDur / 2)) / (beatDur / 2);
+    const freq = cowbellNotes[step % cowbellNotes.length];
+    const cowEnv = Math.exp(-stepProg * 14);
+    const rawCow =
+      Math.sign(Math.sin(2 * Math.PI * freq * t)) * 0.5 +
+      Math.sign(Math.sin(2 * Math.PI * (freq * 1.48) * t)) * 0.5;
+    const cowGain = isDropSection ? 0.34 : 0.14;
+    const cowbell = rawCow * cowEnv * cowGain;
+
+    // 3. Hi-hat tick
+    const hatProg = (t % (beatDur / 4)) / (beatDur / 4);
+    const hat = isDropSection ? (rng() * 2 - 1) * Math.exp(-hatProg * 35) * 0.12 : 0;
+
+    samples[i] = bass + cowbell + hat;
+  }
+
+  writeWavFile(outPath, samples, sampleRate);
+}
+
+// Helper: Estimate the loudest energy jump (beat-drop timestamp) via FFmpeg ebur128 / astats
+function detectBeatDropSeconds(ffmpegPath, filePath, totalDuration) {
+  try {
+    // Sample RMS volume per 0.5s window using FFmpeg astats
+    const raw = execSync(
+      `"${ffmpegPath}" -i "${filePath}" -af "astats=metadata=1:reset=22050,ametadata=print:key=lavfi.astats.Overall.RMS_level" -f null - 2>&1`
+    ).toString();
+
+    const frameTimes = [...raw.matchAll(/pts_time:([0-9.]+)/g)].map((m) => parseFloat(m[1]));
+    const rmsLevels = [...raw.matchAll(/RMS_level=(-?[0-9.]+)/g)].map((m) => parseFloat(m[1]));
+
+    let bestJump = 0;
+    let dropTime = Math.min(3.5, totalDuration * 0.25);
+
+    for (let i = 1; i < Math.min(frameTimes.length, rmsLevels.length); i++) {
+      // Look for biggest dB surge in the first 45% of the track
+      if (frameTimes[i] >= 1.2 && frameTimes[i] <= Math.min(12, totalDuration * 0.45)) {
+        const jump = rmsLevels[i] - rmsLevels[i - 1];
+        if (jump > bestJump && isFinite(jump)) {
+          bestJump = jump;
+          dropTime = frameTimes[i];
+        }
+      }
+    }
+    return Number(dropTime.toFixed(2));
+  } catch {
+    return Number(Math.min(3.5, totalDuration * 0.25).toFixed(2));
+  }
+}
+
+// Command: pick-track
+function handlePickTrack(args) {
+  const dirArg = args.find((a) => a.startsWith('--dir='));
+  const moodArg = args.find((a) => a.startsWith('--mood='));
+  const outArg = args.find((a) => a.startsWith('--out='));
+
+  const libraryDir = path.resolve(process.cwd(), dirArg ? dirArg.split('=')[1] : path.join('public', 'music', 'phonk'));
+  const mood = moodArg ? moodArg.split('=')[1].toLowerCase() : null;
+  const historyPath = path.resolve(process.cwd(), '.rea-track-history.json');
+
+  fs.mkdirSync(libraryDir, { recursive: true });
+
+  // Scan supported audio formats
+  const audioExtRegex = /\.(mp3|wav|ogg|m4a)$/i;
+  let allTracks = fs
+    .readdirSync(libraryDir)
+    .filter((file) => audioExtRegex.test(file))
+    .sort();
+
+  // Auto-synthesize a starter phonk track if library is currently empty
+  if (allTracks.length === 0) {
+    const fallbackName = 'dastras-aggressive-phonk-140bpm.wav';
+    const fallbackFull = path.join(libraryDir, fallbackName);
+    console.log(`⚠️ No audio files found in ${libraryDir}. Synthesizing starter 140 BPM phonk track...`);
+    generateFallbackPhonkWav(fallbackFull);
+    allTracks = [fallbackName];
+  }
+
+  // Load persistent play history
+  let history = { played: [], cycleCount: 1 };
+  if (fs.existsSync(historyPath)) {
+    try {
+      history = JSON.parse(fs.readFileSync(historyPath, 'utf8'));
+      if (!Array.isArray(history.played)) history.played = [];
+    } catch {
+      history = { played: [], cycleCount: 1 };
+    }
+  }
+
+  // Filter out already-played songs in the current rotation cycle
+  let unplayed = allTracks.filter((track) => !history.played.includes(track));
+
+  // Reset rotation only after EVERY song in the library has been used once
+  if (unplayed.length === 0) {
+    console.log(`🔄 Full library rotation complete (${allTracks.length} tracks). Starting cycle #${(history.cycleCount || 1) + 1}...`);
+    history.played = [];
+    history.cycleCount = (history.cycleCount || 1) + 1;
+    unplayed = [...allTracks];
+  }
+
+  // Apply optional --mood keyword filter against unplayed tracks
+  let candidates = unplayed;
+  if (mood) {
+    const moodMatches = unplayed.filter((t) => t.toLowerCase().includes(mood));
+    if (moodMatches.length > 0) {
+      candidates = moodMatches;
+    } else {
+      console.log(`ℹ️ No unplayed tracks matched mood "${mood}"; selecting from remaining unplayed pool.`);
+    }
+  }
+
+  // Deterministic index selection based on history length (no Math.random())
+  const selectedTrack = candidates[history.played.length % candidates.length];
+  const sourcePath = path.join(libraryDir, selectedTrack);
+  const ext = path.extname(selectedTrack);
+  const targetOut = path.resolve(
+    process.cwd(),
+    outArg ? outArg.split('=')[1] : path.join('public', 'audio', `active-phonk${ext}`)
+  );
+
+  // Copy selected track to active composition audio path & record history
+  fs.mkdirSync(path.dirname(targetOut), { recursive: true });
+  fs.copyFileSync(sourcePath, targetOut);
+
+  history.played.push(selectedTrack);
+  history.lastSelected = {
+    track: selectedTrack,
+    mood: mood || 'any',
+    selectedAt: new Date().toISOString(),
+  };
+  fs.writeFileSync(historyPath, JSON.stringify(history, null, 2), 'utf8');
+
+  // Probe duration & detect primary bass-drop timestamp
+  const ffmpegPath = getFfmpegPath();
+  const ffprobePath = getFfprobePath();
+  let durationSec = 12.0;
+  try {
+    const probeOut = execSync(
+      `"${ffprobePath}" -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${targetOut}"`
+    )
+      .toString()
+      .trim();
+    durationSec = parseFloat(probeOut) || 12.0;
+  } catch {}
+
+  const dropSec = detectBeatDropSeconds(ffmpegPath, targetOut, durationSec);
+  const dropFrame60 = Math.round(dropSec * 60);
+
+  console.log(`🎵 Selected Track [${history.played.length}/${allTracks.length} in Cycle #${history.cycleCount}]: ${selectedTrack}`);
+  console.log(`📂 Copied to: ${path.relative(process.cwd(), targetOut)}`);
+  console.log(`⏱️ Duration: ${durationSec.toFixed(2)}s (${Math.ceil(durationSec * 60)} frames @ 60fps)`);
+  console.log(`💥 Detected Beat Drop: ${dropSec}s -> triggerFrame={${dropFrame60}} (@ 60fps)`);
 }
 
 // Command: cut
@@ -1313,7 +1820,7 @@ function handleValidate(compositionId, isSilent = false) {
   let publicDir = path.join(projectRoot, 'public');
 
   if (!fs.existsSync(srcDir)) {
-    const candidateDirs = ['dastras-showcase', 'keplerbridge-vox-doc', 'rea-hero-showcase', 'saas-launch-promo'];
+    const candidateDirs = ['anime-phonk-showcase', 'dastras-showcase', 'keplerbridge-vox-doc', 'rea-hero-showcase', 'saas-launch-promo'];
     for (const cand of candidateDirs) {
       const candSrc = path.join(projectRoot, cand, 'src');
       if (fs.existsSync(candSrc)) {
@@ -1587,6 +2094,7 @@ ${colors.bold}AUDIO & SOUND DESIGN COMMANDS (V2):${colors.reset}
   ${colors.green}voice "<text>" [out.wav] [--provider=gemini|edge]${colors.reset} Dual-provider (Gemini 3.8 Flash TTS / Edge) speech engine
   ${colors.green}voice --dialogue=script.json [out.wav]${colors.reset}             Gemini 2-speaker conversational dialogue synthesis
   ${colors.green}validate-script <text | file.txt>${colors.reset}                 Audit script against Vox editorial standards & banned clichés
+  ${colors.green}pick-track [--dir=...] [--mood=...] [--out=...]${colors.reset}   Non-repeating track selector with beat-drop detection
 
 ${colors.bold}MULTIMEDIA & EDITING COMMANDS (FFmpeg-Powered):${colors.reset}
   ${colors.green}cut <in.mp4> <start> <dur> [out.mp4] [--normalize]${colors.reset}  Zero-loss video trimming with EBU R128 audio normalization
@@ -1638,6 +2146,9 @@ async function main() {
       break;
     case 'validate-script':
       handleValidateScript(args);
+      break;
+    case 'pick-track':
+      handlePickTrack(args);
       break;
     case 'cut':
       handleCut(args);

@@ -28,6 +28,7 @@ You are an expert Motion Graphics Developer and Multimedia Engineer Agent runnin
 * `rea sfx <whoosh|pop|riser|typewriter> [out.wav]` - Generates broadcast-quality 44.1 kHz 16-bit mono WAV sound effects with deterministic PRNG (zero external audio dependencies). Mount in React using `<Audio src={staticFile('sfx/<preset>.wav')} volume={0.25} />`.
 * `rea voice "<script>" [out.mp3] [--voice=en-US-AndrewNeural] [--validate]` - Synthesizes neural voiceover, validates against editorial rules, probes exact duration, and outputs exact frame counts for 30fps and 60fps compositions.
 * `rea validate-script <text | file.txt>` - Audits a narration script against syllable density targets and the banned cliché dictionary.
+* `rea pick-track [--dir=public/music/phonk] [--mood=aggressive|dark|velocity|drift] [--out=public/audio/active-phonk.mp3]` - Non-repeating music track selector with persistent `.rea-track-history.json` rotation, mood filtering, and automated FFmpeg beat-drop timestamp detection.
 
 ### 🎬 Remotion Studio & Rendering
 * `rea init <project-name>` - Scaffolds a new Antigravity-optimized Remotion workspace with TypeScript.
@@ -83,6 +84,7 @@ You are an expert Motion Graphics Developer and Multimedia Engineer Agent runnin
 ---
 
 ## Sub-Rules Knowledge Base
+- [Anime & Phonk High-Retention Edits (9:16 Shorts)](./rules/anime-phonk-edits.md)
 - [Vox Editorial & Audio Pacing Guardrails](./rules/vox-editorial.md)
 - [Composition Rules & Architecture](./rules/compositions.md)
 - [Image & Asset Handling with staticFile()](./rules/images.md)

@@ -29,7 +29,15 @@ jobs:
           node bin/rea-cli.js install-skill
           test -f ~/.gemini/config/skills/remotion-dastras/SKILL.md
           test -f ~/.gemini/config/skills/remotion-dastras/rules/vox-editorial.md
+          test -f ~/.gemini/config/skills/remotion-dastras/rules/anime-phonk-edits.md
           echo "✔ Global skill installation verified."
+
+      - name: Test 'rea pick-track' Phonk Track Selector
+        run: |
+          node bin/rea-cli.js pick-track --mood=aggressive
+          test -f public/audio/active-phonk.wav
+          test -f .rea-track-history.json
+          echo "✔ rea pick-track synthesized starter track and recorded rotation history."
 
       - name: Test 'rea sfx' Procedural WAV Generation
         run: |
