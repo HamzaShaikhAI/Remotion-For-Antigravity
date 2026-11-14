@@ -49,6 +49,9 @@ You are an expert Motion Graphics Developer and Multimedia Engineer Agent runnin
 * `rea batch <quotes.txt|quotes.json> [comp-id] [out-dir] [--upload] [--schedule-days=30]` - Mass compiles video variations with dynamic props, captures custom beat-drop thumbnails, and optionally schedules uploads across YouTube Shorts.
 * `rea live-crypto [coin=bitcoin] [comp-id] [out.mp4]` - Real-time market video synthesis: fetches live API data (CoinGecko / Binance) and binds price, 24h change, and neon cues directly into composition props.
 * `rea upload <video.mp4> "Title" "Description" "tags" [status] [--thumbnail=thumb.jpg] [--publish-at=ISO8601]` - Headless direct upload to YouTube Shorts with custom thumbnail attachment and automated publishing calendar scheduling.
+* `rea upload-tiktok <video.mp4> "Caption #fyp #shorts" [--schedule=ISO8601] [--session=path] [--headless]` - Headless TikTok Creator upload via Playwright with session cookie persistence and automated release scheduling.
+* `rea schedule-calendar [dir=batch-output] [--days=30] [--slots="18:00,21:00"] [--platform=all] [--execute]` - Generates an optimal 30-day staggered publishing calendar matrix (JSON & Markdown) across YouTube Shorts and TikTok, with optional automated execution.
+* `rea add rea-gameplay` - Installs the viral background gameplay plugin (supports split-screen, underlay, picture-in-picture, external MP4s, or procedural 60fps 3D cyber runner).
 
 ---
 

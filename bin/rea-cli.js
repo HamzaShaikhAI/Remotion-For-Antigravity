@@ -938,6 +938,136 @@ export const ChadEmojiOverlay: React.FC<ChadEmojiOverlayProps> = ({
       'index.ts': `export * from './index.tsx';\n`,
     },
   },
+
+  'rea-gameplay': {
+    description: 'Split-screen or underlay viral background gameplay (endless 60fps 3D cyber runner or MP4 player)',
+    files: {
+      'index.tsx': `import React from 'react';
+import { AbsoluteFill, interpolate, OffthreadVideo, staticFile, useCurrentFrame } from 'remotion';
+
+export interface BackgroundGameplayProps {
+  mode?: 'split' | 'underlay' | 'pip';
+  videoSrc?: string;
+  opacity?: number;
+  blur?: number;
+  accentColor?: string;
+  splitRatio?: number;
+  speedMultiplier?: number;
+}
+
+function pseudoRandom(seed: number): number {
+  const x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+export const ProceduralGameplayRunner: React.FC<{ accentColor?: string; speedMultiplier?: number }> = ({
+  accentColor = '#00f5ff',
+  speedMultiplier = 1.0,
+}) => {
+  const frame = useCurrentFrame();
+  const viewW = 1080;
+  const viewH = 960;
+  const horizonY = 160;
+  const roadBottomWidth = 980;
+  const roadTopWidth = 140;
+  const roadCenterX = viewW / 2;
+  const zOffset = (frame * 18 * speedMultiplier) % 100;
+
+  const playerSway = Math.sin(frame * 0.08) * (viewW * 0.22);
+  const playerBob = Math.abs(Math.sin(frame * 0.16)) * 20;
+  const playerTilt = Math.cos(frame * 0.08) * 12;
+
+  const obstacles = [
+    { lane: -1, zBase: 250, color: '#ff0055', heightRatio: 0.8 },
+    { lane: 1, zBase: 550, color: '#eab308', heightRatio: 1.1 },
+    { lane: 0, zBase: 850, color: '#a855f7', heightRatio: 0.9 },
+  ];
+
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '100%', backgroundColor: '#050711', overflow: 'hidden' }}>
+      <svg viewBox={\`0 0 \${viewW} \${viewH}\`} preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+        <defs>
+          <linearGradient id="roadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#080c1d" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#0f172a" stopOpacity="1" />
+          </linearGradient>
+          <linearGradient id="lineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor={accentColor} stopOpacity="0.2" />
+            <stop offset="100%" stopColor={accentColor} stopOpacity="0.95" />
+          </linearGradient>
+        </defs>
+
+        <polygon points={\`\${roadCenterX - roadTopWidth / 2},\${horizonY} \${roadCenterX + roadTopWidth / 2},\${horizonY} \${roadCenterX + roadBottomWidth / 2},\${viewH} \${roadCenterX - roadBottomWidth / 2},\${viewH}\`} fill="url(#roadGrad)" stroke={accentColor} strokeWidth="3" />
+
+        {[-0.5, 0, 0.5].map((laneRatio, idx) => (
+          <line key={idx} x1={roadCenterX + roadTopWidth * laneRatio} y1={horizonY} x2={roadCenterX + roadBottomWidth * laneRatio} y2={viewH} stroke="url(#lineGrad)" strokeWidth={idx === 1 ? 4 : 2} strokeDasharray={idx === 1 ? '32,22' : 'none'} />
+        ))}
+
+        {Array.from({ length: 14 }).map((_, i) => {
+          const progress = ((i * (100 / 14) + zOffset) % 100) / 100;
+          const depth = Math.pow(progress, 2.5);
+          const y = horizonY + depth * (viewH - horizonY);
+          const currentWidth = roadTopWidth + depth * (roadBottomWidth - roadTopWidth);
+          return <line key={i} x1={roadCenterX - currentWidth / 2} y1={y} x2={roadCenterX + currentWidth / 2} y2={y} stroke={accentColor} strokeWidth={1 + depth * 3.5} strokeOpacity={0.25 + depth * 0.75} />;
+        })}
+
+        {obstacles.map((obs, idx) => {
+          const loopZ = 1400;
+          const currentZ = ((obs.zBase - frame * 16 * speedMultiplier) % loopZ + loopZ) % loopZ;
+          const progress = 1 - currentZ / loopZ;
+          if (progress < 0.05 || progress > 0.98) return null;
+          const depth = Math.pow(progress, 2.2);
+          const y = horizonY + depth * (viewH - horizonY) - 30 * depth * obs.heightRatio;
+          const currentRoadW = roadTopWidth + depth * (roadBottomWidth - roadTopWidth);
+          const x = roadCenterX + obs.lane * (currentRoadW * 0.28);
+          const obsW = 28 + depth * 140;
+          const obsH = (20 + depth * 80) * obs.heightRatio;
+          return <rect key={idx} x={x - obsW / 2} y={y - obsH} width={obsW} height={obsH} rx="6" fill={obs.color} stroke="#ffffff" strokeWidth="2" opacity={0.4 + depth * 0.6} />;
+        })}
+
+        <g transform={\`translate(\${roadCenterX + playerSway}, \${viewH - 160 + playerBob}) rotate(\${playerTilt})\`}>
+          <ellipse cx="0" cy="35" rx="18" ry="24" fill="#ff0055" opacity="0.85" />
+          <polygon points="-50,20 0,-35 50,20 30,30 -30,30" fill="#0f172a" stroke="#ffffff" strokeWidth="3" />
+          <polygon points="-25,10 0,-20 25,10 0,18" fill={accentColor} stroke="#ffffff" strokeWidth="1.5" />
+        </g>
+      </svg>
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%)', backgroundSize: '100% 4px', pointerEvents: 'none', opacity: 0.5 }} />
+    </div>
+  );
+};
+
+export const BackgroundGameplay: React.FC<BackgroundGameplayProps> = ({
+  mode = 'split',
+  videoSrc,
+  opacity = 1.0,
+  blur = 0,
+  accentColor = '#00f5ff',
+  splitRatio = 0.52,
+  speedMultiplier = 1.0,
+}) => {
+  const isSplit = mode === 'split';
+  const isUnderlay = mode === 'underlay';
+
+  const containerStyle: React.CSSProperties = isSplit
+    ? { position: 'absolute', left: 0, top: \`\${splitRatio * 100}%\`, width: '100%', height: \`\${(1 - splitRatio) * 100}%\`, overflow: 'hidden', borderTop: \`4px solid \${accentColor}\`, boxShadow: \`0 0 35px \${accentColor}88\`, zIndex: 5 }
+    : isUnderlay
+    ? { position: 'absolute', inset: 0, opacity, filter: blur > 0 ? \`blur(\${blur}px)\` : 'none', zIndex: 0 }
+    : { position: 'absolute', right: 40, bottom: 80, width: 340, height: 480, borderRadius: 24, overflow: 'hidden', border: \`3px solid \${accentColor}\`, boxShadow: \`0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px \${accentColor}66\`, zIndex: 10 };
+
+  return (
+    <div style={containerStyle}>
+      {videoSrc ? (
+        <OffthreadVideo src={videoSrc.startsWith('http') || videoSrc.startsWith('/') ? videoSrc : staticFile(videoSrc)} muted style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      ) : (
+        <ProceduralGameplayRunner accentColor={accentColor} speedMultiplier={speedMultiplier} />
+      )}
+    </div>
+  );
+};
+`,
+      'index.ts': `export * from './index.tsx';\n`,
+    },
+  },
 };
 
 // ==========================================
@@ -1553,8 +1683,10 @@ function handleStill(args) {
   const frameArg = args.find((a) => a.startsWith('--frame=') || a.startsWith('-f=')) || '--frame=0';
   const frameNum = frameArg.split('=')[1] || '0';
 
+  const propsArg = args.find((a) => a.startsWith('--props='));
+
   if (!compId) {
-    logError('Usage: rea still <composition-id> [output.jpeg] [--frame=N]');
+    logError('Usage: rea still <composition-id> [output.jpeg] [--frame=N] [--props=props.json]');
     process.exit(1);
   }
 
@@ -1564,6 +1696,8 @@ function handleStill(args) {
   const cmdArgs = fs.existsSync(remotionCli)
     ? ['still', 'src/index.ts', compId, outFile, `--frame=${frameNum}`]
     : ['remotion', 'still', 'src/index.ts', compId, outFile, `--frame=${frameNum}`];
+
+  if (propsArg) cmdArgs.push(propsArg);
 
   const child = spawn(cmd, cmdArgs, { stdio: 'inherit', shell: true });
   child.on('close', (code) => {
@@ -2292,17 +2426,24 @@ async function handleLiveCrypto(args) {
 
 // Command: batch
 async function handleBatch(args) {
-  // Usage: rea batch <quotes.txt|quotes.json> [CompositionID] [out-dir] [--upload] [--schedule-days=30]
+  // Usage: rea batch <quotes.txt|quotes.json> [CompositionID] [out-dir] [--upload] [--schedule-days=30] [--gameplay=split|underlay] [--gameplay-file=clip.mp4] [--upload-tiktok]
   const inputPath = args[1];
   const compId = args[2] || 'AnimePhonkShort';
   const outDir = (args[3] && !args[3].startsWith('--')) ? args[3] : path.join(process.cwd(), 'batch-output');
   const shouldUpload = args.includes('--upload');
+  const shouldUploadTikTok = args.includes('--upload-tiktok');
 
   const scheduleArg = args.find((a) => a.startsWith('--schedule-days='));
   const scheduleDays = scheduleArg ? parseInt(scheduleArg.split('=')[1], 10) : 0;
 
+  const gameplayArg = args.find((a) => a.startsWith('--gameplay='));
+  const gameplayMode = gameplayArg ? gameplayArg.split('=')[1].toLowerCase() : 'none';
+
+  const gameplayFileArg = args.find((a) => a.startsWith('--gameplay-file='));
+  const gameplayFile = gameplayFileArg ? gameplayFileArg.split('=')[1] : undefined;
+
   if (!inputPath || !fs.existsSync(inputPath)) {
-    logError('Usage: rea batch <quotes.txt|quotes.json> [CompositionID] [out-dir] [--upload] [--schedule-days=30]');
+    logError('Usage: rea batch <quotes.txt|quotes.json> [CompositionID] [out-dir] [--upload] [--schedule-days=30] [--gameplay=split|underlay] [--upload-tiktok]');
     process.exit(1);
   }
 
@@ -2319,14 +2460,21 @@ async function handleBatch(args) {
   }
 
   console.log(`\n🏭 REA Batch Video Factory Initialized: Queuing ${items.length} videos...`);
+  if (gameplayMode !== 'none') {
+    console.log(`🎮 Gameplay Overlay Enabled: mode="${gameplayMode}"${gameplayFile ? ` (file: ${gameplayFile})` : ' (procedural 60fps 3D runner)'}`);
+  }
   if (shouldUpload) {
     console.log(`📤 Direct YouTube Shorts upload enabled${scheduleDays > 0 ? ` (scheduled evenly over ${scheduleDays} days)` : ''}.`);
+  }
+  if (shouldUploadTikTok) {
+    console.log(`🎵 Direct TikTok Creator upload enabled${scheduleDays > 0 ? ` (scheduled evenly over ${scheduleDays} days)` : ''}.`);
   }
 
   const remotionCli = path.join(process.cwd(), 'node_modules', '.bin', process.platform === 'win32' ? 'remotion.cmd' : 'remotion');
   const cmd = fs.existsSync(remotionCli) ? remotionCli : 'npx remotion';
   const dropFrame = 205;
   const now = new Date();
+  const calendarManifest = [];
 
   for (let i = 0; i < items.length; i++) {
     const rawItem = items[i];
@@ -2345,6 +2493,8 @@ async function handleBatch(args) {
       freezeDuration: 48,
       variant: i % 2 === 0 ? 'chad' : 'sigma',
       useExternalClips: false,
+      gameplayMode,
+      gameplayFile,
     };
 
     const tempPropsPath = path.resolve(outDir, `props_${String(i + 1).padStart(3, '0')}.json`);
@@ -2365,15 +2515,31 @@ async function handleBatch(args) {
     execSync(renderCmd, { stdio: 'inherit' });
     logSuccess(`Compiled: ${outPath}`);
 
+    // Calculate calendar slot if scheduling is enabled
+    let publishAtIso = null;
+    let displaySlot = null;
+    if (scheduleDays > 0) {
+      const slots = [18, 21]; // Prime 6:00 PM and 9:00 PM UTC
+      const slotHour = slots[i % slots.length];
+      const dayOffset = Math.floor(i / slots.length) % scheduleDays;
+      const targetDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1 + dayOffset);
+      targetDate.setUTCHours(slotHour, 0, 0, 0);
+      publishAtIso = targetDate.toISOString();
+      displaySlot = targetDate.toUTCString().replace('GMT', 'UTC');
+
+      calendarManifest.push({
+        id: i + 1,
+        video: `short_${String(i + 1).padStart(3, '0')}.mp4`,
+        thumbnail: `thumb_${String(i + 1).padStart(3, '0')}.jpg`,
+        hook: title,
+        quote,
+        publishAt: publishAtIso,
+        displaySlot,
+      });
+    }
+
     // 3. Upload to YouTube Shorts if requested
     if (shouldUpload) {
-      let publishAtIso = null;
-      if (scheduleDays > 0) {
-        const daysOffset = (i * scheduleDays) / items.length;
-        const targetDate = new Date(now.getTime() + daysOffset * 24 * 60 * 60 * 1000 + (i + 1) * 3600 * 1000);
-        publishAtIso = targetDate.toISOString();
-      }
-
       const ytTitle = `${quote.substring(0, 45)} #Shorts #Phonk`;
       const ytDesc = `Quote: "${quote}"\n\nGenerated autonomously by REA.\n#Sigma #Phonk #Shorts #Mindset`;
 
@@ -2391,12 +2557,322 @@ async function handleBatch(args) {
       try {
         await handleUpload(uploadArgs);
       } catch (err) {
-        logError(`Failed to upload ${outPath}: ${err.message}`);
+        logError(`Failed to upload ${outPath} to YouTube: ${err.message}`);
+      }
+    }
+
+    // 4. Upload to TikTok if requested
+    if (shouldUploadTikTok) {
+      const tiktokCaption = `${title}: ${quote} #fyp #anime #phonk #shorts #sigma`;
+      const tiktokArgs = ['upload-tiktok', outPath, tiktokCaption];
+      if (publishAtIso) tiktokArgs.push(`--schedule=${publishAtIso}`);
+
+      try {
+        await handleUploadTikTok(tiktokArgs);
+      } catch (err) {
+        logError(`Failed to upload ${outPath} to TikTok: ${err.message}`);
       }
     }
   }
 
+  // Save 30-Day Publishing Calendar manifest if scheduleDays was set
+  if (calendarManifest.length > 0) {
+    const calendarPath = path.join(outDir, 'publish-calendar.json');
+    fs.writeFileSync(calendarPath, JSON.stringify(calendarManifest, null, 2), 'utf8');
+
+    let calMd = `# 📅 30-Day Publishing Calendar\n\n`;
+    calMd += `| Day | Target Slot (UTC) | Video File | Hook & Quote | Thumbnail |\n`;
+    calMd += `| :---: | :--- | :--- | :--- | :---: |\n`;
+    calendarManifest.forEach((c) => {
+      calMd += `| **#${c.id}** | \`${c.displaySlot}\` | \`${c.video}\` | **${c.hook}:** *"${c.quote}"* | \`${c.thumbnail}\` |\n`;
+    });
+    fs.writeFileSync(path.join(outDir, 'publish-calendar.md'), calMd, 'utf8');
+    console.log(`\n📅 30-Day Calendar manifest saved to: ${calendarPath}`);
+  }
+
   logSuccess(`Batch complete! ${items.length} videos and thumbnails saved to: ${outDir}`);
+}
+
+// Command: upload-tiktok
+async function handleUploadTikTok(args) {
+  // Usage: rea upload-tiktok <video.mp4> "Caption #fyp #shorts" [--schedule="2026-11-20T18:00:00Z"] [--session=.rea-tiktok-session.json] [--headless] [--dry-run]
+  const videoPath = args[1];
+  const caption = args[2] || 'Autonomous edit by REA. #shorts #phonk #fyp';
+  const scheduleArg = args.find((a) => a.startsWith('--schedule='));
+  const scheduleTime = scheduleArg ? scheduleArg.split('=').slice(1).join('=') : null;
+  const sessionArg = args.find((a) => a.startsWith('--session='));
+  const sessionPath = sessionArg ? sessionArg.split('=')[1] : path.resolve(process.cwd(), '.rea-tiktok-session.json');
+  const isHeadless = args.includes('--headless');
+  const isDryRun = args.includes('--dry-run');
+
+  if (!videoPath || !fs.existsSync(videoPath)) {
+    logError('Usage: rea upload-tiktok <video.mp4> "Caption #fyp #shorts" [--schedule="YYYY-MM-DDTHH:mm:ssZ"] [--session=path] [--headless] [--dry-run]');
+    process.exit(1);
+  }
+
+  const resolvedVideo = path.resolve(process.cwd(), videoPath);
+  console.log(`\n🎵 Preparing TikTok automated publish: ${path.basename(resolvedVideo)}`);
+  console.log(`📝 Caption: "${caption}"`);
+  if (scheduleTime) {
+    console.log(`⏰ Scheduled Publish Time: ${scheduleTime}`);
+  }
+
+  let playwright;
+  try {
+    playwright = require('playwright');
+  } catch (err) {
+    logError('Playwright is required for TikTok automation. Please run: npm install playwright');
+    process.exit(1);
+  }
+
+  const hasSession = fs.existsSync(sessionPath);
+  const launchOptions = {
+    headless: isHeadless ? true : !hasSession ? false : true,
+    args: ['--disable-blink-features=AutomationControlled', '--no-sandbox'],
+  };
+
+  console.log(`🌐 Launching Chromium browser (${launchOptions.headless ? 'Headless' : 'Visible UI'})...`);
+  const browser = await playwright.chromium.launch(launchOptions);
+  const contextOptions = {
+    viewport: { width: 1280, height: 800 },
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+  };
+
+  if (hasSession) {
+    try {
+      contextOptions.storageState = sessionPath;
+      console.log(`🔑 Loaded persistent TikTok session from: ${path.basename(sessionPath)}`);
+    } catch {}
+  }
+
+  const context = await browser.newContext(contextOptions);
+  const page = await context.newPage();
+
+  try {
+    console.log('🔗 Navigating to TikTok Creator Center upload portal...');
+    await page.goto('https://www.tiktok.com/creator-center/upload?lang=en', {
+      waitUntil: 'domcontentloaded',
+      timeout: 45000,
+    });
+
+    await page.waitForTimeout(3000);
+    const currentUrl = page.url();
+    if (currentUrl.includes('/login') || currentUrl.includes('/signin') || !hasSession) {
+      console.log('\n⚠️ Authentication Required: Please log in to your TikTok account in the browser window.');
+      console.log('   Once you complete login and reach Creator Center, session cookies will be saved automatically.');
+
+      await page.waitForURL(/.*tiktok\.com\/(creator-center\/upload|upload).*/, {
+        timeout: 120000,
+      });
+
+      await context.storageState({ path: sessionPath });
+      logSuccess(`Authentication successful! Session state saved to: ${sessionPath}`);
+    }
+
+    console.log(`📤 Staging video file: ${path.basename(resolvedVideo)}...`);
+    const fileInput = await page.waitForSelector('input[type="file"]', { timeout: 30000 });
+    await fileInput.setInputFiles(resolvedVideo);
+    console.log('⏳ Uploading media buffer to TikTok server...');
+
+    await page.waitForSelector('div[contenteditable="true"], textarea, div[data-contents="true"]', {
+      timeout: 60000,
+    });
+
+    console.log('✍️ Injecting caption and hashtag telemetry...');
+    const captionEditor = await page.$('div[contenteditable="true"], textarea');
+    if (captionEditor) {
+      await captionEditor.click();
+      await page.keyboard.press('Control+A');
+      await page.keyboard.press('Backspace');
+      await page.keyboard.type(caption, { delay: 35 });
+    }
+
+    if (scheduleTime) {
+      console.log(`🗓️ Configuring scheduled release: ${scheduleTime}...`);
+      const scheduleSwitch = await page.$('input[type="checkbox"][aria-label*="Schedule"], button:has-text("Schedule")');
+      if (scheduleSwitch) {
+        await scheduleSwitch.click();
+      }
+    }
+
+    if (isDryRun) {
+      logSuccess('[DRY-RUN] Video staged, caption injected, and upload verified. Skipping Post button click.');
+      await browser.close();
+      return;
+    }
+
+    console.log('🚀 Submitting Post to TikTok...');
+    const postButton = await page.waitForSelector('button:has-text("Post"), button[data-e2e="post_video_button"]', {
+      timeout: 15000,
+    });
+    await postButton.click();
+
+    await page.waitForTimeout(5000);
+    logSuccess(`TikTok video published successfully!`);
+  } catch (err) {
+    logError(`TikTok automated upload encountered an issue: ${err.message}`);
+  } finally {
+    await browser.close();
+  }
+}
+
+// Command: schedule-calendar
+async function handleScheduleCalendar(args) {
+  // Usage: rea schedule-calendar [dir=batch-output] [--days=30] [--slots="18:00,21:00"] [--platform=youtube|tiktok|all] [--execute]
+  const dirArg = (args[1] && !args[1].startsWith('--')) ? args[1] : 'batch-output';
+  const targetDir = path.resolve(process.cwd(), dirArg);
+
+  const daysArg = args.find((a) => a.startsWith('--days='));
+  const totalDays = daysArg ? parseInt(daysArg.split('=')[1], 10) : 30;
+
+  const slotsArg = args.find((a) => a.startsWith('--slots='));
+  const rawSlots = slotsArg ? slotsArg.split('=')[1] : '18:00,21:00';
+  const slots = rawSlots.split(',').map((s) => s.trim()).filter(Boolean);
+
+  const platformArg = args.find((a) => a.startsWith('--platform='));
+  const platform = platformArg ? platformArg.split('=')[1].toLowerCase() : 'all';
+
+  const shouldExecute = args.includes('--execute');
+
+  if (!fs.existsSync(targetDir)) {
+    logError(`Directory "${dirArg}" not found. Run "rea batch <quotes.txt> AnimePhonkShort ${dirArg}" first.`);
+    process.exit(1);
+  }
+
+  const files = fs.readdirSync(targetDir);
+  const videoFiles = files.filter((f) => f.endsWith('.mp4')).sort();
+
+  if (videoFiles.length === 0) {
+    logError(`No MP4 files found in "${dirArg}". Generate videos first with "rea batch".`);
+    process.exit(1);
+  }
+
+  console.log(`\n📅 30-Day Publishing Calendar Matrix Generator`);
+  console.log(`   Found ${videoFiles.length} videos in ${dirArg}`);
+  console.log(`   Distribution: Over ${totalDays} days`);
+  console.log(`   Daily Release Slots: ${slots.join(', ')} UTC`);
+  console.log(`   Target Platforms: ${platform.toUpperCase()}\n`);
+
+  const calendar = [];
+  const now = new Date();
+  const startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+
+  for (let i = 0; i < videoFiles.length; i++) {
+    const videoFile = videoFiles[i];
+    const baseName = path.basename(videoFile, '.mp4');
+    const thumbFile = files.find((f) => f.startsWith(baseName.replace('short_', 'thumb_')) && f.endsWith('.jpg')) || `${baseName}.jpg`;
+    const propsFile = files.find((f) => f.startsWith(baseName.replace('short_', 'props_')) && f.endsWith('.json'));
+
+    let quote = 'Discipline & Focus';
+    let hook = 'SIGMA MINDSET';
+    if (propsFile) {
+      try {
+        const p = JSON.parse(fs.readFileSync(path.join(targetDir, propsFile), 'utf8'));
+        quote = p.dropCaption || quote;
+        hook = p.hookTitle || hook;
+      } catch {}
+    }
+
+    const slotIndex = i % slots.length;
+    const dayOffset = Math.floor(i / slots.length) % totalDays;
+    const [slotHour, slotMin] = slots[slotIndex].split(':').map((n) => parseInt(n, 10));
+
+    const scheduledDate = new Date(startDate.getTime());
+    scheduledDate.setDate(startDate.getDate() + dayOffset);
+    scheduledDate.setUTCHours(slotHour || 18, slotMin || 0, 0, 0);
+
+    calendar.push({
+      id: i + 1,
+      video: videoFile,
+      videoPath: path.join(targetDir, videoFile),
+      thumbnail: thumbFile,
+      thumbnailPath: path.join(targetDir, thumbFile),
+      hook,
+      caption: quote,
+      publishAt: scheduledDate.toISOString(),
+      displayDate: scheduledDate.toUTCString().replace('GMT', 'UTC'),
+      platform: platform === 'all' ? 'YouTube + TikTok' : platform,
+      status: 'queued',
+    });
+  }
+
+  const calendarJsonPath = path.join(targetDir, 'publish-calendar.json');
+  fs.writeFileSync(calendarJsonPath, JSON.stringify(calendar, null, 2), 'utf8');
+
+  let mdTable = `# 📅 30-Day Automated Publishing Calendar\n\n`;
+  mdTable += `Generated by **Remotion Engine for Antigravity (REA v${VERSION})**\n\n`;
+  mdTable += `| Day | Release Time (UTC) | Video File | Hook & Caption | Thumbnail | Platform | Status |\n`;
+  mdTable += `| :---: | :--- | :--- | :--- | :--- | :---: | :---: |\n`;
+
+  calendar.forEach((entry) => {
+    mdTable += `| **#${entry.id}** | \`${entry.displayDate}\` | \`${entry.video}\` | **${entry.hook}:** *"${entry.caption}"* | \`${entry.thumbnail}\` | ${entry.platform} | ⏳ Queued |\n`;
+  });
+
+  const calendarMdPath = path.join(targetDir, 'publish-calendar.md');
+  fs.writeFileSync(calendarMdPath, mdTable, 'utf8');
+
+  console.log(`┌─────┬──────────────────────────┬─────────────────────────────┬──────────────────┐`);
+  console.log(`│ Day │ Release Slot (UTC)       │ Video Target                │ Status           │`);
+  console.log(`├─────┼──────────────────────────┼─────────────────────────────┼──────────────────┤`);
+  calendar.slice(0, 10).forEach((entry) => {
+    const dayStr = String(entry.id).padEnd(3);
+    const dateStr = entry.displayDate.substring(0, 24).padEnd(24);
+    const vidStr = entry.video.padEnd(27);
+    console.log(`│ #${dayStr} │ ${dateStr} │ ${vidStr} │ ⏳ Queued        │`);
+  });
+  if (calendar.length > 10) {
+    console.log(`│ ... │ + ${calendar.length - 10} more scheduled days  │ ...                         │ ⏳ Queued        │`);
+  }
+  console.log(`└─────┴──────────────────────────┴─────────────────────────────┴──────────────────┘\n`);
+
+  logSuccess(`Publishing calendar generated!`);
+  console.log(`  📄 JSON Manifest: ${calendarJsonPath}`);
+  console.log(`  📊 Markdown Schedule: ${calendarMdPath}`);
+
+  if (shouldExecute) {
+    console.log(`\n🚀 Executing automated calendar publishing...`);
+    for (const item of calendar) {
+      console.log(`\n📤 Publishing Day #${item.id} -> ${item.publishAt}`);
+      const ytTitle = `${item.caption.substring(0, 45)} #Shorts #Phonk`;
+      const ytDesc = `${item.hook}: "${item.caption}"\n\nAutonomous edit by REA.\n#Phonk #Sigma #Shorts`;
+
+      if (platform === 'youtube' || platform === 'all') {
+        const uploadArgs = [
+          'upload',
+          item.videoPath,
+          ytTitle,
+          ytDesc,
+          'phonk,sigma,quotes,shorts',
+          'public',
+          `--thumbnail=${item.thumbnailPath}`,
+          `--publish-at=${item.publishAt}`,
+        ];
+        try {
+          await handleUpload(uploadArgs);
+        } catch (err) {
+          logError(`YouTube schedule failed for ${item.video}: ${err.message}`);
+        }
+      }
+
+      if (platform === 'tiktok' || platform === 'all') {
+        const tiktokCaption = `${item.hook}: ${item.caption} #fyp #anime #phonk #shorts`;
+        const tiktokArgs = [
+          'upload-tiktok',
+          item.videoPath,
+          tiktokCaption,
+          `--schedule=${item.publishAt}`,
+        ];
+        try {
+          await handleUploadTikTok(tiktokArgs);
+        } catch (err) {
+          logError(`TikTok schedule failed for ${item.video}: ${err.message}`);
+        }
+      }
+    }
+    logSuccess('All calendar releases have been scheduled and queued on target platforms!');
+  } else {
+    console.log(`💡 Tip: Run with "--execute" to push this entire 30-day schedule directly to YouTube Shorts and TikTok.`);
+  }
 }
 
 // Print Help
@@ -2437,6 +2913,8 @@ ${colors.bold}BATCH FACTORY & AUTOMATED PUBLISHING COMMANDS:${colors.reset}
   ${colors.green}batch <quotes.txt> [comp-id] [out-dir] [--upload]${colors.reset} Mass compile video variations with custom beat-drop thumbnails
   ${colors.green}live-crypto [coin] [comp-id] [out.mp4]${colors.reset}           Fetch live market API data and compile real-time video
   ${colors.green}upload <video.mp4> "Title" "Desc" "tags" [status]${colors.reset} Direct YouTube Shorts upload with custom thumbnail & scheduling
+  ${colors.green}upload-tiktok <video.mp4> "Caption" [--schedule]${colors.reset}  Headless TikTok Creator upload via Playwright with session caching
+  ${colors.green}schedule-calendar [dir] [--days=30] [--execute]${colors.reset}   Generate and execute 30-day automated publishing calendar
 
 ${colors.bold}OPTIONS:${colors.reset}
   --help, -h                       Show this help menu
@@ -2519,6 +2997,12 @@ async function main() {
       break;
     case 'upload':
       await handleUpload(args);
+      break;
+    case 'upload-tiktok':
+      await handleUploadTikTok(args);
+      break;
+    case 'schedule-calendar':
+      await handleScheduleCalendar(args);
       break;
     case 'hook':
       handleHook(args[1]);

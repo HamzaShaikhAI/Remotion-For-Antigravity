@@ -61,3 +61,21 @@ declare module '../plugins/rea-chad-overlay' {
     accentColor?: string;
   }>;
 }
+
+declare module '../plugins/rea-gameplay' {
+  export interface BackgroundGameplayProps {
+    mode?: 'split' | 'underlay' | 'pip';
+    videoSrc?: string;
+    opacity?: number;
+    blur?: number;
+    accentColor?: string;
+    gameType?: 'cyber-runner' | 'retro-highway' | 'neon-grid';
+    splitRatio?: number;
+    speedMultiplier?: number;
+  }
+  export const BackgroundGameplay: React.FC<BackgroundGameplayProps>;
+  export const ProceduralGameplayRunner: React.FC<{
+    accentColor?: string;
+    speedMultiplier?: number;
+  }>;
+}

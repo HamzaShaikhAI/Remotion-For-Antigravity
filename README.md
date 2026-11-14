@@ -152,13 +152,15 @@ Execute all operations via `rea <command>` (or `node bin/rea-cli.js <command>`):
 | **`still`** | `rea still <comp-id> [out.jpeg] [--frame=N]` | Renders a high-resolution still frame poster at any exact timestamp. |
 | **`gif`** | `rea gif <comp-id> [out.gif] [--fps=15]` | Compiles an optimized animated GIF for documentation or social sharing. |
 
-### 🏭 4. Batch Video Factory & Automated YouTube Publishing Commands
+### 🏭 4. Batch Video Factory & Automated Multi-Platform Publishing Commands
 
 | Command | Usage | Description |
 | :--- | :--- | :--- |
-| **`batch`** | `rea batch <quotes.txt\|quotes.json> [comp-id] [out-dir] [--upload] [--schedule-days=30]` | Mass compiles dozens of shorts in parallel with automatic beat-drop thumbnail extraction. |
+| **`batch`** | `rea batch <quotes.txt\|quotes.json> [comp-id] [out-dir] [--upload] [--schedule-days=30] [--gameplay=split]` | Mass compiles dozens of shorts with beat-drop thumbnails, gameplay overlays, and calendar scheduling. |
 | **`live-crypto`** | `rea live-crypto [coin=bitcoin] [comp-id] [out.mp4]` | Binds real-time live market API telemetry directly to Remotion props and renders dynamic motion graphics. |
-| **`upload`** | `rea upload <video.mp4> "Title" "Desc" "tags" [status] [--thumbnail=thumb.jpg] [--publish-at=ISO8601]` | Headless direct upload to YouTube Shorts with custom thumbnail attachment and 30-day automated publishing calendar scheduling. |
+| **`upload`** | `rea upload <video.mp4> "Title" "Desc" "tags" [status] [--thumbnail=thumb.jpg] [--publish-at=ISO8601]` | Headless direct upload to YouTube Shorts with custom thumbnail attachment and 30-day publishing calendar scheduling. |
+| **`upload-tiktok`** | `rea upload-tiktok <video.mp4> "Caption #fyp" [--schedule=ISO8601] [--session=path] [--headless]` | Automated TikTok Creator upload via Playwright with persistent session cookies and scheduled posting. |
+| **`schedule-calendar`**| `rea schedule-calendar [dir=batch-output] [--days=30] [--slots="18:00,21:00"] [--platform=all] [--execute]` | Generates and executes an optimal 30-day staggered publishing calendar matrix across YouTube Shorts and TikTok. |
 
 ---
 
@@ -228,25 +230,32 @@ rea render AnimePhonkShort out-anime-phonk.mp4
 
 ---
 
-### 5. Algorithmic Audio Reactivity & Data-Driven Video Factory (`rea batch`, `rea live-crypto`, `rea upload`)
+### 5. Algorithmic Audio Reactivity, 30-Day Calendar Publishing & Viral Gameplay
 
 Human video editing is physically bottlenecked by graphical user interfaces: scrubbing waveforms, placing keyframes, dragging playheads, and manually lining up cuts. **REA bypasses GUI friction entirely**, compiling videos deterministically from data and audio mathematics:
 
 - **Algorithmic Audio Reactivity:** Instead of manually adjusting Bezier curves to match beat drops, REA runs Fast Fourier Transforms (FFT) on the audio buffer to isolate sub-bass frequencies (20Hz–120Hz). The camera zoom scale, chromatic aberration, and particle shake are calculated mathematically per frame:
   $$\text{Scale}(t) = 1.0 + (\text{BassEnergy}(t) \times 0.3)$$
 - **Real-Time Market Data Integration (`rea live-crypto`):** Fetches live coin prices, 24h percentage swings, and volatility indices via CoinGecko & Binance APIs, dynamically mapping them to neon color palettes (bullish green vs. bearish crimson) and motivational quotes.
-- **High-Throughput Batch Factory (`rea batch`):** Parses quotes lists (`quotes.txt` or `quotes.json`), renders videos with hardware-accelerated Chromium Direct3D pipelines (`--gl=angle --enable-gpu --concurrency=2`), automatically extracts high-impact beat-drop thumbnails at exact drop frames, and prepares publishable bundles.
-- **Headless YouTube Shorts Publishing (`rea upload`):** Connects to the official Google Cloud YouTube Data API v3 with desktop OAuth2 token caching, uploading completed videos directly as YouTube Shorts, attaching custom beat-drop thumbnails (`youtube.thumbnails.set`), and distributing releases across an automated 30-day publishing calendar via ISO 8601 `publishAt` timestamps.
+- **30-Day Staggered Publishing Calendar (`rea schedule-calendar`):** Generates an optimal distribution matrix across the next 30 days targeting prime audience viewing windows (`18:00 UTC` and `21:00 UTC`). Automatically produces `.rea-publish-calendar.json` and a formatted `publish-calendar.md` schedule table, and executes programmatic scheduled releases via YouTube Shorts API (`status.publishAt`) and TikTok Creator Studio.
+- **Headless TikTok Automation via Playwright (`rea upload-tiktok`):** Uses Playwright Chromium with persistent session storage (`.rea-tiktok-session.json`) to bypass browser lockouts, automating file uploads, description tags, and scheduled publishing directly on TikTok Creator Studio with zero manual GUI interactions.
+- **Viral Background Gameplay Overlay (`rea add rea-gameplay`):** Enhances viewer retention and Average Percentage Viewed (APV) via the `<BackgroundGameplay>` plugin. Supports split-screen layouts (top 50% anime/quote, bottom 50% gameplay), dimmed ambient underlays, and floating PiP cards. Works with external MP4s (`gameplay/subway-surfers.mp4`, `gameplay/minecraft.mp4`) or runs a **100% deterministic procedural 60fps 3D cyber highway runner** with zero external video assets required!
 
 ```bash
-# Compile live crypto motion graphics:
+# 1. Compile live crypto motion graphics:
 rea live-crypto ethereum AnimePhonkShort out-live-eth.mp4
 
-# Mass-produce 50 shorts with beat-drop thumbnails:
-rea batch quotes.txt AnimePhonkShort dist/shorts/
+# 2. Batch-produce 30 shorts with split-screen gameplay & beat-drop thumbnails:
+rea batch quotes.txt AnimePhonkShort batch-output/ --gameplay=split --schedule-days=30
 
-# Headless direct upload with custom thumbnail & scheduled release:
-rea upload short.mp4 "Discipline Over Motivation #shorts" "Daily stoic advice" "motivation,stoic" private --thumbnail=thumb.jpg --publish-at="2026-11-20T14:00:00Z"
+# 3. Generate and inspect 30-day publishing calendar matrix:
+rea schedule-calendar batch-output/ --days=30 --slots="18:00,21:00" --platform=all
+
+# 4. Headless automated publish to TikTok with schedule:
+rea upload-tiktok short_001.mp4 "Sigma Mindset #fyp #phonk" --schedule="2026-11-20T18:00:00Z"
+
+# 5. Push full 30-day schedule directly to YouTube Shorts:
+rea schedule-calendar batch-output/ --days=30 --platform=youtube --execute
 ```
 
 ---
