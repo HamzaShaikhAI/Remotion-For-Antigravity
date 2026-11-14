@@ -1,0 +1,76 @@
+{
+  "batchName": "2.5D Paper Explainer Batch",
+  "style": "paper-2.5d",
+  "defaultRatio": "9:16",
+  "fps": 30,
+  "items": [
+    {
+      "id": "BudgetingPaperShort",
+      "componentName": "BudgetingPaperShort",
+      "title": "The 50/30/20 Rule: Why Budgets Fail",
+      "category": "Personal Finance",
+      "archetype": "financial",
+      "visualHook": "Piggy bank cutout cracking open on cutting mat grid",
+      "durationFrames": 450,
+      "durationSec": 15.0,
+      "accentColor": "#EF4444",
+      "scenes": [
+        { "title": "Why Most Budgets Fail", "subtitle": "The 50/30/20 rule is broken if your fixed costs swallow 80%." },
+        { "title": "The 50% Trap", "subtitle": "Rent, insurance, and utilities leave zero room for error." },
+        { "title": "The 30% Lifestyle Shift", "subtitle": "Guilt-free spending shouldn't mean lifestyle inflation." },
+        { "title": "The 20% Wealth Engine", "subtitle": "Automate your savings before the money even hits checking." }
+      ]
+    },
+    {
+      "id": "QuantumPaperShort",
+      "componentName": "QuantumPaperShort",
+      "title": "Quantum Computing in 60 Seconds",
+      "category": "Deep Tech / Science",
+      "archetype": "educational",
+      "visualHook": "Superposition qubit card flipping between 0 and 1",
+      "durationFrames": 450,
+      "durationSec": 15.0,
+      "accentColor": "#06B6D4",
+      "scenes": [
+        { "title": "Classical Bits Are Boring", "subtitle": "Trapped as a definitive 0 or a 1. One path at a time." },
+        { "title": "Enter Superposition", "subtitle": "A qubit can spin in both states simultaneously until observed." },
+        { "title": "Exponential Parallelism", "subtitle": "300 qubits can hold more numbers than atoms in the universe." },
+        { "title": "The Quantum Leap", "subtitle": "Cracking encryption and simulating drug molecules in seconds." }
+      ]
+    },
+    {
+      "id": "CompoundInterestPaperShort",
+      "componentName": "CompoundInterestPaperShort",
+      "title": "Compound Interest: The 8th Wonder",
+      "category": "Wealth & Investing",
+      "archetype": "financial",
+      "visualHook": "Exponential paper bar chart folding upward",
+      "durationFrames": 450,
+      "durationSec": 15.0,
+      "accentColor": "#10B981",
+      "scenes": [
+        { "title": "The 8th Wonder of the World", "subtitle": "He who understands it, earns it; he who doesn't, pays it." },
+        { "title": "Linear vs Exponential", "subtitle": "Year 1 feels like nothing. Year 20 feels like pure magic." },
+        { "title": "The Cost of Waiting", "subtitle": "Starting at 20 vs 30 cuts your final retirement nest egg in half." },
+        { "title": "Let Time Do the Heavy Lifting", "subtitle": "Consistency beats timing every single time." }
+      ]
+    },
+    {
+      "id": "RomanEconomyPaperShort",
+      "componentName": "RomanEconomyPaperShort",
+      "title": "Why Rome Collapsed (It Wasn't Barbarians)",
+      "category": "World History",
+      "archetype": "educational",
+      "visualHook": "Crumbling parchment scroll with economic deficit stamps",
+      "durationFrames": 450,
+      "durationSec": 15.0,
+      "accentColor": "#D97706",
+      "scenes": [
+        { "title": "It Wasn't Just Barbarians", "subtitle": "Rome's empire rotted from the inside out through hyperinflation." },
+        { "title": "Debasing the Denarius", "subtitle": "Emperors melted silver coins, cutting purity from 95% down to 0.5%." },
+        { "title": "The Bread & Circus Spiral", "subtitle": "Printing phantom money to appease citizens while legions mutinied." },
+        { "title": "Economic Entropy", "subtitle": "When currency loses trust, colossal empires crumble within a generation." }
+      ]
+    }
+  ]
+}

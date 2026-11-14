@@ -23,10 +23,48 @@ import { ZhangHengSeismoscopeShort } from './compositions/ZhangHengSeismoscopeSh
 import { NeutronStarExplainer } from './compositions/NeutronStarExplainer';
 import { PaperStyleEngine } from './compositions/PaperStyleEngine';
 import { AppleGaragePaperStory } from './compositions/AppleGaragePaperStory';
+import { BudgetingPaperShort } from './compositions/batch/BudgetingPaperShort';
+import { QuantumPaperShort } from './compositions/batch/QuantumPaperShort';
+import { CompoundInterestPaperShort } from './compositions/batch/CompoundInterestPaperShort';
+import { RomanEconomyPaperShort } from './compositions/batch/RomanEconomyPaperShort';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* 2.5D Paper Batch Compositions (450 frames @ 30 FPS, 1080x1920) */}
+      <Composition
+        id="BudgetingPaperShort"
+        component={BudgetingPaperShort}
+        durationInFrames={450}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="QuantumPaperShort"
+        component={QuantumPaperShort}
+        durationInFrames={450}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="CompoundInterestPaperShort"
+        component={CompoundInterestPaperShort}
+        durationInFrames={450}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="RomanEconomyPaperShort"
+        component={RomanEconomyPaperShort}
+        durationInFrames={450}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+
       {/* 9:16 Viral 2.5D Paper Apple Garage Story (3D Camera Rig + Talking Mouth-Flap · 15s @ 60fps) */}
       <Composition
         id="AppleGaragePaperStory"
