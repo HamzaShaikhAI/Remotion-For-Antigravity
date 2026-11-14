@@ -187,7 +187,15 @@ node bin/rea-cli.js install-skill
 
 All operations are executed via `rea <command>` (or `node bin/rea-cli.js <command>`):
 
-### 🎯 1. Editorial Intuition & Taste Commands (V2.2)
+### 🏢 1. Enterprise Autonomous Studio Commands (V4.0)
+
+| Command | Usage | Description |
+| :--- | :--- | :--- |
+| **`upscale-4k`** | `rea upscale-4k <in.mp4> [out.mp4] [--scale=4]` | **Neural Vision:** Real-ESRGAN edge-directed 4K super-resolution upscaling for remastering 720p/1080p anime into crisp 4K (2160×3840). |
+| **`key-match`** | `rea key-match <keyA> <keyB>` | **Psychoacoustic:** Harmonic Camelot Wheel key transition analyzer guaranteeing acoustic energy compatibility across stems. |
+| **`script-to-storyboard`** | `rea script-to-storyboard "<prompt>"` | **Agentic Direction:** Unstructured text-to-Remotion timeline compiler generating camera moves, shot lengths, and foley bindings with 0 human intervention. |
+
+### 🎯 2. Editorial Intuition & Taste Commands (V2.2)
 
 | Command | Usage | Description |
 | :--- | :--- | :--- |

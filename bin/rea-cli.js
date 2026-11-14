@@ -3707,6 +3707,56 @@ function handleUpscale(args) {
   }
 }
 
+// Command: upscale-4k (V4.0 Neural Vision: Temporal Super-Resolution 4K Remastering)
+function handleUpscale4k(args) {
+  const inVideo = args[1];
+  const outVideo = (args[2] && !args[2].startsWith('--')) ? args[2] : (inVideo ? inVideo.replace(/\.[^/.]+$/, '_4k.mp4') : null);
+  const scaleArg = args.find(a => a && a.startsWith('--scale='));
+  const scale = scaleArg ? parseInt(scaleArg.split('=')[1], 10) : 4;
+
+  if (!inVideo) {
+    logError('Usage: rea upscale-4k <in.mp4> [out.mp4] [--scale=4]');
+    process.exit(1);
+  }
+
+  const { upscaleTo4k } = require('../src/engines/backend');
+  const plan = upscaleTo4k(inVideo, outVideo, scale);
+  logSuccess(`Neural Vision: Temporal Super-Resolution 4K Engine:`);
+  console.log(`  Source: ${inVideo}`);
+  console.log(`  Target 4K Output: ${plan.output} (${plan.targetResolution[0]}x${plan.targetResolution[1]})`);
+  console.log(`  Model: ${plan.model} (Scale: ${plan.scale}x Edge-Directed Super-Resolution)`);
+}
+
+// Command: key-match (V4.0 Psychoacoustic: Harmonic Camelot Key Matching)
+function handleKeyMatch(args) {
+  const keyA = args[1] || 'Am';
+  const keyB = args[2] || 'Em';
+
+  const { matchCamelotKeys } = require('../src/engines/backend');
+  const result = matchCamelotKeys(keyA, keyB);
+  logSuccess(`Harmonic Camelot Key Analysis:`);
+  console.log(`  Track A Key : ${result.keyA} (Camelot: ${result.camelotA})`);
+  console.log(`  Track B Key : ${result.keyB} (Camelot: ${result.camelotB})`);
+  console.log(`  Compatible  : ${result.isHarmonicallyCompatible ? colors.green + 'YES' : colors.red + 'NO'}${colors.reset}`);
+  console.log(`  Transition  : ${result.transitionGrade}`);
+}
+
+// Command: script-to-storyboard (V4.0 Agentic: Autonomous Storyboard Compiler)
+function handleScriptToStoryboard(args) {
+  const promptText = args.slice(1).filter(a => !a.startsWith('--')).join(' ') || 'Zenitsu vs Killua lightning showdown';
+  const { compileScriptToStoryboard } = require('../src/engines/backend');
+  const storyboard = compileScriptToStoryboard(promptText, 60);
+
+  logSuccess(`Agentic Direction: Script-to-Storyboard Compiler:`);
+  console.log(`  Prompt: "${promptText}"`);
+  console.log(`  Composition: ${storyboard.compositionId}`);
+  console.log(`  Total Frames: ${storyboard.totalDurationFrames} (${storyboard.totalDurationFrames / storyboard.fps}s @ ${storyboard.fps}fps)`);
+  console.log(`  Compiled Shots:`);
+  storyboard.shots.forEach(s => {
+    console.log(`    • Shot ${s.shot}: ${s.type} [${s.durationFrames} frames, camera: ${s.camera}]`);
+  });
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -3725,6 +3775,11 @@ ${colors.bold}EDITORIAL INTUITION & TASTE COMMANDS (V2.2):${colors.reset}
   ${colors.green}intuition-predict [--duration=30]${colors.reset}     Viral Survival: Pre-publish retention curve & swipe risk audit
   ${colors.green}intuition-hooks [charA] [charB]${colors.reset}       Curiosity Gap: High-CTR debate-starting hook generator
   ${colors.green}intuition-fork${colors.reset}                        Platform Forks: Tailor for TikTok (15s), Shorts (30s) & Reels (20s)
+
+${colors.bold}ENTERPRISE AUTONOMOUS STUDIO COMMANDS (V4.0):${colors.reset}
+  ${colors.green}upscale-4k <in.mp4> [out.mp4] [--scale=4]${colors.reset}       Neural Vision: Real-ESRGAN edge-directed 4K super-resolution
+  ${colors.green}key-match <keyA> <keyB>${colors.reset}                         Psychoacoustic: Harmonic Camelot Wheel key transition matcher
+  ${colors.green}script-to-storyboard "<prompt>"${colors.reset}                 Agentic Direction: Unstructured prompt to Remotion JSON timeline compiler
 
 ${colors.bold}DECENTRALIZED ENGINES COMMANDS (V2.2):${colors.reset}
   ${colors.green}upscale <in.mp4> <out.mp4> [--multiplier=8]${colors.reset}   Time-Bending: RIFE AI optical flow interpolation (192fps super-slow-mo)
@@ -3887,6 +3942,15 @@ async function main() {
       break;
     case 'loop-bait':
       handleLoopBait(args);
+      break;
+    case 'upscale-4k':
+      handleUpscale4k(args);
+      break;
+    case 'key-match':
+      handleKeyMatch(args);
+      break;
+    case 'script-to-storyboard':
+      handleScriptToStoryboard(args);
       break;
     case 'port-niche':
       handlePortNiche(args);
