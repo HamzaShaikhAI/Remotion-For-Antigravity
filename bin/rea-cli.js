@@ -4062,22 +4062,24 @@ async function handleLambdaRender(args) {
 async function handleMusic(args) {
   const prompt = args[1];
   if (!prompt || prompt.startsWith('-')) {
-    logError('Prompt required: rea music "<prompt>" [-d <duration>] [-b <bpm>] [-o <outPath>]');
+    logError('Prompt required: rea music "<prompt>" [-d <duration>] [-o <outPath>]');
     process.exit(1);
   }
 
   const durArg = args.find((a) => a.startsWith('-d=') || a.startsWith('--duration='))?.split('=')[1] ||
     (args.includes('-d') ? args[args.indexOf('-d') + 1] : args.includes('--duration') ? args[args.indexOf('--duration') + 1] : '30');
-  
-  const bpmArg = args.find((a) => a.startsWith('-b=') || a.startsWith('--bpm='))?.split('=')[1] ||
-    (args.includes('-b') ? args[args.indexOf('-b') + 1] : args.includes('--bpm') ? args[args.indexOf('--bpm') + 1] : '128');
 
   const outArg = args.find((a) => a.startsWith('-o=') || a.startsWith('--out='))?.split('=')[1] ||
-    (args.includes('-o') ? args[args.indexOf('-o') + 1] : args.includes('--out') ? args[args.indexOf('--out') + 1] : 'public/audio/custom_soundtrack.mp3');
+    (args.includes('-o') ? args[args.indexOf('-o') + 1] : args.includes('--out') ? args[args.indexOf('--out') + 1] : 'public/audio/soundtrack.mp3');
 
   try {
-    const { generateAiSoundtrack } = require('../src/engines/backend');
-    await generateAiSoundtrack(prompt, parseFloat(durArg), parseFloat(bpmArg), outArg);
+    let AiMusicGenerator;
+    try {
+      AiMusicGenerator = require('../src/engines/psychoacoustic/AiMusicGenerator.ts').AiMusicGenerator;
+    } catch {
+      AiMusicGenerator = require('../src/engines/backend').AiMusicGenerator;
+    }
+    await AiMusicGenerator.fetchCloudSoundtrack(prompt, Number(durArg), outArg);
   } catch (err) {
     logError(`Music generation error: ${err.message}`);
     process.exit(1);
@@ -4135,7 +4137,7 @@ ${colors.bold}DECENTRALIZED ENGINES COMMANDS (V2.2):${colors.reset}
   ${colors.green}fleet "<!edit combat Zenitsu audio=...>"${colors.reset}      Fleet Commander: Real-time autonomous bot command dispatcher
 
 ${colors.bold}AUDIO & SOUND DESIGN COMMANDS (V2):${colors.reset}
-  ${colors.green}music "<prompt>" [-d 30] [-b 128] [-o out.mp3]${colors.reset} AI Custom Music & Soundtrack Engine (ACE-Step 1.5 & Procedural)
+  ${colors.green}music "<prompt>" [-d 30] [-o out.mp3]${colors.reset}          Fetch or generate background soundtrack via lightweight cloud APIs
   ${colors.green}install-skill${colors.reset}                                    Install skill globally into ~/.gemini/config/skills/
   ${colors.green}sfx <whoosh|pop|riser|typewriter> [out.wav]${colors.reset}      Deterministic 44.1 kHz WAV procedural sound synthesis
   ${colors.green}voice "<text>" [out.wav] [--provider=gemini|edge]${colors.reset} Dual-provider (Gemini 3.8 Flash TTS / Edge) speech engine

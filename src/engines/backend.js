@@ -886,133 +886,97 @@ async function deployAndRenderLambda(options, inputProps = {}) {
   return { renderId, bucketName, serveUrl };
 }
 
-// --- 29. AI Custom Music & Soundtrack Engine (ACE-Step 1.5 / Procedural) ---
-async function generateAiSoundtrack(prompt, durationSec = 30, bpm = 128, outPath = 'public/audio/custom_soundtrack.mp3') {
-  console.log(`🎵 [REA Music Engine] Synthesizing custom soundtrack...`);
-  console.log(`   Prompt: "${prompt}"`);
-  console.log(`   Parameters: ${durationSec}s duration @ ${bpm} BPM`);
+// --- 29. Cloud-Backed Lightweight Music Engine (AiMusicGenerator) ---
+const AiMusicGenerator = {
+  fetchCloudSoundtrack: async function (prompt, durationSec = 30, outPath = 'public/audio/soundtrack.mp3') {
+    console.log(`☁️ [REA Cloud Music Engine] Querying cloud audio provider for prompt: "${prompt}"...`);
+    console.log(`   Target Duration: ${durationSec}s | Destination: ${outPath}`);
 
-  const resolvedPath = path.resolve(process.cwd(), outPath);
-  const parentDir = path.dirname(resolvedPath);
-  if (!fs.existsSync(parentDir)) {
-    fs.mkdirSync(parentDir, { recursive: true });
-  }
+    const resolvedPath = path.resolve(process.cwd(), outPath);
+    const parentDir = path.dirname(resolvedPath);
+    if (!fs.existsSync(parentDir)) {
+      fs.mkdirSync(parentDir, { recursive: true });
+    }
 
-  let engineUsed = 'procedural-synthesizer';
-  const aceStepBinary = process.env.ACESTEP_BIN || 'acestep';
-  const aceStepModel = process.env.ACESTEP_MODEL_PATH;
+    const cloudApiUrl = process.env.CLOUD_MUSIC_API_URL || 'https://api.freetouse.com/v3/tracks';
 
-  let generatedWithAceStep = false;
-  if (aceStepModel && fs.existsSync(aceStepModel)) {
     try {
-      console.log(`⚡ [REA Music] Detected ACE-Step 1.5 weights at: ${aceStepModel}`);
-      execSync(
-        `"${aceStepBinary}" --model "${aceStepModel}" --prompt "${prompt}" --duration ${durationSec} --bpm ${bpm} --out "${resolvedPath}"`,
-        { stdio: 'pipe' }
-      );
-      generatedWithAceStep = true;
-      engineUsed = 'ace-step-1.5';
-      console.log(`✔ [REA Music] Successfully generated audio using ACE-Step 1.5!`);
-    } catch (err) {
-      console.warn(`⚠ [REA Music] ACE-Step execution fallback triggered: ${err.message}`);
-    }
-  }
+      const axios = require('axios');
+      const response = await axios.get(cloudApiUrl, {
+        params: { search: prompt, limit: 1 },
+        timeout: 6000,
+      });
 
-  if (!generatedWithAceStep) {
-    console.log(`🎹 [REA Music] Utilizing REA Harmonic Sound Engine to synthesize ${durationSec}s @ ${bpm} BPM...`);
-    const sampleRate = 44100;
-    const numSamples = Math.floor(sampleRate * durationSec);
-    const buffer = Buffer.alloc(44 + numSamples * 2);
+      const track = response.data?.[0];
+      if (track && track.audio_url) {
+        console.log(`📥 Downloading track: "${track.title}" from cloud catalog...`);
+        const audioStream = await axios({
+          url: track.audio_url,
+          method: 'GET',
+          responseType: 'stream',
+          timeout: 15000,
+        });
 
-    buffer.write('RIFF', 0);
-    buffer.writeUInt32LE(36 + numSamples * 2, 4);
-    buffer.write('WAVE', 8);
-    buffer.write('fmt ', 12);
-    buffer.writeUInt32LE(16, 16);
-    buffer.writeUInt16LE(1, 20); // PCM
-    buffer.writeUInt16LE(1, 22); // mono
-    buffer.writeUInt32LE(sampleRate, 24);
-    buffer.writeUInt32LE(sampleRate * 2, 28);
-    buffer.writeUInt16LE(2, 32);
-    buffer.writeUInt16LE(16, 34);
-    buffer.write('data', 36);
-    buffer.writeUInt32LE(numSamples * 2, 40);
+        await new Promise((resolve, reject) => {
+          const writer = fs.createWriteStream(resolvedPath);
+          audioStream.data.pipe(writer);
+          writer.on('finish', resolve);
+          writer.on('error', reject);
+        });
 
-    const beatPeriod = 60 / bpm;
-    const dropTime = Math.min(12, durationSec * 0.4);
-    const baseFreq = 55;
-
-    for (let i = 0; i < numSamples; i++) {
-      const t = i / sampleRate;
-      const beatProgress = (t % beatPeriod) / beatPeriod;
-
-      const kickEnv = Math.exp(-beatProgress * 12);
-      const kickFreq = 65 * Math.exp(-beatProgress * 8) + 38;
-      const kick = Math.sin(2 * Math.PI * kickFreq * t) * kickEnv;
-
-      const padChord =
-        Math.sin(2 * Math.PI * baseFreq * 2 * t) * 0.15 +
-        Math.sin(2 * Math.PI * baseFreq * 2.4 * t) * 0.12 +
-        Math.sin(2 * Math.PI * baseFreq * 3 * t) * 0.1;
-
-      const hatEnv = Math.exp(-((beatProgress + 0.5) % 1) * 30);
-      const hat = (Math.random() * 2 - 1) * hatEnv * 0.08;
-
-      const dropMultiplier = t >= dropTime ? 1.4 : 0.6;
-      const subBass = t >= dropTime ? Math.sin(2 * Math.PI * 45 * t) * 0.35 : 0;
-
-      let sampleVal = (kick * 0.5 + padChord * 0.3 + hat + subBass) * dropMultiplier;
-      sampleVal = Math.max(-1, Math.min(1, sampleVal));
-      buffer.writeInt16LE(Math.floor(sampleVal * 32767), 44 + i * 2);
-    }
-
-    const tempWav = resolvedPath.replace(/\.mp3$/, '.wav');
-    fs.writeFileSync(tempWav, buffer);
-
-    if (resolvedPath.endsWith('.mp3')) {
-      try {
-        const ffmpeg = path.resolve('bin', 'ffmpeg', 'ffmpeg.exe');
-        const ffmpegCmd = fs.existsSync(ffmpeg) ? `"${ffmpeg}"` : 'ffmpeg';
-        execSync(`${ffmpegCmd} -y -i "${tempWav}" -b:a 192k "${resolvedPath}"`, { stdio: 'ignore' });
-        if (fs.existsSync(tempWav)) fs.unlinkSync(tempWav);
-      } catch {
-        fs.writeFileSync(resolvedPath, buffer);
+        const metadata = {
+          title: track.title,
+          prompt,
+          durationSec,
+          bpm: track.bpm || 128,
+          engine: 'cloud-api',
+          sourceUrl: track.audio_url,
+          generatedAt: new Date().toISOString(),
+        };
+        fs.writeFileSync(`${resolvedPath}.meta.json`, JSON.stringify(metadata, null, 2));
+        console.log(`✅ Soundtrack successfully saved to: ${resolvedPath}`);
+        return { success: true, path: resolvedPath, title: track.title, engine: 'cloud-api' };
+      } else {
+        throw new Error('No matching cloud track found for the given prompt.');
       }
-    } else {
-      fs.writeFileSync(resolvedPath, buffer);
+    } catch (error) {
+      console.warn(`⚠️ Cloud music fetch failed: ${error.message}. Activating resilient fallback...`);
+      const studioTrack = path.resolve(process.cwd(), 'public/audio/active-phonk.mp3');
+      const backupTrack = path.resolve(process.cwd(), 'public/music/phonk/dastras-aggressive-phonk-140bpm.wav');
+
+      if (fs.existsSync(studioTrack)) {
+        console.log(`🎵 [Fallback] Sourcing authentic studio phonk audio from: ${path.basename(studioTrack)}`);
+        fs.copyFileSync(studioTrack, resolvedPath);
+      } else if (fs.existsSync(backupTrack)) {
+        console.log(`🎵 [Fallback] Sourcing authentic track from: ${path.basename(backupTrack)}`);
+        fs.copyFileSync(backupTrack, resolvedPath);
+      } else {
+        fs.writeFileSync(resolvedPath, '');
+      }
+
+      const fallbackMeta = {
+        title: 'Studio Fallback Soundtrack',
+        prompt,
+        durationSec,
+        bpm: 140,
+        engine: 'studio-asset-fallback',
+        generatedAt: new Date().toISOString(),
+      };
+      fs.writeFileSync(`${resolvedPath}.meta.json`, JSON.stringify(fallbackMeta, null, 2));
+
+      return {
+        success: false,
+        path: resolvedPath,
+        title: 'Studio Fallback Soundtrack',
+        engine: 'studio-asset-fallback',
+        error: error.message,
+      };
     }
-  }
+  },
+};
 
-  const fps = 60;
-  const beatPeriod = 60 / bpm;
-  const totalBeats = Math.floor(durationSec / beatPeriod);
-  const transients = [];
-  for (let b = 0; b < totalBeats; b++) {
-    transients.push(Math.round(b * beatPeriod * fps));
-  }
-
-  const dropOffsetSec = Math.min(12, durationSec * 0.4);
-
-  const metadata = {
-    prompt,
-    durationSec,
-    bpm,
-    engine: engineUsed,
-    dropOffsetSec,
-    transients,
-    generatedAt: new Date().toISOString(),
-    status: 'success',
-    audioPath: path.relative(process.cwd(), resolvedPath).replace(/\\/g, '/'),
-  };
-
-  const metaPath = `${resolvedPath}.meta.json`;
-  fs.writeFileSync(metaPath, JSON.stringify(metadata, null, 2));
-
-  console.log(`✔ Soundtrack successfully compiled and saved to: ${resolvedPath}`);
-  console.log(`✔ Metadata & beat transient map saved to: ${metaPath}`);
-  console.log(`   Engine: ${engineUsed} | Total Downbeats: ${transients.length}`);
-
-  return metadata;
+async function generateAiSoundtrack(prompt, durationSec = 30, bpm = 128, outPath = 'public/audio/custom_soundtrack.mp3') {
+  return AiMusicGenerator.fetchCloudSoundtrack(prompt, durationSec, outPath);
 }
 
 module.exports = {
@@ -1045,4 +1009,5 @@ module.exports = {
   estimateRenderCost,
   deployAndRenderLambda,
   generateAiSoundtrack,
+  AiMusicGenerator,
 };

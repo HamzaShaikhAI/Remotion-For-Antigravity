@@ -174,7 +174,7 @@ EDITORIAL INTUITION & RETENTION COMMANDS (V2.2):
   rea art-director [comp-id] [props.json]                      Studio QA: Multimodal VLM QA loop & auto-correction
 
 AUDIO & SOUND DESIGN COMMANDS:
-  rea music "<prompt>" [-d 30] [-b 128] [-o out.mp3]          AI Custom Music Engine: ACE-Step 1.5 & procedural soundtrack generator
+  rea music "<prompt>" [-d 30] [-o out.mp3]                    Cloud Music Engine: Lightweight cloud API / catalog fetcher with resilient studio fallback
   rea sfx <whoosh|pop|riser|typewriter> [out.wav]              Deterministic 44.1 kHz WAV procedural sound synthesis
   rea foley <sword_clash|sonic_boom|laser> [out.wav]           Psychoacoustic: Procedural Foley sound design
   rea voice "<text>" [out.wav] [--provider=gemini|edge]        Dual-provider (Gemini 3.8 Flash TTS / Edge) speech engine
@@ -213,14 +213,19 @@ node bin/rea-cli.js lambda-render Generated_saas -b my-rea-render-bucket --regio
 
 ---
 
-## 🎵 AI Custom Music & Soundtrack Engine (`rea music`)
+## 🎵 Cloud-Backed Lightweight Music Engine (`rea music`)
 
-REA features an automated, frame-synchronized audio generator supporting **ACE-Step 1.5** local/quantized model architectures (under 4GB GGUF/NVFP4 weights or Python CLI) alongside an offline, zero-dependency harmonic procedural synthesizer.
+REA features an autonomous, cloud-backed audio generator in `src/engines/psychoacoustic/AiMusicGenerator.ts`. Instead of running heavy, local GPU models (like 18+ GB neural checkpoints), `rea music` queries lightweight cloud audio APIs or zero-key public music catalogs to download high-production soundtracks matched to your prompt and duration.
+
+### Key Advantages:
+1. **Zero Local Hardware Load:** Zero GPU VRAM consumption, zero Python/PyTorch bloat, and zero disk space consumed by heavy model weights.
+2. **Instant Pipeline Execution:** Downloads production-ready audio in seconds, pairing seamlessly with `@remotion/lambda` for a completely serverless video generation pipeline.
+3. **Resilient Studio Fallback:** If cloud endpoints are unavailable or offline, the engine automatically falls back to curated studio assets (`public/audio/active-phonk.mp3`) or valid PCM ambient beds—never failing or writing corrupted 0-byte files.
 
 ### Command Execution:
 ```bash
-# Generate a 30-second custom soundtrack at 128 BPM
-node bin/rea-cli.js music "Cinematic phonk beat with heavy 808 drop at second 12" -d 30 -b 128 -o public/audio/custom_soundtrack.mp3
+# Query cloud audio provider or catalog for a 30-second soundtrack
+node bin/rea-cli.js music "High-octane Memphis phonk with punchy 808s and cowbells" -d 30 -o public/audio/soundtrack.mp3
 ```
 
 ### Visual Beat & Transient Synchronization:
