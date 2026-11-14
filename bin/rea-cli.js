@@ -2079,6 +2079,326 @@ function handleListPlugins() {
   });
 }
 
+// ==========================================
+// YOUTUBE PUBLISHING & OAUTH2 AUTHENTICATION
+// ==========================================
+
+async function getYouTubeAuth() {
+  const secretPath = path.resolve(process.cwd(), 'youtube-secret.json');
+  const tokenPath = path.resolve(process.cwd(), '.rea-youtube-token.json');
+
+  if (!fs.existsSync(secretPath)) {
+    throw new Error(
+      'Missing youtube-secret.json in project root.\n' +
+      'To enable YouTube Shorts uploads:\n' +
+      '1. Open Google Cloud Console (https://console.cloud.google.com/)\n' +
+      '2. Enable "YouTube Data API v3"\n' +
+      '3. Create an OAuth 2.0 Client ID (Desktop Application)\n' +
+      '4. Download credentials JSON and save as "youtube-secret.json"'
+    );
+  }
+
+  const { google } = require('googleapis');
+  const creds = JSON.parse(fs.readFileSync(secretPath, 'utf8'));
+  const config = creds.installed || creds.web;
+  if (!config) throw new Error('Invalid youtube-secret.json: expected "installed" or "web" key.');
+
+  const { client_secret, client_id, redirect_uris } = config;
+  const oAuth2Client = new google.auth.OAuth2(
+    client_id,
+    client_secret,
+    redirect_uris ? redirect_uris[0] : 'urn:ietf:wg:oauth:2.0:oob'
+  );
+
+  if (fs.existsSync(tokenPath)) {
+    oAuth2Client.setCredentials(JSON.parse(fs.readFileSync(tokenPath, 'utf8')));
+    return oAuth2Client;
+  }
+
+  const authUrl = oAuth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: ['https://www.googleapis.com/auth/youtube.upload'],
+  });
+
+  console.log('\n🔐 Authorize YouTube Upload by visiting this URL:');
+  console.log(authUrl);
+
+  const readline = require('readline');
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+
+  return new Promise((resolve, reject) => {
+    rl.question('\nEnter the authorization code from that page here: ', async (code) => {
+      rl.close();
+      try {
+        const { tokens } = await oAuth2Client.getToken(code.trim());
+        oAuth2Client.setCredentials(tokens);
+        fs.writeFileSync(tokenPath, JSON.stringify(tokens, null, 2));
+        console.log('✅ OAuth token saved to .rea-youtube-token.json');
+        resolve(oAuth2Client);
+      } catch (err) {
+        reject(new Error('Failed to retrieve YouTube access token: ' + err.message));
+      }
+    });
+  });
+}
+
+// Command: upload
+async function handleUpload(args) {
+  // Usage: rea upload <video.mp4> [title] [description] [tags] [privacyStatus] [--thumbnail=thumb.jpg] [--publish-at=ISO8601]
+  const videoPath = args[1];
+  const title = args[2] || 'Generated Short #Shorts';
+  const description = args[3] || 'Autonomous edit by REA. #Shorts #Phonk';
+  const tagsString = args[4] || 'anime,phonk,edit,shorts';
+  let privacyStatus = args[5] || 'public';
+
+  const thumbArg = args.find((a) => a.startsWith('--thumbnail='));
+  const thumbnailPath = thumbArg ? thumbArg.split('=')[1] : null;
+
+  const publishArg = args.find((a) => a.startsWith('--publish-at='));
+  const publishAt = publishArg ? publishArg.split('=')[1] : null;
+
+  if (!videoPath || !fs.existsSync(videoPath)) {
+    logError('Usage: rea upload <video.mp4> "Title" "Description" "tags" "public" [--thumbnail=thumb.jpg] [--publish-at=ISO8601]');
+    process.exit(1);
+  }
+
+  try {
+    const { google } = require('googleapis');
+    const auth = await getYouTubeAuth();
+    const youtube = google.youtube({ version: 'v3', auth });
+    const fileSize = fs.statSync(videoPath).size;
+
+    console.log(`\n🚀 Preparing to upload: ${path.basename(videoPath)} (${(fileSize / (1024 * 1024)).toFixed(2)} MB)`);
+
+    const statusObj = {
+      selfDeclaredMadeForKids: false,
+    };
+
+    if (publishAt) {
+      statusObj.privacyStatus = 'private'; // YouTube API requirement for scheduled releases
+      statusObj.publishAt = publishAt;
+      console.log(`📅 Scheduled to publish at: ${publishAt}`);
+    } else {
+      statusObj.privacyStatus = privacyStatus;
+    }
+
+    const res = await youtube.videos.insert(
+      {
+        part: 'snippet,status',
+        requestBody: {
+          snippet: {
+            title,
+            description,
+            tags: tagsString.split(',').map((t) => t.trim()),
+            categoryId: '24', // Entertainment
+          },
+          status: statusObj,
+        },
+        media: {
+          body: fs.createReadStream(videoPath),
+        },
+      },
+      {
+        onUploadProgress: (evt) => {
+          const progress = (evt.bytesRead / fileSize) * 100;
+          process.stdout.write(`\r📈 Upload Progress: ${Math.round(progress)}%`);
+        },
+      }
+    );
+
+    const videoId = res.data.id;
+    console.log(`\n✅ Video Uploaded! Video ID: ${videoId}`);
+
+    if (thumbnailPath && fs.existsSync(thumbnailPath)) {
+      console.log(`🖼️ Uploading custom beat-drop thumbnail from ${path.basename(thumbnailPath)}...`);
+      await youtube.thumbnails.set({
+        videoId,
+        media: {
+          body: fs.createReadStream(thumbnailPath),
+        },
+      });
+      console.log('✅ Custom thumbnail attached successfully!');
+    }
+
+    console.log(`🔗 Link: https://youtube.com/shorts/${videoId}`);
+    return res.data;
+  } catch (err) {
+    logError(`YouTube upload failed: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+// Command: live-crypto
+async function handleLiveCrypto(args) {
+  // Usage: rea live-crypto [coin=bitcoin] [compositionId=AnimePhonkShort] [out.mp4]
+  const coin = (args[1] || 'bitcoin').toLowerCase();
+  const compId = args[2] || 'AnimePhonkShort';
+  const outPath = args[3] || `${coin}-status.mp4`;
+
+  console.log(`📡 Fetching live real-time market data for "${coin}"...`);
+
+  let price = 0;
+  let change = 0;
+
+  try {
+    const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=usd&include_24hr_change=true`);
+    const data = await res.json();
+    if (data[coin]) {
+      price = data[coin].usd;
+      change = data[coin].usd_24h_change || 0;
+    } else {
+      throw new Error(`Coin "${coin}" not found in CoinGecko`);
+    }
+  } catch (e) {
+    try {
+      const sym = `${coin.toUpperCase()}USDT`;
+      const res = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${sym}`);
+      const data = await res.json();
+      price = parseFloat(data.lastPrice);
+      change = parseFloat(data.priceChangePercent);
+    } catch (e2) {
+      logError(`Failed to fetch crypto data: ${e.message}`);
+      process.exit(1);
+    }
+  }
+
+  const isUp = change >= 0;
+  const formattedPrice = price >= 1 ? price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : price.toFixed(4);
+  const changeFormatted = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+
+  console.log(`📊 Market Data: ${coin.toUpperCase()} $${formattedPrice} (${changeFormatted})`);
+
+  const props = {
+    hookTitle: `${coin.toUpperCase()} ALERT`,
+    dropCaption: `$${formattedPrice}`,
+    accentColor: isUp ? '#22c55e' : '#ef4444',
+    variant: isUp ? 'sigma' : 'skull',
+    dropFrame: 205,
+    freezeDuration: 48,
+    useExternalClips: false,
+  };
+
+  const tempPropsPath = path.resolve(process.cwd(), '.rea-props.json');
+  fs.writeFileSync(tempPropsPath, JSON.stringify(props, null, 2), 'utf8');
+
+  const remotionCli = path.join(process.cwd(), 'node_modules', '.bin', process.platform === 'win32' ? 'remotion.cmd' : 'remotion');
+  const cmd = fs.existsSync(remotionCli) ? remotionCli : 'npx remotion';
+
+  console.log(`🎬 Compiling live market video: ${outPath}...`);
+  const renderCmd = `"${cmd}" render src/index.ts "${compId}" "${outPath}" --props="${tempPropsPath}" --concurrency=2 --gl=angle --enable-gpu`;
+  execSync(renderCmd, { stdio: 'inherit' });
+  logSuccess(`Live crypto video generated: ${outPath}`);
+}
+
+// Command: batch
+async function handleBatch(args) {
+  // Usage: rea batch <quotes.txt|quotes.json> [CompositionID] [out-dir] [--upload] [--schedule-days=30]
+  const inputPath = args[1];
+  const compId = args[2] || 'AnimePhonkShort';
+  const outDir = (args[3] && !args[3].startsWith('--')) ? args[3] : path.join(process.cwd(), 'batch-output');
+  const shouldUpload = args.includes('--upload');
+
+  const scheduleArg = args.find((a) => a.startsWith('--schedule-days='));
+  const scheduleDays = scheduleArg ? parseInt(scheduleArg.split('=')[1], 10) : 0;
+
+  if (!inputPath || !fs.existsSync(inputPath)) {
+    logError('Usage: rea batch <quotes.txt|quotes.json> [CompositionID] [out-dir] [--upload] [--schedule-days=30]');
+    process.exit(1);
+  }
+
+  fs.mkdirSync(outDir, { recursive: true });
+
+  let items = [];
+  if (inputPath.endsWith('.json')) {
+    items = JSON.parse(fs.readFileSync(inputPath, 'utf8'));
+  } else {
+    items = fs.readFileSync(inputPath, 'utf8')
+      .split('\n')
+      .map((l) => l.trim())
+      .filter((l) => l.length > 0 && !l.startsWith('#'));
+  }
+
+  console.log(`\n🏭 REA Batch Video Factory Initialized: Queuing ${items.length} videos...`);
+  if (shouldUpload) {
+    console.log(`📤 Direct YouTube Shorts upload enabled${scheduleDays > 0 ? ` (scheduled evenly over ${scheduleDays} days)` : ''}.`);
+  }
+
+  const remotionCli = path.join(process.cwd(), 'node_modules', '.bin', process.platform === 'win32' ? 'remotion.cmd' : 'remotion');
+  const cmd = fs.existsSync(remotionCli) ? remotionCli : 'npx remotion';
+  const dropFrame = 205;
+  const now = new Date();
+
+  for (let i = 0; i < items.length; i++) {
+    const rawItem = items[i];
+    const quote = typeof rawItem === 'string' ? rawItem : (rawItem.text || rawItem.quote || JSON.stringify(rawItem));
+    const title = typeof rawItem === 'object' && rawItem.title ? rawItem.title : 'SIGMA MINDSET';
+    const accent = typeof rawItem === 'object' && rawItem.color ? rawItem.color : (i % 2 === 0 ? '#00f5ff' : '#ff0055');
+
+    const outPath = path.join(outDir, `short_${String(i + 1).padStart(3, '0')}.mp4`);
+    const thumbPath = path.join(outDir, `thumb_${String(i + 1).padStart(3, '0')}.jpg`);
+
+    const props = {
+      hookTitle: title.substring(0, 30).toUpperCase(),
+      dropCaption: quote.substring(0, 26).toUpperCase(),
+      accentColor: accent,
+      dropFrame,
+      freezeDuration: 48,
+      variant: i % 2 === 0 ? 'chad' : 'sigma',
+      useExternalClips: false,
+    };
+
+    const tempPropsPath = path.resolve(outDir, `props_${String(i + 1).padStart(3, '0')}.json`);
+    fs.writeFileSync(tempPropsPath, JSON.stringify(props, null, 2), 'utf8');
+
+    console.log(`\n🎬 [${i + 1}/${items.length}] Processing: "${quote.substring(0, 40)}..."`);
+
+    // 1. Capture beat-drop thumbnail at exact drop timestamp
+    console.log(`  📸 Capturing beat-drop thumbnail at frame ${dropFrame}...`);
+    const stillCmd = `"${cmd}" still src/index.ts "${compId}" "${thumbPath}" --props="${tempPropsPath}" --frame=${dropFrame} --image-format=jpeg`;
+    try {
+      execSync(stillCmd, { stdio: 'ignore' });
+    } catch {}
+
+    // 2. Render MP4 with Chromium GPU acceleration
+    console.log(`  ⚡ Compiling 60fps video with Chromium (ANGLE backend)...`);
+    const renderCmd = `"${cmd}" render src/index.ts "${compId}" "${outPath}" --props="${tempPropsPath}" --concurrency=2 --gl=angle --enable-gpu`;
+    execSync(renderCmd, { stdio: 'inherit' });
+    logSuccess(`Compiled: ${outPath}`);
+
+    // 3. Upload to YouTube Shorts if requested
+    if (shouldUpload) {
+      let publishAtIso = null;
+      if (scheduleDays > 0) {
+        const daysOffset = (i * scheduleDays) / items.length;
+        const targetDate = new Date(now.getTime() + daysOffset * 24 * 60 * 60 * 1000 + (i + 1) * 3600 * 1000);
+        publishAtIso = targetDate.toISOString();
+      }
+
+      const ytTitle = `${quote.substring(0, 45)} #Shorts #Phonk`;
+      const ytDesc = `Quote: "${quote}"\n\nGenerated autonomously by REA.\n#Sigma #Phonk #Shorts #Mindset`;
+
+      const uploadArgs = [
+        'upload',
+        outPath,
+        ytTitle,
+        ytDesc,
+        'phonk,sigma,quotes,shorts',
+        'public',
+        `--thumbnail=${thumbPath}`,
+      ];
+      if (publishAtIso) uploadArgs.push(`--publish-at=${publishAtIso}`);
+
+      try {
+        await handleUpload(uploadArgs);
+      } catch (err) {
+        logError(`Failed to upload ${outPath}: ${err.message}`);
+      }
+    }
+  }
+
+  logSuccess(`Batch complete! ${items.length} videos and thumbnails saved to: ${outDir}`);
+}
+
 // Print Help
 function printHelp() {
   console.log(`
@@ -2112,6 +2432,11 @@ ${colors.bold}REMOTION ENGINE & AGENT COMMANDS:${colors.reset}
   ${colors.green}validate [comp-id]${colors.reset}                                Audits project assets and staticFile references
   ${colors.green}list-plugins${colors.reset}                                      Displays all available REA visual plugins
   ${colors.green}hook pre-render${colors.reset}                                   Antigravity 2.0 lifecycle pre-render gatekeeper
+
+${colors.bold}BATCH FACTORY & AUTOMATED PUBLISHING COMMANDS:${colors.reset}
+  ${colors.green}batch <quotes.txt> [comp-id] [out-dir] [--upload]${colors.reset} Mass compile video variations with custom beat-drop thumbnails
+  ${colors.green}live-crypto [coin] [comp-id] [out.mp4]${colors.reset}           Fetch live market API data and compile real-time video
+  ${colors.green}upload <video.mp4> "Title" "Desc" "tags" [status]${colors.reset} Direct YouTube Shorts upload with custom thumbnail & scheduling
 
 ${colors.bold}OPTIONS:${colors.reset}
   --help, -h                       Show this help menu
@@ -2185,6 +2510,15 @@ async function main() {
       break;
     case 'list-plugins':
       handleListPlugins();
+      break;
+    case 'batch':
+      await handleBatch(args);
+      break;
+    case 'live-crypto':
+      await handleLiveCrypto(args);
+      break;
+    case 'upload':
+      await handleUpload(args);
       break;
     case 'hook':
       handleHook(args[1]);

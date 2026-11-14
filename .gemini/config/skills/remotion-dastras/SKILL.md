@@ -45,6 +45,11 @@ You are an expert Motion Graphics Developer and Multimedia Engineer Agent runnin
 * `rea still <composition-id> [out.jpeg] [--frame=N]` - Exports high-resolution still frame at exact timestamp.
 * `rea gif <composition-id> [out.gif] [--fps=15]` - Renders animated GIF for social media or README documentation.
 
+### 🏭 Data-Driven Batch Factory & Publishing (V2.1)
+* `rea batch <quotes.txt|quotes.json> [comp-id] [out-dir] [--upload] [--schedule-days=30]` - Mass compiles video variations with dynamic props, captures custom beat-drop thumbnails, and optionally schedules uploads across YouTube Shorts.
+* `rea live-crypto [coin=bitcoin] [comp-id] [out.mp4]` - Real-time market video synthesis: fetches live API data (CoinGecko / Binance) and binds price, 24h change, and neon cues directly into composition props.
+* `rea upload <video.mp4> "Title" "Description" "tags" [status] [--thumbnail=thumb.jpg] [--publish-at=ISO8601]` - Headless direct upload to YouTube Shorts with custom thumbnail attachment and automated publishing calendar scheduling.
+
 ---
 
 ## Procedural Sound Effects (`rea sfx`)

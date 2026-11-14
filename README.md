@@ -152,6 +152,14 @@ Execute all operations via `rea <command>` (or `node bin/rea-cli.js <command>`):
 | **`still`** | `rea still <comp-id> [out.jpeg] [--frame=N]` | Renders a high-resolution still frame poster at any exact timestamp. |
 | **`gif`** | `rea gif <comp-id> [out.gif] [--fps=15]` | Compiles an optimized animated GIF for documentation or social sharing. |
 
+### 🏭 4. Batch Video Factory & Automated YouTube Publishing Commands
+
+| Command | Usage | Description |
+| :--- | :--- | :--- |
+| **`batch`** | `rea batch <quotes.txt\|quotes.json> [comp-id] [out-dir] [--upload] [--schedule-days=30]` | Mass compiles dozens of shorts in parallel with automatic beat-drop thumbnail extraction. |
+| **`live-crypto`** | `rea live-crypto [coin=bitcoin] [comp-id] [out.mp4]` | Binds real-time live market API telemetry directly to Remotion props and renders dynamic motion graphics. |
+| **`upload`** | `rea upload <video.mp4> "Title" "Desc" "tags" [status] [--thumbnail=thumb.jpg] [--publish-at=ISO8601]` | Headless direct upload to YouTube Shorts with custom thumbnail attachment and 30-day automated publishing calendar scheduling. |
+
 ---
 
 ## 🧠 Architectural Highlights
@@ -216,6 +224,29 @@ rea sfx riser public/sfx/riser.wav
 # Validate and compile 60fps vertical master:
 rea validate AnimePhonkShort
 rea render AnimePhonkShort out-anime-phonk.mp4
+```
+
+---
+
+### 5. Algorithmic Audio Reactivity & Data-Driven Video Factory (`rea batch`, `rea live-crypto`, `rea upload`)
+
+Human video editing is physically bottlenecked by graphical user interfaces: scrubbing waveforms, placing keyframes, dragging playheads, and manually lining up cuts. **REA bypasses GUI friction entirely**, compiling videos deterministically from data and audio mathematics:
+
+- **Algorithmic Audio Reactivity:** Instead of manually adjusting Bezier curves to match beat drops, REA runs Fast Fourier Transforms (FFT) on the audio buffer to isolate sub-bass frequencies (20Hz–120Hz). The camera zoom scale, chromatic aberration, and particle shake are calculated mathematically per frame:
+  $$\text{Scale}(t) = 1.0 + (\text{BassEnergy}(t) \times 0.3)$$
+- **Real-Time Market Data Integration (`rea live-crypto`):** Fetches live coin prices, 24h percentage swings, and volatility indices via CoinGecko & Binance APIs, dynamically mapping them to neon color palettes (bullish green vs. bearish crimson) and motivational quotes.
+- **High-Throughput Batch Factory (`rea batch`):** Parses quotes lists (`quotes.txt` or `quotes.json`), renders videos with hardware-accelerated Chromium Direct3D pipelines (`--gl=angle --enable-gpu --concurrency=2`), automatically extracts high-impact beat-drop thumbnails at exact drop frames, and prepares publishable bundles.
+- **Headless YouTube Shorts Publishing (`rea upload`):** Connects to the official Google Cloud YouTube Data API v3 with desktop OAuth2 token caching, uploading completed videos directly as YouTube Shorts, attaching custom beat-drop thumbnails (`youtube.thumbnails.set`), and distributing releases across an automated 30-day publishing calendar via ISO 8601 `publishAt` timestamps.
+
+```bash
+# Compile live crypto motion graphics:
+rea live-crypto ethereum AnimePhonkShort out-live-eth.mp4
+
+# Mass-produce 50 shorts with beat-drop thumbnails:
+rea batch quotes.txt AnimePhonkShort dist/shorts/
+
+# Headless direct upload with custom thumbnail & scheduled release:
+rea upload short.mp4 "Discipline Over Motivation #shorts" "Daily stoic advice" "motivation,stoic" private --thumbnail=thumb.jpg --publish-at="2026-11-20T14:00:00Z"
 ```
 
 ---

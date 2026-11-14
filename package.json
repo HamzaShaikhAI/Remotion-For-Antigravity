@@ -35,6 +35,7 @@
     "@remotion/media-utils": "^4.0.543",
     "@remotion/zod-types": "^4.0.543",
     "edge-tts-universal": "^1.4.0",
+    "googleapis": "^190.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "remotion": "^4.0.0",
