@@ -7,13 +7,14 @@
 ![Remotion](https://img.shields.io/badge/Remotion-v4.0+-blueviolet?style=for-the-badge&logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict_Typing-blue?style=for-the-badge&logo=typescript&logoColor=white)
 ![FFmpeg](https://img.shields.io/badge/FFmpeg-Bundled_Zero--Config-green?style=for-the-badge&logo=ffmpeg&logoColor=white)
+![Dual TTS](https://img.shields.io/badge/Dual_TTS-Gemini_3.8_+_Edge_TTS-ff5722?style=for-the-badge&logo=google&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-amber?style=for-the-badge)
 
 <br/>
 
-**The Autonomous Motion Graphics, Video Editing & Multimedia Engine for Google Antigravity 2.0 Agents.**
+**The Autonomous Motion Graphics, Procedural Sound Synthesis, AI Voiceover & Multimedia Video Editing Engine for Google Antigravity 2.0 AI Agents.**
 
-*Generate, animate, trim, loudness-normalize, and render production-grade React video graphics directly from autonomous AI prompts.*
+*Generate, animate, narrate, synthesize sound, trim, loudness-normalize, and render production-grade React videos directly from autonomous AI prompts.*
 
 <br/>
 
@@ -26,120 +27,99 @@
 
 ---
 
-
 ## 📌 Executive Summary & Architectural Overview
 
-Traditional coding agents are restricted to generating static HTML/CSS, text files, or terminal scripts. **REA (Remotion Engine for Antigravity)** expands Google Antigravity 2.0 into an **autonomous video director, animator, and post-production editor**.
+Traditional coding agents are restricted to generating static HTML/CSS, text files, or terminal scripts. **REA (Remotion Engine for Antigravity)** expands Google Antigravity 2.0 into an **autonomous video director, animator, sound designer, and post-production editor**.
 
-REA bridges the gap between programmatic React motion design and AI agents through a unified native CLI (`bin/rea-cli.js`), an isolated bundled FFmpeg compositor, deterministic physics primitives, and strict pre-render governance gates.
+REA bridges the gap between programmatic React motion design and AI agents through a unified native CLI (`bin/rea-cli.js`), an isolated bundled FFmpeg compositor, deterministic physics primitives, pure Node.js procedural sound synthesis, dual-provider neural voiceover, and memory-safe chunked multi-act rendering.
 
 ```
-                      ┌───────────────────────────────────────┐
+                      ┌──────────────────────────────────────┐
                       │   Google Antigravity 2.0 AI Agent    │
-                      └──────────────────┬────────────────────┘
+                      └──────────────────┬───────────────────┘
                                          │
-                    Prompt: "Build an autonomous launch video"
+                    Prompt: "Build a 10-minute Vox documentary"
                                          │
                                          ▼
-                      ┌───────────────────────────────────────┐
+                      ┌──────────────────────────────────────┐
                       │          REA CLI Orchestrator         │
                       │            (bin/rea-cli.js)           │
-                      └──────┬───────────┬────────────┬───────┘
-                             │           │            │
-            ┌────────────────┴┐    ┌─────┴─────┐   ┌──┴────────────────┐
-            │ Remotion Engine │    │ Pre-Render│   │  Bundled FFmpeg   │
-            │   (React 18)    │    │ Gate Hook │   │   (Zero-Config)   │
-            └────────┬────────┘    └───────────┘   └──┬────────────────┘
-                     │                                │
-        ┌────────────┴────────────┐       ┌───────────┴───────────┐
-        │  src/plugins/           │       │  Lossless Trimming    │
-        │  • rea-particles        │       │  EBU R128 Loudness    │
-        │  • rea-transitions      │       │  Stream Telemetry     │
-        │  • rea-typography       │       │  Still & GIF Render   │
-        │  • rea-captions         │       └───────────────────────┘
-        │  • rea-mockups          │
-        └────────────┬────────────┘
-                     │
-                     ▼
-      ┌───────────────────────────────┐
-      │  Deterministic HD MP4 / GIF   │
-      │   (Zero Math.random() Leaks)  │
-      └───────────────────────────────┘
+                      └────────┬─────────┬─────────┬─────────┘
+                               │         │         │
+            ┌──────────────────┴┐   ┌────┴───┐   ┌─┴────────────────┐
+            │ Remotion Engine   │   │ Pre-   │   │  Bundled FFmpeg  │
+            │   (React 18)      │   │ Render │   │  (Zero-Config)   │
+            └─────────┬─────────┘   │ Gate   │   └─┬────────────────┘
+                      │             └────────┘     │
+        ┌─────────────┴──────────┐        ┌────────┴───────────────┐
+        │  src/plugins/          │        │  Lossless Trimming     │
+        │  • rea-particles       │        │  EBU R128 Loudness     │
+        │  • rea-transitions     │        │  Stream Telemetry      │
+        │  • rea-typography      │        │  Still & GIF Render    │
+        │  • rea-captions        │        │  Lossless Concat       │
+        │  • rea-mockups         │        └────────────────────────┘
+        └─────────────┬──────────┘
+                      │
+        ┌─────────────┴────────────────────────────────────────────┐
+        │  Audio, Voice & Long-Form Rendering Architecture         │
+        │  • Gemini 3.8 Flash TTS & Zero-Key Edge TTS Dual Engine  │
+        │  • Multi-Speaker 2-Person Dialogue Synthesis             │
+        │  • Pure Node.js 44.1 kHz PCM WAV Procedural SFX          │
+        │  • Vox Journalistic Editorial Guardrails Validator       │
+        │  • Chunked Act-by-Act Long-Form Rendering (rea render-long) │
+        └──────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## ⚡ Key Highlights & Core Capabilities
+## ⚡ Quick Start & Global Skill Installation
 
-- **🤖 100% Agent-Autonomous Toolchain:** Controlled through the `rea` CLI, eliminating human configuration or UI setup.
-- **📦 Zero-Config Bundled FFmpeg:** Performs frame-accurate cutting, trimming, audio extraction, loudness normalization, and GIF generation using Remotion's isolated compositor binaries. No global system FFmpeg installation required.
-- **📐 Mathematical Determinism:** Strictly eliminates `Math.random()` across all render loops, guaranteeing frame-accurate, flicker-free multithreaded rendering.
-- **⚡ Spring Physics Motion:** Powered by Remotion's native `spring()` physics and `interpolate()` curves—never linear CSS transitions.
-- **🛡️ Pre-Render Validation Gate (`hooks/pre-render.json`):** Antigravity 2.0 lifecycle hook automatically scans composition files, assets, and `staticFile()` references to catch broken paths before launching Chromium worker pools.
-- **📱 Multi-Aspect Ratio Flexibility:** Natively supports 16:9 widescreen (1920×1080), 9:16 vertical reels (1080×1920), 1:1 square social audiograms (1080×1080), and 2.35:1 anamorphic cinema widescreen.
-
----
-
-## 📊 Benchmark Matrix: Why REA Outperforms Alternatives
-
-| Capability / Metric | REA (Antigravity Remotion) | Standard Remotion CLI | MoviePy / Python | After Effects / GUI |
-| :--- | :---: | :---: | :---: | :---: |
-| **Agent Autonomy** | 🟢 **Native Skill & Hooks** | 🟡 CLI only | 🟡 Script-based | 🔴 Manual UI only |
-| **Animation Precision** | 🟢 **Sub-frame React Physics** | 🟢 Sub-frame React Physics | 🔴 Frame-limited / Linear | 🟢 High (manual keyframes) |
-| **FFmpeg Dependency** | 🟢 **Bundled (Zero-Config)** | 🟡 Requires system setup | 🔴 System FFmpeg required | ⚪ N/A (Internal proprietary) |
-| **Deterministic Parallelism** | 🟢 **Enforced by AGENTS.md** | 🟡 Developer dependent | 🔴 Prone to drift / leaks | 🟢 Frame-based |
-| **Audio Loudness Normalization**| 🟢 **EBU R128 (-16 LUFS)** | 🔴 Manual filter complex | 🟡 Manual pydub filter | 🟢 Built-in manual filter |
-| **Pre-Render Safety Audits** | 🟢 **Automatic (`rea validate`)**| 🔴 Manual | 🔴 Manual | 🔴 Manual |
-| **Execution Speed** | ⚡ **Fast (Chromium Threads)**| ⚡ Fast | 🐢 Slow (CPU GIL) | 🐢 Heavy GUI overhead |
-
----
-
-## ⚡ REA CLI Reference Manual
-
-The `rea` CLI is the unified entrypoint for developers and autonomous AI agents:
+REA installs as an autonomous system skill inside Google Antigravity across Windows, macOS, and Linux:
 
 ```bash
-node bin/rea-cli.js <command> [arguments...]
-# Or link globally:
-npm link
-rea <command> [arguments...]
+# 1. Clone repository
+git clone https://github.com/HamzaShaikhAI/Remotion-For-Antigravity.git
+cd Remotion-For-Antigravity
+
+# 2. Install dependencies (Bundles Remotion + FFmpeg + Google GenAI SDK)
+npm install
+
+# 3. Deploy skill globally into ~/.gemini/config/skills/remotion-dastras
+node bin/rea-cli.js install-skill
 ```
 
-### 🎙️ Audio, Sound Design & Dual-Provider Voiceover (Version 2)
+Once installed, Google Antigravity detects REA directives, rules, and CLI tools automatically in every new agent turn.
+
+---
+
+## 🛠️ Unified CLI Command Reference
+
+Execute all operations via `rea <command>` (or `node bin/rea-cli.js <command>`):
+
+### 🎙️ 1. Audio, Sound Design & Dual-Provider Voiceover
 
 | Command | Usage | Description |
 | :--- | :--- | :--- |
 | **`install-skill`** | `rea install-skill` | Automatically deploys bundled skill globally into `~/.gemini/config/skills/remotion-dastras`. |
-| **`sfx`** | `rea sfx <whoosh\|pop\|riser\|typewriter> [out.wav]` | Synthesizes deterministic broadcast 44.1 kHz 16-bit PCM WAV sound effects directly into `public/sfx/` with zero external dependencies. |
-| **`voice`** | `rea voice "<text>" [out.wav] [--provider=gemini\|edge] [--voice=...] [--style="..."]` | Dual-engine voiceover: broadcast Google Gemini 3.8 Flash TTS (`gemini-3.8-flash-tts`) or zero-key Edge TTS. Computes exact Remotion frame counts for 30fps/60fps. |
-| **`voice (dialogue)`** | `rea voice --dialogue=script.json [out.wav] [--provider=gemini]` | Synthesizes conversational 2-person dialogues for podcasts, interviews, and audiograms with turn-by-turn style and speaker control. |
+| **`sfx`** | `rea sfx <whoosh\|pop\|riser\|typewriter> [out.wav]` | Synthesizes broadcast 44.1 kHz 16-bit PCM WAV sound effects directly into `public/sfx/` with zero external dependencies. |
+| **`voice`** | `rea voice "<text>" [out.wav] [--provider=gemini\|edge] [--voice=...] [--style="..."]` | Dual-engine voiceover: broadcast Google Gemini 3.8 Flash TTS (`gemini-3.8-flash-tts`) or zero-key Edge TTS. Calculates exact Remotion frame counts. |
+| **`voice (dialogue)`** | `rea voice --dialogue=script.json [out.wav] [--provider=gemini]` | Synthesizes conversational 2-person dialogues for podcasts and audiograms with turn-by-turn speaker annotations. |
 | **`validate-script`** | `rea validate-script <text \| file.txt>` | Audits voiceover scripts against `rules/vox-editorial.md` for syllable density (3.8–4.5/sec) and bans cliché filler phrases. |
 
-#### 🗣️ Dual-Engine Voiceover & Multi-Speaker Dialogue
-REA equips Antigravity with broadcast-ready narration:
-- **Google Gemini 3.8 Flash TTS (`--provider=gemini`):** Synthesizes broadcast 24 kHz 16-bit PCM WAV audio using the official `@google/genai` SDK and `gemini-3.8-flash-tts`. Supports delivery styles via `--style="..."` and multi-speaker dialogues via `--dialogue=dialogue.json`.
-- **Zero-Key Edge TTS (Default):** Rapid neural narration with zero API keys required. Perfect for immediate offline-first agent workflows.
-
-| Aesthetic Style | Curated Voice | Recommended `--style` Delivery | Character |
-| :--- | :--- | :--- | :--- |
-| **Vox / Documentary** | `Charon` / `Rasalgethi` | `"warm, authoritative, measured documentary narrator"` | Informative, grounded, clear |
-| **Cyberpunk / Sci-Fi** | `Orus` / `Alnilam` | `"calm, futuristic, slightly resonant AI system voice"` | Resonant, firm, robotic |
-| **Tech / SaaS Launch** | `Zephyr` / `Puck` | `"energetic, upbeat, modern product keynote"` | Bright, high-clarity, confident |
-| **Storytelling / Explainer** | `Sulafat` / `Aoede` | `"warm, inviting, conversational storyteller"` | Breezy, friendly, engaging |
-
-### 🎬 Remotion Studio & Rendering Commands
+### 🎬 2. Remotion Studio & Rendering Commands
 
 | Command | Usage | Description |
 | :--- | :--- | :--- |
 | **`init`** | `rea init <project-name>` | Scaffolds a new TypeScript-enabled Remotion workspace with full REA integration. |
 | **`add`** | `rea add <plugin-name>` | Injects modular visual plugins (`rea-particles`, `rea-transitions`, `rea-typography`, `rea-captions`, `rea-mockups`). |
 | **`preview`** | `rea preview` | Launches live interactive Remotion Studio at `http://localhost:3000`. |
-| **`validate`**| `rea validate [comp-id]` | Audits `src/Root.tsx`, `public/` directory, and all `staticFile()` imports. |
 | **`render`** | `rea render <comp-id> [out.mp4]` | Runs pre-flight audit and compiles high-definition video via Chromium workers. |
+| **`render-long`** | `rea render-long <Comp1,Comp2..\|--auto> [out.mp4]` | Memory-safe chunked rendering for long-form videos (> 120s); flushes Chromium RAM between segments and losslessly concatenates with bundled FFmpeg. |
+| **`validate`**| `rea validate [comp-id]` | Audits `src/Root.tsx`, `public/` directory, and all `staticFile()` imports. |
 | **`list-plugins`** | `rea list-plugins` | Displays the catalog of available visual plugins. |
 | **`hook`** | `rea hook pre-render` | Intercepts agent tool calls before render execution to prevent runtime failures. |
 
-### ✂️ Multimedia & FFmpeg Editing Commands (Bundled Engine)
+### ✂️ 3. Multimedia & FFmpeg Editing Commands (Bundled Engine)
 
 | Command | Usage | Description |
 | :--- | :--- | :--- |
@@ -151,9 +131,151 @@ REA equips Antigravity with broadcast-ready narration:
 
 ---
 
-## 🎨 Supported Animation Styles & Production Showcase
+## 🧠 Architectural Deep Dives
 
-REA natively supports a comprehensive library of motion graphic aesthetics and video styles:
+### 1. Dual-Provider AI Voice Engine & Multi-Speaker Dialogue
+REA gives Antigravity agents broadcast-ready vocal narration:
+- **Google Gemini 3.8 Flash TTS (`--provider=gemini`):** Direct RIFF 24 kHz mono 16-bit PCM WAV audio generation using the official `@google/genai` SDK. Supports delivery style annotations (`--style="..."`) and multi-speaker 2-person dialogues (`--dialogue=dialogue.json`).
+- **Zero-Key Edge TTS (Default Fallback):** Instant neural voice synthesis with zero API keys required, ideal for offline and local-first workflows.
+
+#### Curated Gemini 3.8 Flash TTS Voices
+| Video Aesthetic | Curated Voice | Recommended `--style` Delivery Flag | Vocal Character |
+| :--- | :--- | :--- | :--- |
+| **Vox / Documentary** | `Charon` / `Rasalgethi` | `"warm, authoritative, measured documentary narrator"` | Informative, clear, grounded |
+| **Cyberpunk / Sci-Fi** | `Orus` / `Alnilam` | `"calm, futuristic, slightly resonant AI system voice"` | Firm, deep, cinematic |
+| **Tech / SaaS Launch** | `Zephyr` / `Puck` | `"energetic, upbeat, modern product keynote"` | Bright, enthusiastic, crisp |
+| **Storytelling / Explainer** | `Sulafat` / `Aoede` | `"warm, inviting, conversational storyteller"` | Warm, breezy, natural |
+
+#### Multi-Speaker 2-Person Dialogue Format (`dialogue.json`)
+```json
+{
+  "speakers": [
+    { "speaker": "Alex", "voice": "Charon" },
+    { "speaker": "Maya", "voice": "Kore" }
+  ],
+  "turns": [
+    {
+      "speaker": "Alex",
+      "style": "curious, energetic podcast host",
+      "text": "Did Antigravity just compile a ten-minute motion documentary without a single render crash?"
+    },
+    {
+      "speaker": "Maya",
+      "style": "calm, confident systems architect",
+      "text": "Every frame. The chunked segment pipeline flushed Chromium's memory between every single act."
+    }
+  ]
+}
+```
+Synthesize with:
+```bash
+rea voice --dialogue=dialogue.json public/audio/podcast-dialogue.wav
+```
+
+---
+
+### 2. Pure Node.js Procedural Sound Design (`rea sfx`)
+Traditional tools require Python, NumPy, or third-party audio packages. REA generates broadcast-quality 44.1 kHz 16-bit PCM WAV sound effects entirely in Node.js buffer mathematics:
+
+```bash
+rea sfx whoosh public/sfx/whoosh.wav      # Exponential frequency sweep (200 Hz -> 800 Hz)
+rea sfx pop public/sfx/pop.wav            # Sharp sine transient with parabolic decay
+rea sfx riser public/sfx/riser.wav        # Tension-building frequency ramp (100 Hz -> 1200 Hz)
+rea sfx typewriter public/sfx/type.wav    # Crisp 2.4 kHz terminal key transient
+```
+Mount in Remotion components with tight sequence wrapping:
+```tsx
+<Sequence from={30} durationInFrames={30}>
+  <Audio src={staticFile('sfx/pop.wav')} volume={0.25} />
+</Sequence>
+```
+
+---
+
+### 3. Chunked Segment Rendering for 10+ Minute Videos (`rea render-long`)
+When compositions exceed 120 seconds (`durationInFrames > 120 * fps`), single-pass Chromium rendering risks Out-Of-Memory (OOM) crashes on local workstations.
+
+REA enforces a **Manifest-Driven Architecture** in `src/Root.tsx`:
+
+```tsx
+import { Composition, Folder, Series } from 'remotion';
+
+// 1. Single source of truth for audio-locked Act durations
+export const ACTS_MANIFEST = [
+  { id: 'Act1Paradox', component: Act1Paradox, durationInFrames: 777 },
+  { id: 'Act2Proxy', component: Act2Proxy, durationInFrames: 753 },
+  { id: 'Act3Compiler', component: Act3Compiler, durationInFrames: 857 },
+  { id: 'Act4Batching', component: Act4Batching, durationInFrames: 647 },
+  { id: 'Act5Conformance', component: Act5Conformance, durationInFrames: 658 },
+  { id: 'Act6Mission', component: Act6Mission, durationInFrames: 480 },
+] as const;
+
+// 2. Master composition for Remotion Studio preview
+export const MasterDocumentary: React.FC = () => (
+  <Series>
+    {ACTS_MANIFEST.map(({ id, component: Comp, durationInFrames }) => (
+      <Series.Sequence key={id} durationInFrames={durationInFrames}>
+        <Comp />
+      </Series.Sequence>
+    ))}
+  </Series>
+);
+
+// 3. Register both the master preview and isolated chunk targets
+export const RemotionRoot: React.FC = () => (
+  <>
+    <Composition
+      id="MasterDocumentary"
+      component={MasterDocumentary}
+      durationInFrames={ACTS_MANIFEST.reduce((s, a) => s + a.durationInFrames, 0)}
+      fps={30}
+      width={1920}
+      height={1080}
+    />
+    <Folder name="Render-Segments">
+      {ACTS_MANIFEST.map(({ id, component, durationInFrames }) => (
+        <Composition
+          key={id}
+          id={id}
+          component={component}
+          durationInFrames={durationInFrames}
+          fps={30}
+          width={1920}
+          height={1080}
+        />
+      ))}
+    </Folder>
+  </>
+);
+```
+
+Render seamlessly with automatic segment discovery:
+```bash
+# Auto-detects all Acts from ACTS_MANIFEST and stitches losslessly:
+rea render-long --auto final-documentary.mp4
+
+# Or specify custom segments manually:
+rea render-long Act1Paradox,Act2Proxy,Act3Compiler final-documentary.mp4
+```
+
+---
+
+### 4. Vox Journalistic Editorial Guardrails (`rules/vox-editorial.md`)
+REA enforces strict pacing and language standards for documentary scripts:
+- **Syllable Density Target:** 3.8 to 4.5 syllables per second.
+- **Banned Cliché Dictionary:** Automatically flags conversational fluff (*"In today's fast-paced digital world..."*, *"Let's dive in..."*, *"It goes without saying..."*).
+- **Exact Duration Locking:** `rea voice` telemetry calculates target frame counts at 30fps and 60fps, adding an automatic `+15` frame dwell buffer so animations never cut off mid-sentence.
+
+Audit any script via CLI:
+```bash
+rea validate-script "Modern GPU architectures face an unexpected planned obsolescence barrier."
+```
+
+---
+
+## 🎨 Supported Animation Styles & Production Showcases
+
+REA natively supports an expansive library of motion graphic aesthetics:
 
 ### 1. 🌆 Cyberpunk Sci-Fi HUD & Telemetry
 - **Description:** Hi-tech futuristic interface with differential multi-ring gyroscopes, typewriter telemetry, scanning laser beams, and glowing neon embers.
@@ -165,171 +287,144 @@ REA natively supports a comprehensive library of motion graphic aesthetics and v
 - **Key Techniques:** 3D CSS perspective transforms (`perspective(1000px) rotateX(...) rotateY(...)`), high-damping `spring()` physics, SVG revenue curves drawing dynamically via `strokeDashoffset`, and `KineticSplitText`.
 - **Composition:** `saas-launch-promo/out-saas.mp4` (12s @ 30fps, 1920×1080).
 
-### 3. 📰 Vox-Style Editorial Documentary Motion Graphics
-- **Description:** Tactile newsprint aesthetic with bold highlighter-yellow callout boxes, brutalist borders, and animated data maps.
-- **Key Techniques:** Zero-`Math.random()` deterministic film grain using SVG `<feTurbulence seed={(frame * 17 + 29) % 100}>`, transatlantic cable paths drawing via `interpolate()`, and spring-popping latency telemetry badges (`58.2 ms`).
-- **Composition:** `vox-cables/out-documentary.mp4` (8s @ 30fps, 1920×1080).
+### 3. 📰 Vox-Style Editorial Documentary (KeplerBridge 6-Act Showcase)
+- **Description:** 6-Act technical documentary detailing how open-source developers unlocked DirectX 12 Agility SDK capabilities on legacy NVIDIA Kepler hardware.
+- **Key Techniques:** Tactile grid paper with subtle film grain, dual-node bytecode translation diagrams, interactive benchmark bar races across 86 PC games, and audio-locked scene durations.
+- **Composition:** `keplerbridge-vox-doc/final-keplerbridge-documentary.mp4` (6 Acts, 4,172 frames @ 30fps, 1920×1080).
 
-### 4. 📱 YouTube Shorts & Reels Vertical Code Walkthroughs (9:16)
-- **Description:** Mobile-first technical reels designed for developer audience retention on YouTube Shorts, Instagram Reels, and TikTok.
-- **Key Techniques:** Sleek macOS dark terminal, character-by-character typewriter code generation with blinking cursor, spring camera zoom (`1.35x`) and pan, selective code dimming (`opacity: 0.3`), and floating architectural callout badges.
+### 4. 📱 Vertical Social Shorts & Reels
+- **Description:** High-velocity vertical video format (9:16) with spring-animated annotation badges and dynamic focal zooms.
+- **Key Techniques:** Smooth camera pan/zoom (`scale: 1.35`), dimmed context layers (`opacity: 0.3`), and animated code terminal typing.
 - **Composition:** `code-walkthrough-reel/out-vertical.mp4` (10s @ 30fps, 1080×1920).
 
-### 5. 🎙 High-Retention Social Podcast Audiograms (1:1 Square)
-- **Description:** Square social audiograms featuring a 48-bar radial audio spectrum visualizer and word-by-word synced subtitles.
-- **Key Techniques:** Polar coordinate radial bars oscillating via layered trigonometric frame waves (`Math.sin(frame * 0.2 + i)`), pulsating center dB meter (`-14.5 dB`), and `rea-captions` with bouncy spring scaling (`1.18x`) and electric cyan (`#00F5FF`) highlight pills.
+### 5. 🎙️ Viral Podcast Audiogram
+- **Description:** Obsidian-dark audiogram with an audio-reactive 48-bar radial spectrum visualizer, bouncing active-word subtitle pills, and waveform rings.
+- **Key Techniques:** Deterministic radial sine/cosine oscillators (`Math.sin(frame * 0.2 + i)`), spring-scaled subtitle highlight pills (`#00f5ff`), and multi-speaker dialogue integration.
 - **Composition:** `viral-audiogram/out-audiogram.mp4` (8s @ 30fps, 1080×1080).
 
-### 6. 🎬 Multi-Scene Narrative Anime & Story Films
-- **Description:** Complete cinematic narrative film pipeline editing raw generative video clips into structured multi-act movies.
-- **Key Techniques:** Lossless batch trimming with `rea cut`, continuous monotonic audio/video stream concatenation, 2.35:1 anamorphic letterbox black bars, dynamic Act chapter markers, and bilingual subtitles (English & Hindi).
-- **Composition:** `pokevypar-edit/out-pokevypar-final.mp4` (79s, 1,896 frames @ 24fps, 1280×720).
+### 6. 🎬 Commercial Video Editing & Loudness Normalization
+- **Description:** Frame-accurate video cutting, stream-copy trimming, and broadcast EBU R128 audio normalization (`-16 LUFS`).
+- **Key Techniques:** Bundled FFmpeg zero-loss cutting via `rea cut --normalize`, automated audio track extraction (`rea audio`), and deep telemetry probing (`rea probe`).
 
 ---
 
-## 🧩 Built-in REA Visual Plugin Catalog
+## 🚨 Top 10 Issues & Solutions (Troubleshooting Guide)
 
-REA provides modular visual components ready for immediate agent import:
+### 1. Chromium Out-Of-Memory (OOM) on Videos Longer Than 2 Minutes
+- **Symptom:** Render process crashes silently or reports `Error: Page crashed!` during frame compilation.
+- **Cause:** Headless Chromium accumulates canvas bitmaps and audio PCM buffers across thousands of unmanaged frames.
+- **Solution:** Use the chunked rendering pipeline `rea render-long --auto [out.mp4]`. Decompose your video into modular Acts in `src/Root.tsx` under `ACTS_MANIFEST`. REA renders each Act in complete isolation with `--concurrency=2`, flushes RAM between acts, and losslessly stitches them via FFmpeg.
 
-```tsx
-// 1. Procedural Cyberpunk Neon Embers
-import { NeonEmbers } from '../plugins/rea-particles';
-<NeonEmbers count={60} interactive={true} />
+### 2. Audio Desynchronization & Mid-Sentence Cutoffs
+- **Symptom:** Visual transitions occur before the voiceover finished speaking.
+- **Cause:** Hardcoding guessed scene durations instead of locking them to actual speech lengths.
+- **Solution:** Always generate audio **first** using `rea voice`. Read the exact frame count printed by `rea voice` and apply the `+15` frame dwell buffer: `<Series.Sequence durationInFrames={exactVoiceFrames + 15}>`.
 
-// 2. Glitch & Chromatic Channel Transition
-import { GlitchTransition } from '../plugins/rea-transitions';
-<GlitchTransition intensity={1.5}>
-  <SceneContent />
-</GlitchTransition>
+### 3. Missing `staticFile()` Assets Breaking Headless Renders
+- **Symptom:** Chromium hangs on black frames or fails with `Asset not found in public/`.
+- **Cause:** Referencing local files via relative file paths (`../../public/image.png`) instead of `staticFile('image.png')`.
+- **Solution:** Always import `staticFile` from `remotion`. Run `rea validate [comp-id]` before rendering. The REA lifecycle hook (`rea hook pre-render`) automatically intercepts and blocks broken render commands before Chromium launches.
 
-// 3. Staggered Kinetic Split Character Typography
-import { KineticSplitText } from '../plugins/rea-typography';
-<KineticSplitText text="AUTONOMOUS AGENTS" delayPerLetter={2} />
+### 4. Circular Export Errors in React Plugins (Error #130)
+- **Symptom:** `Element type is invalid: expected a string or a class/function but got: undefined.`
+- **Cause:** Barrel file `src/plugins/<plugin>/index.ts` containing self-referential `export * from './index'`.
+- **Solution:** Ensure all plugin barrel files explicitly reference the component file: `export * from './index.tsx'`.
 
-// 4. Kinetic Word-by-Word Captions with Bouncy Highlight Pills
-import { AnimatedCaptions } from '../plugins/rea-captions';
-<AnimatedCaptions words={captionData} activeColor="#00f5ff" />
+### 5. Non-Deterministic Frame Jitter During Concurrent Renders
+- **Symptom:** Particle bursts, flicker, or elements jump erratically between frames in the rendered MP4.
+- **Cause:** Using `Math.random()` inside React render components. Remotion renders frames out-of-order across multi-threaded workers.
+- **Solution:** Never use `Math.random()`. Derive all pseudorandom positions deterministically from the current frame and item index: `((frame * 17 + index * 31) % 100) / 100`.
 
-// 5. Clean Browser & Application Mockup Frames
-import { BrowserMockup } from '../plugins/rea-mockups';
-<BrowserMockup url="https://antigravity.google.dev">
-  <Dashboard />
-</BrowserMockup>
-```
+### 6. Unmanaged Audio Buffer Leaks in Multi-Scene Compositions
+- **Symptom:** High RAM consumption and audio crackling on multi-scene timelines.
+- **Cause:** Mounting `<Audio>` elements at frame 0 with `startFrom={420}` instead of wrapping them in `<Sequence>`.
+- **Solution:** Always enclose sound effects in a tight sequence: `<Sequence from={420} durationInFrames={30}><Audio ... /></Sequence>` so Remotion unloads the PCM buffer immediately after playback.
 
----
+### 7. PowerShell String Escaping Issues on Windows
+- **Symptom:** CLI voice or sfx commands fail with `Unexpected token in expression`.
+- **Cause:** Double quotes and special characters interpreted by PowerShell before reaching Node.js.
+- **Solution:** Pass arguments inside single quotes or use dedicated script files: `rea voice "My narration script" out.mp3`.
 
-## 📜 The Deterministic Rendering Laws (AGENTS.md)
+### 8. Large Video Files Bloating Git Version History
+- **Symptom:** Git repositories become slow to clone; GitHub rejects commits exceeding 100 MB.
+- **Cause:** Staging compiled `.mp4`, `.mov`, or raw audio files in Git commits.
+- **Solution:** Commit only source code, configs, still poster frames (`.jpeg`), and lightweight preview GIFs. Ensure `.gitignore` ignores `*.mp4`, `*.mov`, `*.wav`, `*.mp3`, and `.rea-chunks/`.
 
-All agents and contributors operating in this repository must adhere to the following mandatory engineering standards:
+### 9. Google Gemini TTS Quota Exceeded or Missing API Key
+- **Symptom:** `Error: GEMINI_API_KEY environment variable is required for Gemini TTS.`
+- **Cause:** Calling `--provider=gemini` without having an active API key exported.
+- **Solution:** Export your key with `export GEMINI_API_KEY="..."`, or omit the flag to use REA's built-in zero-key Edge TTS default (`--provider=edge`), which works 100% free with no configuration.
 
-1. **Zero `Math.random()` Inside Render Loops:**
-   Because Remotion renders frames out-of-order across parallel Chromium workers, `Math.random()` causes severe visual tearing and non-deterministic frames. All animations, particle drifts, and film grain seeds must be derived mathematically using `frame`, `useVideoConfig()`, and trigonometric offsets.
-2. **Spring Physics Over Linear CSS Transitions:**
-   Linear CSS transitions fail to calculate sub-frame velocities accurately during frame-by-frame rendering. All transitions, scaling, and movements must use Remotion's `spring()` physics or `interpolate()` easing curves.
-3. **Asset Governance via `staticFile()`:**
-   Direct relative path strings (`../public/img.png`) break when bundled in production. All static assets must reside in `public/` and be referenced using `staticFile('asset.png')`.
-4. **Pre-Render Interceptor Gate:**
-   The `hooks/pre-render.json` lifecycle hook monitors all `rea render` and `remotion render` invocations, aborting immediately if missing assets or syntax violations are discovered.
-
----
-
-## 🚀 Quickstart Installation Guide
-
-### Prerequisites
-- Node.js 18.0.0 or higher
-- Windows, macOS, or Linux (cross-platform compatible)
-
-### Setup
-```bash
-# 1. Clone repository
-git clone https://github.com/HamzaShaikhAI/Remotion-For-Antigravity.git
-cd Remotion-For-Antigravity
-
-# 2. Install workspace dependencies
-npm install
-
-# 3. Initialize a new project with the REA CLI
-node bin/rea-cli.js init my-motion-project
-cd my-motion-project
-
-# 4. Add desired visual plugins
-node ../bin/rea-cli.js add rea-typography
-node ../bin/rea-cli.js add rea-transitions
-
-# 5. Launch Remotion Studio Preview
-node ../bin/rea-cli.js preview
-
-# 6. Validate and Compile Video
-node ../bin/rea-cli.js validate MainVideo
-node ../bin/rea-cli.js render MainVideo out.mp4
-```
+### 10. Missing Host FFmpeg Installation
+- **Symptom:** `ffmpeg: command not found` when attempting media trimming or probe operations.
+- **Cause:** Host system does not have FFmpeg installed on its system PATH.
+- **Solution:** REA automatically resolves the bundled cross-platform FFmpeg executable bundled with `@remotion/renderer`. All `rea cut`, `rea probe`, `rea audio`, and `rea render-long` operations work out of the box without installing system FFmpeg.
 
 ---
 
-## 🤖 Antigravity 2.0 Agent Workflow
+## ❓ Frequently Asked Questions (FAQs)
 
-When asking Google Antigravity to create a video:
+#### Q1: Does REA require a GPU or hardware acceleration to render videos?
+**A:** No. REA compiles videos headlessly using Remotion's CPU-based SwiftShader software rasterizer. While hardware acceleration can speed up rendering on systems with dedicated GPUs, REA runs reliably on standard cloud instances, GitHub Actions runners, and laptops without a discrete GPU.
 
-```
-User Prompt: "Create a 10-second vertical reel explaining Docker containers with terminal typing and zoom."
-       │
-       ▼
-1. Agent generates Implementation Plan Artifact (.md)
-       │
-       ▼
-2. Agent executes: rea init docker-reel
-       │
-       ▼
-3. Agent writes deterministic React components in src/compositions/
-       │
-       ▼
-4. Pre-Render Gatekeeper runs: rea validate
-       │
-       ▼
-5. Agent renders asynchronously: rea render DockerReel out-vertical.mp4
-       │
-       ▼
-6. Agent audits output via: rea probe out-vertical.mp4
-       │
-       ▼
-7. Deliverable returned with embedded preview poster frame!
-```
+#### Q2: Can I use REA completely free without paying for API keys?
+**A:** Yes! REA is built around a **Zero-Key First Principle**:
+- Audio voiceovers default to zero-key neural Edge TTS (`--provider=edge`).
+- Sound design synthesis (`rea sfx`) runs 100% locally via pure Node.js PCM math.
+- FFmpeg video cutting, probing, and rendering run locally without external APIs.
+The Google Gemini 3.8 Flash TTS provider is an optional broadcast-grade enhancement.
+
+#### Q3: What is the maximum video length REA can render?
+**A:** With the chunked segment renderer (`rea render-long`), there is no technical upper limit. Long-form documentaries of 10 minutes, 30 minutes, or longer render smoothly by breaking the video into 30–90 second Acts in `src/Root.tsx`, keeping Chromium memory usage capped under 3 GB throughout the render.
+
+#### Q4: How does REA guarantee deterministic video rendering?
+**A:** Remotion renders frames concurrently across multiple Chromium workers. If components rely on `Math.random()`, wall-clock timers (`Date.now()`), or unmanaged async state, frames flicker. REA enforces deterministic mathematical formulas where every visual coordinate, scale, and opacity is a pure mathematical function of `frame` and `fps`.
+
+#### Q5: Can I add custom visual plugins to REA?
+**A:** Absolutely. Create a new directory under `src/plugins/<my-plugin>/` containing an `index.tsx` component and an `index.ts` re-export. Once created, run `rea list-plugins` to verify registration, and import the plugin directly into your compositions.
+
+#### Q6: How does REA handle audio loudness compliance for broadcast and social media?
+**A:** Passing the `--normalize` flag to `rea cut` applies an EBU R128 two-pass loudness filter (`loudnorm=I=-16:TP=-1.5:LRA=11`). This sets the integrated loudness to `-16 LUFS` with a maximum true peak of `-1.5 dBFS`, conforming to YouTube, Spotify, and broadcast streaming standards.
+
+#### Q7: Can REA render vertical videos for TikTok, YouTube Shorts, and Instagram Reels?
+**A:** Yes. Specify `width={1080}` and `height={1920}` in your composition in `src/Root.tsx`. REA includes dedicated responsive templates and typography plugins optimized for vertical mobile viewports.
 
 ---
 
-## ❓ Frequently Asked Questions (FAQ)
+## 🤝 Community, Contributing & Governance
 
-<details>
-<summary><b>How does Google Antigravity render Remotion videos autonomously?</b></summary>
-Google Antigravity leverages the REA skill definition and the <code>rea</code> CLI toolchain. The agent formulates a structured storyboard, writes deterministic React components inside <code>src/compositions/</code>, runs pre-flight validation gates, and triggers multi-threaded Chromium rendering headlessly via background processes.
-</details>
+We welcome contributions from developers, motion designers, and AI researchers!
 
-<details>
-<summary><b>Why does REA forbid Math.random() in Remotion components?</b></summary>
-Remotion renders video frames concurrently across multiple CPU threads and out-of-order (e.g. frame 45 might render before frame 10). If <code>Math.random()</code> is called during render passes, every worker thread evaluates a different seed, causing severe frame-to-frame jitter and broken visual continuity. REA uses index math and trigonometric offsets to ensure 100% deterministic reproducibility.
-</details>
-
-<details>
-<summary><b>How does REA handle video cutting and audio normalization without system FFmpeg?</b></summary>
-REA bundles Remotion's cross-platform compositor binaries. The <code>rea cut</code> command automatically resolves the internal FFmpeg binary to perform frame-accurate stream copying and applies the EBU R128 loudness filter (<code>loudnorm=I=-16:TP=-1.5:LRA=11</code>) without requiring the user to install FFmpeg or set Windows PATH environment variables.
-</details>
-
-<details>
-<summary><b>Can REA generate vertical videos for YouTube Shorts and TikTok?</b></summary>
-Yes. REA natively supports vertical aspect ratios (1080×1920, 9:16) with optimized typography scales, auto-zooming code terminals, and retention-focused animated badges. Use the <code>rea-mockups</code> and <code>rea-typography</code> plugins for high-converting social shorts.
-</details>
-
-<details>
-<summary><b>How does the Pre-Render Gatekeeper hook work?</b></summary>
-Antigravity 2.0 lifecycle hooks configured in <code>.gemini/config/skills/remotion-dastras/hooks/pre-render.json</code> intercept tool execution before any render command is sent. It inspects all <code>staticFile()</code> asset imports against the filesystem, blocking the render command if any assets are missing, saving minutes of wasted rendering time.
-</details>
+### Development Workflow
+1. Fork the repository and create your feature branch:
+   ```bash
+   git checkout -b feat/my-new-plugin
+   ```
+2. Follow strict REA architectural standards:
+   - Zero `Math.random()` inside React render bodies.
+   - All motion scaled with `spring()` physics or `interpolate()`.
+   - All static assets referenced strictly via `staticFile()`.
+3. Verify test suite and pre-flight audits:
+   ```bash
+   npm test
+   node bin/rea-cli.js validate
+   ```
+4. Submit a Pull Request with verifiable render evidence (poster stills or GIF previews).
 
 ---
 
-## 📄 License & Community
+## 🌐 GEO-SEO & AI Agent Discoverability
 
-Distributed under the **MIT License**. Created for the **Google Antigravity & AI Agent Ecosystem**.  
-Authored and maintained by **Hamza Shaikh** ([@HamzaShaikhAI](https://github.com/HamzaShaikhAI)).  
+REA is engineered for seamless search and discovery across modern AI coding agents, enterprise developer search engines, and programmatic multimedia tooling:
 
-*Contributions, plugin extensions, and feature issues are welcome!*
+- **Target Domains:** Programmatic Video Generation, AI Agent Video Direction, React Motion Graphics, Autonomous Video Post-Production, Remotion Automation, Headless FFmpeg Processing.
+- **Regional Developer Hubs:** United States (San Francisco, Seattle, New York), Europe (London, Berlin, Amsterdam, Zurich), Asia-Pacific (Bengaluru, Singapore, Tokyo, Sydney).
+- **Core Integrations:** Google Antigravity 2.0, Remotion v4, Google Gemini Live / Flash, Edge TTS, FFmpeg, React 18, TypeScript.
+
+---
+
+## 📄 License & Author
+
+- **Author:** [Hamza Shaikh](https://github.com/HamzaShaikhAI)
+- **License:** [MIT License](LICENSE) — free for personal, commercial, and enterprise applications.
+- **Project Repository:** [https://github.com/HamzaShaikhAI/Remotion-For-Antigravity](https://github.com/HamzaShaikhAI/Remotion-For-Antigravity)

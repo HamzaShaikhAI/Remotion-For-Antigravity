@@ -18,7 +18,7 @@ export const Act5Conformance: React.FC = () => {
   return (
     <AbsoluteFill>
       <Audio src={staticFile('audio/act5_conformance.mp3')} volume={1.0} />
-      <Sequence from={20}>
+      <Sequence from={20} durationInFrames={30}>
         <Audio src={staticFile('sfx/pop.wav')} volume={0.25} />
       </Sequence>
 

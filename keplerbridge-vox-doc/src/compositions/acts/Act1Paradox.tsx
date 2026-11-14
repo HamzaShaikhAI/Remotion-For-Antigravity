@@ -12,11 +12,13 @@ export const Act1Paradox: React.FC = () => {
     <AbsoluteFill>
       {/* Audio Narration and SFX */}
       <Audio src={staticFile('audio/act1_paradox.mp3')} volume={1.0} />
-      <Audio src={staticFile('sfx/riser.wav')} volume={0.2} />
-      <Sequence from={20}>
+      <Sequence durationInFrames={45}>
+        <Audio src={staticFile('sfx/riser.wav')} volume={0.2} />
+      </Sequence>
+      <Sequence from={20} durationInFrames={30}>
         <Audio src={staticFile('sfx/pop.wav')} volume={0.25} />
       </Sequence>
-      <Sequence from={180}>
+      <Sequence from={180} durationInFrames={45}>
         <Audio src={staticFile('sfx/whoosh.wav')} volume={0.2} />
       </Sequence>
 

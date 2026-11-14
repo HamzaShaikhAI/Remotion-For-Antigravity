@@ -10,6 +10,8 @@ dist/
 out/
 build/
 .remotion/
+.rea-chunks/
+**/.rea-chunks/
 out-*.mp4
 *.mp4
 *.mov

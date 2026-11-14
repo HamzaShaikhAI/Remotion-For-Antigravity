@@ -10,10 +10,10 @@ export const Act4Batching: React.FC = () => {
   return (
     <AbsoluteFill>
       <Audio src={staticFile('audio/act4_batching.mp3')} volume={1.0} />
-      <Sequence from={20}>
+      <Sequence from={20} durationInFrames={30}>
         <Audio src={staticFile('sfx/pop.wav')} volume={0.25} />
       </Sequence>
-      <Sequence from={150}>
+      <Sequence from={150} durationInFrames={45}>
         <Audio src={staticFile('sfx/riser.wav')} volume={0.2} />
       </Sequence>
 

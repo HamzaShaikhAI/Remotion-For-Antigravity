@@ -11,10 +11,10 @@ export const Act2Proxy: React.FC = () => {
   return (
     <AbsoluteFill>
       <Audio src={staticFile('audio/act2_proxy.mp3')} volume={1.0} />
-      <Sequence from={15}>
+      <Sequence from={15} durationInFrames={30}>
         <Audio src={staticFile('sfx/pop.wav')} volume={0.25} />
       </Sequence>
-      <Sequence from={120}>
+      <Sequence from={120} durationInFrames={45}>
         <Audio src={staticFile('sfx/whoosh.wav')} volume={0.2} />
       </Sequence>
 

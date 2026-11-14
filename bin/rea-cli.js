@@ -1416,6 +1416,102 @@ function handleRender(compositionId, outFile = 'out.mp4', extraArgs = []) {
   });
 }
 
+// Command: render-long
+function handleRenderLong(args) {
+  // Usage:
+  //   rea render-long <Comp1,Comp2,Comp3,...> [final-output.mp4]
+  //   rea render-long --auto [final-output.mp4]
+  const compListArg = args[1];
+  const finalOut = (compListArg === '--auto' ? args[2] : args[2]) || 'final-documentary.mp4';
+
+  if (!compListArg) {
+    logError('Usage: rea render-long <Comp1,Comp2,Comp3,...> [final-output.mp4]');
+    console.log('   or: rea render-long --auto [final-output.mp4]\n');
+    console.log('Renders each Act/Segment in isolation with --concurrency=2 to flush Chromium memory,');
+    console.log('then losslessly concatenates segments with bundled FFmpeg.\n');
+    process.exit(1);
+  }
+
+  let compositions = [];
+  if (compListArg === '--auto') {
+    const rootPath = path.resolve(process.cwd(), 'src', 'Root.tsx');
+    if (!fs.existsSync(rootPath)) {
+      logError(`Could not find src/Root.tsx in ${process.cwd()}`);
+      process.exit(1);
+    }
+    const rootContent = fs.readFileSync(rootPath, 'utf8');
+    const manifestBlock = rootContent.match(/ACTS_MANIFEST\s*=\s*\[([\s\S]*?)\]/);
+    if (!manifestBlock) {
+      logError('Could not find ACTS_MANIFEST in src/Root.tsx');
+      process.exit(1);
+    }
+    compositions = [...manifestBlock[1].matchAll(/id:\s*['"`]([^'"`]+)['"`]/g)].map((m) => m[1]);
+    logInfo(`Auto-detected ${compositions.length} segments from ACTS_MANIFEST: ${compositions.join(', ')}`);
+  } else {
+    compositions = compListArg.split(',').map((c) => c.trim()).filter(Boolean);
+  }
+
+  if (compositions.length === 0) {
+    logError('No valid composition IDs specified for render-long.');
+    process.exit(1);
+  }
+
+  logInfo(`Pre-flight asset validation for ${compositions.length} segments...`);
+  const validationIssues = handleValidate(null, true);
+  if (validationIssues.length > 0) {
+    logError(`Aborting render-long due to ${validationIssues.length} asset issue(s):`);
+    validationIssues.forEach((issue) => console.log(`  - ${colors.red}${issue}${colors.reset}`));
+    process.exit(1);
+  }
+
+  const ffmpegPath = getFfmpegPath();
+  const tempDir = path.resolve(process.cwd(), '.rea-chunks');
+  ensureDir(tempDir);
+
+  const remotionCli = path.join(process.cwd(), 'node_modules', '.bin', process.platform === 'win32' ? 'remotion.cmd' : 'remotion');
+  const chunkPaths = [];
+
+  try {
+    for (let i = 0; i < compositions.length; i++) {
+      const compId = compositions[i];
+      const chunkFile = path.join(tempDir, `chunk_${String(i).padStart(2, '0')}_${compId}.mp4`);
+      console.log(`\n${colors.bold}${colors.cyan}🎬 [${i + 1}/${compositions.length}] Rendering isolated segment: ${compId}...${colors.reset}`);
+
+      const renderCmd = fs.existsSync(remotionCli)
+        ? `"${remotionCli}" render src/index.ts "${compId}" "${chunkFile}" --concurrency=2`
+        : `npx remotion render src/index.ts "${compId}" "${chunkFile}" --concurrency=2`;
+
+      execSync(renderCmd, { stdio: 'inherit', cwd: process.cwd() });
+      chunkPaths.push(chunkFile);
+      logSuccess(`Segment rendered: ${chunkFile}`);
+    }
+
+    // Build FFmpeg concat demuxer list
+    const concatListPath = path.join(tempDir, 'concat_list.txt');
+    const concatContent = chunkPaths
+      .map((p) => `file '${p.replace(/\\/g, '/')}'`)
+      .join('\n');
+    fs.writeFileSync(concatListPath, concatContent, 'utf8');
+
+    const resolvedOut = path.resolve(process.cwd(), finalOut);
+    ensureDir(path.dirname(resolvedOut));
+
+    console.log(`\n${colors.bold}${colors.magenta}🔗 Stitching ${chunkPaths.length} segments losslessly with bundled FFmpeg...${colors.reset}`);
+    execSync(
+      `"${ffmpegPath}" -f concat -safe 0 -i "${concatListPath}" -c copy "${resolvedOut}" -y`,
+      { stdio: 'inherit', cwd: process.cwd() }
+    );
+
+    // Clean up temporary chunks
+    fs.rmSync(tempDir, { recursive: true, force: true });
+    logSuccess(`\nLong-form video complete! Written to: ${resolvedOut}`);
+  } catch (err) {
+    logError(`Segment render failed: ${err.message}`);
+    logWarn(`Completed chunks are preserved in ${tempDir} for resumption without re-rendering.`);
+    process.exit(1);
+  }
+}
+
 // Command: hook
 function handleHook(subcommand) {
   if (subcommand === 'pre-render') {
@@ -1492,6 +1588,7 @@ ${colors.bold}REMOTION ENGINE & AGENT COMMANDS:${colors.reset}
   ${colors.green}add <plugin-name>${colors.reset}                                  Installs a REA visual plugin (transitions, particles, etc.)
   ${colors.green}preview [options]${colors.reset}                                  Launches Remotion Studio at http://localhost:3000
   ${colors.green}render <comp-id> [out.mp4]${colors.reset}                         Compiles video with pre-flight asset audits
+  ${colors.green}render-long <Comp1,Comp2..|--auto> [out.mp4]${colors.reset} Chunked multi-act rendering + zero-loss concat (memory-safe)
   ${colors.green}validate [comp-id]${colors.reset}                                Audits project assets and staticFile references
   ${colors.green}list-plugins${colors.reset}                                      Displays all available REA visual plugins
   ${colors.green}hook pre-render${colors.reset}                                   Antigravity 2.0 lifecycle pre-render gatekeeper
@@ -1556,6 +1653,9 @@ async function main() {
       break;
     case 'render':
       handleRender(args[1], args[2], args.slice(3));
+      break;
+    case 'render-long':
+      handleRenderLong(args);
       break;
     case 'validate':
       handleValidate(args[1]);

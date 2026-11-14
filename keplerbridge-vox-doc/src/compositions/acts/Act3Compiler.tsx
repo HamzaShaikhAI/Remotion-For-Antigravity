@@ -11,10 +11,10 @@ export const Act3Compiler: React.FC = () => {
   return (
     <AbsoluteFill>
       <Audio src={staticFile('audio/act3_compiler.mp3')} volume={1.0} />
-      <Sequence from={15}>
+      <Sequence from={15} durationInFrames={60}>
         <Audio src={staticFile('sfx/typewriter.wav')} volume={0.3} />
       </Sequence>
-      <Sequence from={240}>
+      <Sequence from={240} durationInFrames={30}>
         <Audio src={staticFile('sfx/pop.wav')} volume={0.25} />
       </Sequence>
 

@@ -10,8 +10,10 @@ export const Act6Mission: React.FC = () => {
   return (
     <AbsoluteFill>
       <Audio src={staticFile('audio/act6_mission.mp3')} volume={1.0} />
-      <Audio src={staticFile('sfx/riser.wav')} volume={0.25} />
-      <Sequence from={240}>
+      <Sequence durationInFrames={45}>
+        <Audio src={staticFile('sfx/riser.wav')} volume={0.25} />
+      </Sequence>
+      <Sequence from={240} durationInFrames={45}>
         <Audio src={staticFile('sfx/whoosh.wav')} volume={0.2} />
       </Sequence>
 
