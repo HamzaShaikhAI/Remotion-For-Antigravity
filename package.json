@@ -1,6 +1,6 @@
 {
   "name": "antigravity-remotion-skills",
-  "version": "2.3.0-rc.1",
+  "version": "2.4.0-rc.1",
   "description": "Remotion Engine for Antigravity (REA) - Autonomous video motion graphics skills, plugins, sound synthesis, and CLI for Google Antigravity 2.0",
   "main": "bin/rea-cli.js",
   "bin": {

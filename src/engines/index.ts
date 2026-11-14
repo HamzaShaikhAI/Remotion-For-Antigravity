@@ -74,3 +74,6 @@ export * from './three';
 // Engine XVI: Rough Hand-Drawn Annotations
 export * from './annotations';
 
+// Engine XVII: Universal Canvas Effects Matrix & Shaders
+export * from './effects';
+

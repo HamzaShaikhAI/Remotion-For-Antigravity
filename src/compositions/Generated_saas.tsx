@@ -10,7 +10,7 @@ export const GeneratedSAASComposition: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: '#121214',
+        backgroundColor: '#0a0d14',
         justifyContent: 'center',
         alignItems: 'center',
         fontFamily: 'Inter, system-ui, sans-serif',
@@ -19,7 +19,7 @@ export const GeneratedSAASComposition: React.FC = () => {
       }}
     >
       <div style={{ textAlign: 'center', transform: 'scale(' + titleSpring + ')', opacity: titleSpring }}>
-        <div style={{ fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#38bdf8', fontWeight: 900 }}>
+        <div style={{ fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#38bdf8', fontWeight: 700 }}>
           Generated saas Archetype
         </div>
         <h1 style={{ fontSize: 52, fontWeight: 900, margin: '12px 0 0' }}>Cloud Compute Mesh</h1>
