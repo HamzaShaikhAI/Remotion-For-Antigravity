@@ -1,0 +1,47 @@
+[
+  {
+    "archetype": "saas",
+    "compositionName": "SaaSGrowthReel",
+    "prompt": "Modern SaaS analytics demo with brand icons and metric cards",
+    "status": "PASSED",
+    "grade": "A+",
+    "iterations": 2,
+    "durationSeconds": "2.83"
+  },
+  {
+    "archetype": "tech",
+    "compositionName": "LocalAiShort",
+    "prompt": "The Death of Cloud Computing with glowing SVG flow lines",
+    "status": "PASSED",
+    "grade": "A+",
+    "iterations": 2,
+    "durationSeconds": "2.83"
+  },
+  {
+    "archetype": "data",
+    "compositionName": "NeuralWeightsVisualizer",
+    "prompt": "Neural network weight matrices and tensor flow pipelines",
+    "status": "PASSED",
+    "grade": "A+",
+    "iterations": 2,
+    "durationSeconds": "2.84"
+  },
+  {
+    "archetype": "abstract",
+    "compositionName": "ParadoxOfFocus",
+    "prompt": "Cinematic minimal educational short with dual-font typography",
+    "status": "PASSED",
+    "grade": "A+",
+    "iterations": 2,
+    "durationSeconds": "2.81"
+  },
+  {
+    "archetype": "cinematic",
+    "compositionName": "OneConversationFinale",
+    "prompt": "2:07 AM studio awakening short film with NLE timeline HUD",
+    "status": "PASSED",
+    "grade": "A+",
+    "iterations": 2,
+    "durationSeconds": "2.84"
+  }
+]

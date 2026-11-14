@@ -1081,6 +1081,9 @@ const { PrecisionSfxAligner } = require('./audio/PrecisionSfxAligner.ts');
 // --- 31. Multi-Step Iterative Training Loop ---
 const { MultiStepTrainer } = require('./training/MultiStepTrainer.ts');
 
+// --- 32. Advanced Audio Ducking & SFX Library Engine ---
+const { AdvancedAudioEngine, SFXLibrary } = require('./audio/AdvancedAudioEngine.ts');
+
 module.exports = {
   extractActionSequences,
   separateStems,
@@ -1115,4 +1118,6 @@ module.exports = {
   GoogleLyriaMusicEngine,
   PrecisionSfxAligner,
   MultiStepTrainer,
+  AdvancedAudioEngine,
+  SFXLibrary,
 };

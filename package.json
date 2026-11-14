@@ -18,7 +18,8 @@
     "postinstall": "node ./bin/rea-cli.js install-skill",
     "test": "node bin/rea-cli.js --help",
     "rea": "node bin/rea-cli.js",
-    "list-plugins": "node bin/rea-cli.js list-plugins"
+    "list-plugins": "node bin/rea-cli.js list-plugins",
+    "batch-test": "node scripts/overnight-batch-test.ts"
   },
   "keywords": [
     "antigravity",

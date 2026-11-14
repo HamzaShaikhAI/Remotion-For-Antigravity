@@ -4429,6 +4429,9 @@ async function main() {
     case 'sfx-align':
       await handleSfxAlign(args);
       break;
+    case 'batch-test':
+      require('../scripts/overnight-batch-test.ts');
+      break;
     default:
       logError(`Unknown command: "${command}"`);
       printHelp();
