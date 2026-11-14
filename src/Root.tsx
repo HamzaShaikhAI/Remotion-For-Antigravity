@@ -8,10 +8,32 @@ import { ZenitsuVsKilluaShowdown } from './compositions/ZenitsuVsKilluaShowdown'
 import { ZenitsuVsKilluaShowdownV2 } from './compositions/ZenitsuVsKilluaShowdownV2';
 import { GodTierEngineShowcase } from './compositions/GodTierEngineShowcase';
 import { HollywoodIntuitionMaster } from './compositions/HollywoodIntuitionMaster';
+import { DiagramComposition } from './compositions/Diagram_flowchart';
+import { GeneratedSAASComposition } from './compositions/Generated_saas';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* 16:9 Landscape SVG Architecture & Data Flow */}
+      <Composition
+        id="ArchitectureFlowchart"
+        component={DiagramComposition}
+        durationInFrames={180}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+
+      {/* 16:9 Landscape Generative SaaS Product Demo */}
+      <Composition
+        id="GenerativeSaasDemo"
+        component={GeneratedSAASComposition}
+        durationInFrames={150}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+
       <Composition
         id="HollywoodIntuitionMaster"
         component={HollywoodIntuitionMaster}

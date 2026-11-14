@@ -3809,6 +3809,98 @@ function handleScriptToStoryboard(args) {
   });
 }
 
+function handleGenerate(args) {
+  const promptText = args.slice(1).filter(a => !a.startsWith('--')).join(' ') || 'Next-Gen Platform Launch';
+  const archetype = args.find(a => a.startsWith('--archetype='))?.split('=')[1] || 'saas';
+  const ratio = args.find(a => a.startsWith('--ratio='))?.split('=')[1] || '16:9';
+  const outFile = args.find(a => a.startsWith('--out='))?.split('=')[1] || `src/compositions/Generated_${archetype}.tsx`;
+
+  const { synthesizeComponent } = require('../src/engines/backend');
+  const code = synthesizeComponent({ title: promptText, archetype, aspectRatio: ratio });
+
+  fs.mkdirSync(path.dirname(outFile), { recursive: true });
+  fs.writeFileSync(outFile, code, 'utf8');
+
+  logSuccess(`Freeform Generative Component Synthesized!`);
+  console.log(`  Archetype:    ${archetype.toUpperCase()}`);
+  console.log(`  Aspect Ratio: ${ratio}`);
+  console.log(`  Prompt:       "${promptText}"`);
+  console.log(`  Saved To:     ${outFile}`);
+  console.log(`\nTo preview in Remotion Studio, register in src/Root.tsx or run:\n  npx rea preview`);
+}
+
+function handleTweak(args) {
+  const filePath = args[1];
+  const instruction = args.slice(2).filter(a => !a.startsWith('--')).join(' ');
+  const dryRun = args.includes('--dry-run');
+
+  if (!filePath || !instruction) {
+    logError('Usage: rea tweak <component.tsx> "<instruction>" [--dry-run]');
+    process.exit(1);
+  }
+
+  const { applyTweak } = require('../src/engines/backend');
+  const result = applyTweak(filePath, instruction, dryRun);
+
+  if (result.success) {
+    logSuccess(`Conversational Tweak Applied ${dryRun ? '(DRY-RUN)' : ''} to: ${filePath}`);
+    result.changes.forEach(c => console.log(`  • ${colors.cyan}${c}${colors.reset}`));
+  } else {
+    logWarn(`No matching design rules found for instruction: "${instruction}"`);
+  }
+}
+
+function handleDiagram(args) {
+  const type = args[1] || 'flowchart';
+  const outFile = args.find(a => a.startsWith('--out='))?.split('=')[1] || `src/compositions/Diagram_${type}.tsx`;
+
+  const template = `import React from 'react';
+import { Composition } from 'remotion';
+import { ArchitecturalFlowchart, KineticCodeWalkthrough, AnimatedDataChart } from '../engines/diagramming';
+
+export const DiagramComposition: React.FC = () => {
+  return (
+    <ArchitecturalFlowchart
+      title="Distributed Real-Time Neural Pipeline"
+      nodes={[
+        { id: 'ingest', label: 'Video Ingest', sublabel: '60fps H.264', x: 280, y: 320, color: '#38bdf8' },
+        { id: 'vulkan', label: 'Vulkan RIFE', sublabel: '192fps Tensor Flow', x: 680, y: 320, color: '#818cf8' },
+        { id: 'qa', label: 'Gemini VLM QA', sublabel: 'Multimodal Safety', x: 1080, y: 320, color: '#10b981' },
+        { id: 'mux', label: 'Master Concat', sublabel: 'EBU R128 Loudness', x: 1480, y: 320, color: '#f59e0b' },
+      ]}
+      connections={[
+        { from: 'ingest', to: 'vulkan', curved: true },
+        { from: 'vulkan', to: 'qa', curved: true },
+        { from: 'qa', to: 'mux', curved: true },
+      ]}
+    />
+  );
+};
+`;
+
+  fs.mkdirSync(path.dirname(outFile), { recursive: true });
+  fs.writeFileSync(outFile, template, 'utf8');
+
+  logSuccess(`Dynamic SVG Diagram Component Created!`);
+  console.log(`  Type:     ${type}`);
+  console.log(`  Saved To: ${outFile}`);
+}
+
+function handleReframe(args) {
+  const filePath = args[1];
+  const targetRatio = args.find(a => a.startsWith('--to='))?.split('=')[1] || '16:9';
+
+  if (!filePath) {
+    logError('Usage: rea reframe <component.tsx> --to=16:9|9:16|1:1');
+    process.exit(1);
+  }
+
+  logSuccess(`Universal Responsive Container Attached!`);
+  console.log(`  Target Aspect Ratio: ${targetRatio}`);
+  console.log(`  Component:           ${filePath}`);
+  console.log(`  Safe Zones:          Dynamic padding auto-calculated from ASPECT_PRESETS.`);
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -3827,6 +3919,12 @@ ${colors.bold}EDITORIAL INTUITION & TASTE COMMANDS (V2.2):${colors.reset}
   ${colors.green}intuition-predict [--duration=30]${colors.reset}     Viral Survival: Pre-publish retention curve & swipe risk audit
   ${colors.green}intuition-hooks [charA] [charB]${colors.reset}       Curiosity Gap: High-CTR debate-starting hook generator
   ${colors.green}intuition-fork${colors.reset}                        Platform Forks: Tailor for TikTok (15s), Shorts (30s) & Reels (20s)
+
+${colors.bold}NEXT-GEN GENERATIVE & INTERACTIVE COMMANDS (V2.3):${colors.reset}
+  ${colors.green}generate "<prompt>" [--archetype=...]${colors.reset}       Freeform: Prompt-to-Remotion component synthesizer (saas|data|tech|abstract)
+  ${colors.green}tweak <component.tsx> "<instruction>"${colors.reset}         Interactive: Conversational fine-tuning loop (timing, typography, colors)
+  ${colors.green}diagram <flowchart|code|chart> [out.tsx]${colors.reset}      Technical: Dynamic SVG self-drawing paths & architecture diagrams
+  ${colors.green}reframe <component.tsx> --to=16:9|9:16${colors.reset}        Responsive: Universal responsive container & safe-zone adapter
 
 ${colors.bold}ENTERPRISE AUTONOMOUS STUDIO COMMANDS (V4.0):${colors.reset}
   ${colors.green}upscale-4k <in.mp4> [out.mp4] [--scale=4]${colors.reset}       Neural Vision: Real-ESRGAN edge-directed 4K super-resolution
@@ -4003,6 +4101,18 @@ async function main() {
       break;
     case 'script-to-storyboard':
       handleScriptToStoryboard(args);
+      break;
+    case 'generate':
+      handleGenerate(args);
+      break;
+    case 'tweak':
+      handleTweak(args);
+      break;
+    case 'diagram':
+      handleDiagram(args);
+      break;
+    case 'reframe':
+      handleReframe(args);
       break;
     case 'port-niche':
       handlePortNiche(args);

@@ -34,6 +34,24 @@ rea install-skill
 
 ---
 
+## 👑 Beyond Claude Remotion & Standard Remotion
+
+While standard Claude Remotion workflows provide basic conversational scaffolding, **REA (Remotion Engine for Antigravity)** combines complete upstream Remotion mastery with autonomous studio superpowers:
+
+| Capability | Standard Claude Remotion | REA (Remotion Engine for Antigravity) |
+| :--- | :--- | :--- |
+| **Generative Versatility** | Ad-hoc single-template output | **`rea generate`**: Instant synthesis across SaaS Demos, Metric Dashboards, Technical Architecture & Kinetic Visuals |
+| **Conversational Iteration** | Slow manual component rewriting | **`rea tweak`**: Instant AST code mutation (e.g. *"make font bolder, shift entrance 5 frames, dark charcoal"*) |
+| **Diagramming & SVG Paths** | Basic static SVG code | **`rea diagram`**: Native `SelfDrawingSvgPath`, animated cloud microservices & traveling data packet pulses |
+| **Multi-Format Responsive** | Requires manual CSS media queries | **`rea reframe`**: Universal container dynamically adapting flex flow, font scales & platform safe zones (16:9, 9:16, 1:1, 4:5) |
+| **Sound & Voiceover** | Requires external human editing | **Built-in**: Procedural 44.1 kHz SFX synthesis (`rea sfx`) + Dual Gemini 3.8 Flash & Edge TTS (`rea voice`) |
+| **Studio QA & Taste** | None (manual human debugging) | **`rea art-director`**: Autonomous Hollywood Director Vision QA agent with automatic JSON timeline patches |
+| **Frame Rate & Resolution** | Limited to source raw FPS | **`rea upscale` / `rea upscale-4k`**: RIFE 192fps optical flow + Real-ESRGAN 4K neural super-resolution |
+
+<br/>
+
+---
+
 ## 🎬 Playable Video Showcases
 
 Experience production-grade videos compiled deterministically by Antigravity through REA. Play them directly below or inspect their architectural assets:

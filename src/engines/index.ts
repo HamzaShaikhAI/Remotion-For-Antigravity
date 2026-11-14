@@ -55,3 +55,10 @@ export * from './neurochemistry/SubliminalLoreFlash';
 // Engine X: Autonomous Studio Ecosystem
 export * from './studio/AutomatedSponsorCta';
 export * from './orchestration/ExecutiveProducerDashboard';
+
+// Engine XI: Complex SVG Path Diagramming & Tech Flowcharts
+export * from './diagramming';
+
+// Engine XII: Universal Multi-Format Responsive Engine
+export * from './multiformat';
+

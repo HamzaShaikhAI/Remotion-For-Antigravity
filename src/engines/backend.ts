@@ -73,3 +73,8 @@ export * from './timebending/SuperSlowMoTension';
 
 export * from './studio/MeanArtDirectorQa';
 export * from './studio/CrossNichePortingEngine';
+
+export * from './generative/DynamicComponentSynthesizer';
+export * from './interactive/ConversationalTweakEngine';
+export * from './multiformat/AspectPresets';
+

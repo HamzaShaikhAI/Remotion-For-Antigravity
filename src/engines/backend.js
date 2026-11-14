@@ -656,6 +656,95 @@ function compileScriptToStoryboard(promptText = 'Hero lightning strike clash', f
   };
 }
 
+// --- 18. Freeform Generative Component Synthesis ---
+function synthesizeComponent({ title = 'Next-Gen Platform', subtitle = 'Autonomous Architecture', archetype = 'saas', aspectRatio = '16:9' } = {}) {
+  const isVertical = aspectRatio === '9:16';
+  const width = isVertical ? 1080 : 1920;
+  const height = isVertical ? 1920 : 1080;
+
+  return [
+    "import React from 'react';",
+    "import { AbsoluteFill, spring, useCurrentFrame, useVideoConfig } from 'remotion';",
+    "",
+    "export const Generated" + archetype.toUpperCase() + "Composition: React.FC = () => {",
+    "  const frame = useCurrentFrame();",
+    "  const { fps } = useVideoConfig();",
+    "",
+    "  const titleSpring = spring({ frame, fps, config: { damping: 14, stiffness: 90 } });",
+    "",
+    "  return (",
+    "    <AbsoluteFill",
+    "      style={{",
+    "        backgroundColor: '#0a0d14',",
+    "        justifyContent: 'center',",
+    "        alignItems: 'center',",
+    "        fontFamily: 'Inter, system-ui, sans-serif',",
+    "        color: '#f8fafc',",
+    "        padding: 40,",
+    "      }}",
+    "    >",
+    "      <div style={{ textAlign: 'center', transform: 'scale(' + titleSpring + ')', opacity: titleSpring }}>",
+    "        <div style={{ fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#38bdf8', fontWeight: 700 }}>",
+    "          Generated " + archetype + " Archetype",
+    "        </div>",
+    "        <h1 style={{ fontSize: 52, fontWeight: 900, margin: '12px 0 0' }}>" + title + "</h1>",
+    "        <p style={{ fontSize: 18, color: '#94a3b8', marginTop: 10 }}>" + subtitle + "</p>",
+    "      </div>",
+    "    </AbsoluteFill>",
+    "  );",
+    "};",
+  ].join('\n');
+}
+
+// --- 19. Live Conversational Tweak Engine ---
+function applyTweak(filePath, instruction, dryRun = false) {
+  if (!fs.existsSync(filePath)) {
+    throw new Error('Component file not found: ' + filePath);
+  }
+
+  let content = fs.readFileSync(filePath, 'utf8');
+  let updated = content;
+  const changes = [];
+  const lower = instruction.toLowerCase();
+
+  if (lower.includes('bolder') || lower.includes('bold font')) {
+    updated = updated.replace(/fontWeight:\s*['"]?(400|500|600|700)['"]?/g, 'fontWeight: 900');
+    changes.push('Updated typography fontWeight to 900 (ultra-bold)');
+  } else if (lower.includes('lighter') || lower.includes('regular font')) {
+    updated = updated.replace(/fontWeight:\s*['"]?(800|900|bold)['"]?/g, 'fontWeight: 400');
+    changes.push('Reduced typography fontWeight to 400 (regular)');
+  }
+
+  const shiftMatch = lower.match(/(?:shift|delay)\s+(?:entrance|spring|animation)\s+by\s+(\d+)\s+frames?/);
+  if (shiftMatch) {
+    const shiftAmount = parseInt(shiftMatch[1], 10);
+    updated = updated.replace(/frame:\s*frame/g, 'frame: frame - ' + shiftAmount);
+    changes.push('Shifted animation entrance timing by ' + shiftAmount + ' frames');
+  }
+
+  if (lower.includes('dark charcoal') || lower.includes('charcoal')) {
+    updated = updated.replace(/backgroundColor:\s*['"][^'"]+['"]/g, "backgroundColor: '#121214'");
+    changes.push("Changed background theme to dark charcoal ('#121214')");
+  } else if (lower.includes('pitch black') || lower.includes('pure black')) {
+    updated = updated.replace(/backgroundColor:\s*['"][^'"]+['"]/g, "backgroundColor: '#000000'");
+    changes.push("Changed background theme to pure black ('#000000')");
+  } else if (lower.includes('emerald') || lower.includes('green')) {
+    updated = updated.replace(/#38bdf8/g, '#10b981').replace(/#3b82f6/g, '#059669');
+    changes.push('Shifted color palette accents to Emerald Cyberpunk');
+  }
+
+  if (lower.includes('snappier') || lower.includes('stiffer')) {
+    updated = updated.replace(/stiffness:\s*\d+/g, 'stiffness: 180').replace(/damping:\s*\d+/g, 'damping: 18');
+    changes.push('Updated spring physics: stiffness: 180, damping: 18 (snappy response)');
+  }
+
+  if (!dryRun && changes.length > 0) {
+    fs.writeFileSync(filePath, updated, 'utf8');
+  }
+
+  return { filePath, success: changes.length > 0, changes };
+}
+
 module.exports = {
   extractActionSequences,
   separateStems,
@@ -679,4 +768,6 @@ module.exports = {
   upscaleTo4k,
   matchCamelotKeys,
   compileScriptToStoryboard,
+  synthesizeComponent,
+  applyTweak,
 };
