@@ -1,4 +1,6 @@
 {
+  "toolName": "run_command",
+  "handler": "node ./bin/rea-cli.js hook pre-render",
   "rea-pre-render-guard": {
     "enabled": true,
     "description": "Intercepts agent command executions to validate Remotion assets and code syntax before compilation.",

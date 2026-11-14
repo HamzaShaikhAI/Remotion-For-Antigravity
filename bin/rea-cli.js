@@ -1309,8 +1309,20 @@ function handleAdd(pluginName) {
 // Command: validate
 function handleValidate(compositionId, isSilent = false) {
   const projectRoot = process.cwd();
-  const srcDir = path.join(projectRoot, 'src');
-  const publicDir = path.join(projectRoot, 'public');
+  let srcDir = path.join(projectRoot, 'src');
+  let publicDir = path.join(projectRoot, 'public');
+
+  if (!fs.existsSync(srcDir)) {
+    const candidateDirs = ['dastras-showcase', 'keplerbridge-vox-doc', 'rea-hero-showcase', 'saas-launch-promo'];
+    for (const cand of candidateDirs) {
+      const candSrc = path.join(projectRoot, cand, 'src');
+      if (fs.existsSync(candSrc)) {
+        srcDir = candSrc;
+        publicDir = path.join(projectRoot, cand, 'public');
+        break;
+      }
+    }
+  }
 
   const issues = [];
 
