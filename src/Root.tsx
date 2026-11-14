@@ -22,10 +22,24 @@ import { ParadoxOfFocus } from './compositions/ParadoxOfFocus';
 import { ZhangHengSeismoscopeShort } from './compositions/ZhangHengSeismoscopeShort';
 import { NeutronStarExplainer } from './compositions/NeutronStarExplainer';
 import { PaperStyleEngine } from './compositions/PaperStyleEngine';
+import { AppleGaragePaperStory } from './compositions/AppleGaragePaperStory';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* 9:16 Viral 2.5D Paper Apple Garage Story (3D Camera Rig + Talking Mouth-Flap · 15s @ 60fps) */}
+      <Composition
+        id="AppleGaragePaperStory"
+        component={AppleGaragePaperStory}
+        durationInFrames={900}
+        fps={60}
+        width={1080}
+        height={1920}
+        defaultProps={{
+          title: "The Apple Garage Dream",
+        }}
+      />
+
       {/* 9:16 Viral 2.5D Paper Style Short (Cutting Mat, Sticker Cutouts & 16fps Throttle) */}
       <Composition
         id="PaperStyleEngine"

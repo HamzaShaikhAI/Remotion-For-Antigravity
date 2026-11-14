@@ -43,8 +43,8 @@ export const KeyframeLockedSFX: React.FC<SFXTriggerProps> = ({
     config: { damping, stiffness },
   });
 
-  // Play audio precisely during the impact window (prevents looping or mistiming)
-  const shouldPlay = impactProgress > thresholdMin && impactProgress < thresholdMax;
+  // Play audio precisely during the impact window (starting at targetFrame for full duration)
+  const shouldPlay = frame >= targetFrame && frame < targetFrame + Math.round(fps * 2.0);
 
-  return shouldPlay ? React.createElement(Audio, { src: staticFile(targetFile), volume }) : null;
+  return shouldPlay ? React.createElement(Audio, { src: staticFile(targetFile), volume, startFrom: 0 }) : null;
 };
