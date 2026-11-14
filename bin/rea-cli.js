@@ -12,7 +12,7 @@ const path = require('path');
 const os = require('os');
 const { spawn, execSync } = require('child_process');
 
-const VERSION = '2.4.0-rc.1';
+const VERSION = '2.4.0';
 
 // ANSI terminal colors
 const colors = {
@@ -4000,6 +4000,28 @@ function handleSyncUpstream(args) {
   }
 }
 
+function handleCloudCost(args) {
+  const provider = args.find((a) => a.startsWith('--provider='))?.split('=')[1] || 'aws-lambda';
+  const durationArg = args.find((a) => a.startsWith('--duration='))?.split('=')[1];
+  const duration = durationArg ? parseFloat(durationArg) : 30.0;
+  const fpsArg = args.find((a) => a.startsWith('--fps='))?.split('=')[1];
+  const fps = fpsArg ? parseInt(fpsArg, 10) : 60;
+
+  try {
+    const { estimateRenderCost } = require('../src/engines/backend');
+    const est = estimateRenderCost(provider, duration, fps);
+    logSuccess(`Multi-Cloud Serverless Render Matrix Telemetry:`);
+    console.log(`  Provider           : ${colors.cyan}${est.provider.toUpperCase()}${colors.reset}`);
+    console.log(`  Composition Length : ${est.durationSec}s (${est.totalFrames} frames @ ${fps}fps)`);
+    console.log(`  Allocated Workers  : ${est.workerCount} parallel serverless instances`);
+    console.log(`  Wall-Clock Render  : ~${est.estimatedRenderTimeSec} seconds`);
+    console.log(`  Estimated Cost     : ${colors.bold}${colors.green}$${est.estimatedCostUsd} USD${colors.reset}`);
+  } catch (err) {
+    logError(`Cloud cost estimation failed: ${err.message}`);
+    process.exit(1);
+  }
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -4026,6 +4048,7 @@ ${colors.bold}NEXT-GEN GENERATIVE & INTERACTIVE COMMANDS (V2.3):${colors.reset}
   ${colors.green}reframe <component.tsx> --to=16:9|9:16${colors.reset}        Responsive: Universal responsive container & safe-zone adapter
   ${colors.green}docs <query>${colors.reset}                                 Real-Time: Official Remotion API docs & best-practice lookup
   ${colors.green}sync-upstream${colors.reset}                                Telemetry: Upstream Remotion Day-One feature alignment & compatibility audit
+  ${colors.green}cloud-cost [--provider=aws-lambda]${colors.reset}           Serverless: Multi-cloud render cost & worker allocation telemetry
 
 ${colors.bold}ENTERPRISE AUTONOMOUS STUDIO COMMANDS (V4.0):${colors.reset}
   ${colors.green}upscale-4k <in.mp4> [out.mp4] [--scale=4]${colors.reset}       Neural Vision: Real-ESRGAN edge-directed 4K super-resolution
@@ -4220,6 +4243,9 @@ async function main() {
       break;
     case 'sync-upstream':
       handleSyncUpstream(args);
+      break;
+    case 'cloud-cost':
+      handleCloudCost(args);
       break;
     case 'port-niche':
       handlePortNiche(args);

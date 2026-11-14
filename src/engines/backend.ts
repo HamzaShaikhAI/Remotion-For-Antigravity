@@ -79,4 +79,5 @@ export * from './interactive/ConversationalTweakEngine';
 export * from './multiformat/AspectPresets';
 export * from './docs/RemotionDocsLookup';
 export * from './sync/UpstreamSyncEngine';
+export * from './cloud';
 

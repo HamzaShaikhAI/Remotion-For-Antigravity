@@ -77,3 +77,18 @@ export * from './annotations';
 // Engine XVII: Universal Canvas Effects Matrix & Shaders
 export * from './effects';
 
+// Engine XVIII: Programmatic SVG Shapes Primitives
+export * from './shapes';
+
+// Engine XIX: SVG Path Mathematics & Interpolation
+export * from './paths';
+
+// Engine XX: Kinetic Word-Level Karaoke Captions
+export * from './captions';
+
+// Engine XXI: Multi-Cloud Serverless Render Matrix
+export * from './cloud';
+
+// Engine XXII: Deterministic Web Fonts Preloader
+export * from './fonts';
+

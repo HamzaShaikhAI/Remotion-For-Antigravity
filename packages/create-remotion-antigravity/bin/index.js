@@ -88,7 +88,7 @@ function run() {
       "@remotion/cli": "^4.0.0",
       "@remotion/media-utils": "^4.0.543",
       "@remotion/zod-types": "^4.0.543",
-      "antigravity-remotion-skills": "^2.4.0-rc.1",
+      "antigravity-remotion-skills": "^2.4.0",
       "react": "^18.2.0",
       "react-dom": "^18.2.0",
       "remotion": "^4.0.0",

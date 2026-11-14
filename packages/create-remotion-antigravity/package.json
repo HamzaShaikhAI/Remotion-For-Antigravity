@@ -1,6 +1,6 @@
 {
   "name": "create-remotion-antigravity",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "One-click starter generator for Remotion for Antigravity (REA) video studios",
   "main": "bin/index.js",
   "bin": {

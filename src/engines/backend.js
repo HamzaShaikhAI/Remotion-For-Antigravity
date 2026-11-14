@@ -806,6 +806,25 @@ function auditUpstreamSync() {
   };
 }
 
+// --- 22. Multi-Cloud Serverless Render Matrix ---
+function estimateRenderCost(provider = 'aws-lambda', durationSec = 30, fps = 60) {
+  const totalFrames = durationSec * fps;
+  const workerCount = Math.min(120, Math.ceil(totalFrames / 30));
+  const computeSeconds = (totalFrames * 28) / 1000;
+  const wallClockTimeSec = Math.max(3, computeSeconds / workerCount);
+  const gbHours = (3008 / 1024) * computeSeconds;
+  const estimatedCostUsd = gbHours * 0.0000166667;
+
+  return {
+    provider,
+    durationSec,
+    totalFrames,
+    workerCount,
+    estimatedRenderTimeSec: parseFloat(wallClockTimeSec.toFixed(1)),
+    estimatedCostUsd: parseFloat(estimatedCostUsd.toFixed(4)),
+  };
+}
+
 module.exports = {
   extractActionSequences,
   separateStems,
@@ -833,4 +852,5 @@ module.exports = {
   applyTweak,
   lookupRemotionDocs,
   auditUpstreamSync,
+  estimateRenderCost,
 };
