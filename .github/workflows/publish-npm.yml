@@ -29,7 +29,14 @@ jobs:
         run: npm test
 
       - name: Publish Core Package to npm
-        run: npm publish --access public
+        run: |
+          PKG_NAME=$(node -p "require('./package.json').name")
+          PKG_VER=$(node -p "require('./package.json').version")
+          if npm view "$PKG_NAME@$PKG_VER" version > /dev/null 2>&1; then
+            echo "Version $PKG_NAME@$PKG_VER is already published on npm. Skipping publish."
+          else
+            npm publish --access public
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -53,6 +60,13 @@ jobs:
 
       - name: Publish Installer Package to npm
         working-directory: ./packages/create-remotion-antigravity
-        run: npm publish --access public
+        run: |
+          PKG_NAME=$(node -p "require('./package.json').name")
+          PKG_VER=$(node -p "require('./package.json').version")
+          if npm view "$PKG_NAME@$PKG_VER" version > /dev/null 2>&1; then
+            echo "Version $PKG_NAME@$PKG_VER is already published on npm. Skipping publish."
+          else
+            npm publish --access public
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
