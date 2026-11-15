@@ -4318,6 +4318,60 @@ async function handleMotionLab(args) {
   }
 }
 
+async function handleCadChrome(args) {
+  const brand = args[1] && !args[1].startsWith('-') ? args[1] : 'amani/studio';
+  const isRender = args.includes('--render');
+  const isPreview = args.includes('--preview');
+  const stillArg = args.find((a) => a.startsWith('--still='));
+  const lengthArg = args.find((a) => a.startsWith('--length='))?.split('=')[1] || '36';
+  const outArg = args.find((a) => a.startsWith('--out='))?.split('=')[1] || 'out.mp4';
+  const forceArg = args.includes('--force');
+
+  console.log(`\n${colors.bold}${colors.cyan}📐 [REA Precision Industrial CAD & Liquid Chrome Engine XXV]${colors.reset}`);
+  console.log(`📌 Brand Identity: "${colors.yellow}${brand}${colors.reset}"`);
+  console.log(`⏱  Duration: ${lengthArg}s @ 30 FPS (1080 frames, 1080x1080 Square 1:1)`);
+  console.log(`🎨 Architecture:`);
+  console.log(`   ├─ Technical Drawing Grid: 20x20 Minor & Major Coordinate Grid`);
+  console.log(`   ├─ Animated CAD Blueprint: Precision Calipers (20, 20, gap 2), R 10, r 8, - r 2.4, 45° Angle`);
+  console.log(`   ├─ Alignment System: Origin Reticle (⌖), Diagonal Rays & Dashed Tangent Circles`);
+  console.log(`   ├─ Liquid Chrome Shading: Multi-stop Silver & Slate Gradients, Prismatic Dispersion`);
+  console.log(`   ├─ 3D Spatial Extrusion: Deep Z-axis Beveled Sidewalls, Isometric Perspective Camera Orbit`);
+  console.log(`   ├─ High-Velocity Macro Sweep: Shallow Depth-of-Field Blur Along Inner Curved Channel`);
+  console.log(`   └─ Minimalist Swiss Lockup: amani/studio Typography with Vertical Ease-Out Settle`);
+
+  const issues = handleValidate('AmaniStudioCadChrome', true);
+  if (issues.length > 0) {
+    logError(`Validation found issues in AmaniStudioCadChrome:`);
+    issues.forEach((iss) => console.log(`  - ${iss}`));
+    process.exit(1);
+  }
+  logSuccess(`AmaniStudioCadChrome validated! 0 staticFile or rendering collisions.`);
+
+  if (stillArg) {
+    const frameNum = stillArg.split('=')[1] || '180';
+    const stillOut = outArg.endsWith('.mp4') ? `cadchrome-still-f${frameNum}.jpeg` : outArg;
+    console.log(`\n📸 Exporting verification still at frame ${frameNum}...`);
+    handleStill(['still', 'AmaniStudioCadChrome', stillOut, `--frame=${frameNum}`]);
+    return;
+  }
+
+  if (isPreview) {
+    console.log(`\n🎬 Launching Remotion Studio for CAD-to-Chrome interactive preview...`);
+    handlePreview(['preview', 'src/compositions/AmaniStudioCadChrome.tsx']);
+    return;
+  }
+
+  if (isRender) {
+    console.log(`\n🚀 Compiling broadcast master video: ${outArg}...`);
+    const extraArgs = forceArg ? ['--force'] : [];
+    handleRender('AmaniStudioCadChrome', outArg, extraArgs);
+  } else {
+    console.log(`\n💡 ${colors.dim}To render the full master video: ${colors.reset}${colors.green}rea cad-chrome --render --out=amani-studio.mp4${colors.reset}`);
+    console.log(`💡 ${colors.dim}To export a still frame:          ${colors.reset}${colors.green}rea cad-chrome --still=980 --out=lockup.jpeg${colors.reset}`);
+    console.log(`💡 ${colors.dim}To preview in Remotion Studio:     ${colors.reset}${colors.green}rea cad-chrome --preview${colors.reset}`);
+  }
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -4338,6 +4392,7 @@ ${colors.bold}EDITORIAL INTUITION & TASTE COMMANDS (V2.2):${colors.reset}
   ${colors.green}intuition-fork${colors.reset}                        Platform Forks: Tailor for TikTok (15s), Shorts (30s) & Reels (20s)
 
 ${colors.bold}NEXT-GEN GENERATIVE & INTERACTIVE COMMANDS (V2.3):${colors.reset}
+  ${colors.green}cad-chrome [brand] [--render|--still]${colors.reset}       Precision CAD Blueprint to Liquid Chrome 3D Emblem Engine
   ${colors.green}motionlab [title] [--render|--still]${colors.reset}        Motion Lab Studio 3D Glassmorphic Bento Engine (16 Skills, Carousel)
   ${colors.green}kurzgesagt [topic] [--render|--still]${colors.reset}       Kurzgesagt 2D/WebGL Canvas Scientific Explainer Engine (Sun, Earth, Mascot)
   ${colors.green}train-multistep "<prompt>" [--archetype=...]${colors.reset} 4-Phase Iterative Refinement Loop (Blueprint->Draft->Audit->AST Patch)
@@ -4627,6 +4682,9 @@ async function main() {
       break;
     case 'motionlab':
       await handleMotionLab(args);
+      break;
+    case 'cad-chrome':
+      await handleCadChrome(args);
       break;
     default:
       logError(`Unknown command: "${command}"`);

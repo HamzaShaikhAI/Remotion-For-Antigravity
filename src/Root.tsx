@@ -31,10 +31,21 @@ import { ClaudeMotionSkillsShowcase } from './compositions/ClaudeMotionSkillsSho
 import { HeistDilemmaStory } from './compositions/HeistDilemmaStory';
 import { KurzgesagtExplainer } from './compositions/KurzgesagtExplainer';
 import { MotionLabShowcase } from './compositions/MotionLabShowcase';
+import { AmaniStudioCadChrome } from './compositions/AmaniStudioCadChrome';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* Precision CAD Blueprint to Liquid Chrome 3D Brand Lockup (1080x1080, 36s @ 30fps) */}
+      <Composition
+        id="AmaniStudioCadChrome"
+        component={AmaniStudioCadChrome}
+        durationInFrames={1080}
+        fps={30}
+        width={1080}
+        height={1080}
+      />
+
       {/* Motion Lab Studio 3D Glassmorphic Bento Showcase (1440x1800, 30s @ 60fps) */}
       <Composition
         id="MotionLabShowcase"

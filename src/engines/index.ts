@@ -98,4 +98,8 @@ export * from './kurzgesagt';
 // Engine XXIV: Motion Lab Studio & 3D Glassmorphic Bento Engine
 export * from './motionlab';
 
+// Engine XXV: Precision Industrial Blueprint & Liquid Chrome 3D Emblem Engine
+export * from './cadchrome';
+
+
 

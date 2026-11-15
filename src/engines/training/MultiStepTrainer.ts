@@ -42,6 +42,13 @@ export class MultiStepTrainer {
           promptLower.includes('space') ||
           promptLower.includes('what if')
         ? 'kurzgesagt'
+        : promptLower.includes('cad') ||
+          promptLower.includes('chrome') ||
+          promptLower.includes('blueprint') ||
+          promptLower.includes('industrial') ||
+          promptLower.includes('dieter') ||
+          promptLower.includes('amani')
+        ? 'cad-chrome'
         : promptLower.includes('motion') ||
           promptLower.includes('glass') ||
           promptLower.includes('bento') ||

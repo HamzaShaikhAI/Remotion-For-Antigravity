@@ -3,7 +3,7 @@ import path from 'path';
 
 export interface StyleBlueprint {
   name: string;
-  archetype: 'tech' | 'paper-2.5d' | 'saas' | 'cinematic' | 'abstract' | 'kurzgesagt' | 'motion-lab';
+  archetype: 'tech' | 'paper-2.5d' | 'saas' | 'cinematic' | 'abstract' | 'kurzgesagt' | 'motion-lab' | 'cad-chrome';
   springPhysics: {
     damping: number;
     stiffness: number;
@@ -130,6 +130,27 @@ const BUILTIN_STYLES: Record<string, StyleBlueprint> = {
       border: '1.5px solid rgba(255, 255, 255, 0.75)',
       shadow: '0 36px 80px rgba(80, 50, 110, 0.25)',
       accentColor: '#f97316',
+    },
+    certifiedGrade: 'A+',
+    cachedAt: new Date().toISOString(),
+  },
+  'cad-chrome': {
+    name: 'cad-chrome',
+    archetype: 'cad-chrome',
+    springPhysics: { damping: 18, stiffness: 90, mass: 0.95 },
+    typography: {
+      fontPrimary: "'Plus Jakarta Sans', -apple-system, sans-serif",
+      fontAccent: "'SF Mono', Menlo, Consolas, monospace",
+      headlineWeight: 800,
+      letterSpacing: -1.5,
+    },
+    safeZones: { bottomClearancePx: 200, rightMarginPx: 100 },
+    palette: {
+      background: '#05070a',
+      surface: 'rgba(255, 255, 255, 0.05)',
+      border: '1px solid rgba(255, 255, 255, 0.15)',
+      shadow: '0 24px 48px rgba(0, 0, 0, 0.85)',
+      accentColor: '#ffffff',
     },
     certifiedGrade: 'A+',
     cachedAt: new Date().toISOString(),
