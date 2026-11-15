@@ -118,7 +118,7 @@ const OysterChromaticMesh: React.FC<{ frame: number }> = ({ frame }) => {
           mixBlendMode: 'multiply',
           pointerEvents: 'none',
           backgroundImage: `radial-gradient(#000 1px, transparent 1px)`,
-          backgroundSize: '4px 4px',
+          backgroundSize: '24px 24px',
         }}
       />
     </AbsoluteFill>
@@ -126,24 +126,31 @@ const OysterChromaticMesh: React.FC<{ frame: number }> = ({ frame }) => {
 };
 
 // ---------------------------------------------------------------------------
-// Act 1: The Hook — "Prompts to Broadcast Video" (Frames 0 – 450)
+// Act 1: The Hook — "Prompts to Broadcast Video" (Frames 0 – 450 | 0.0s – 7.5s)
 // ---------------------------------------------------------------------------
 const Act1HookPipeline: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) => {
-  // Entrance spring
   const enterSpring = spring({
     frame,
     fps,
-    config: { damping: 18, stiffness: 140, mass: 0.85 },
+    config: motionTokens.spring.snappy,
   });
 
-  const fullPromptText = 'rea create "What if the Sun vanished?" --style=auto';
-  // Typing progress from frame 25 to 160
+  // Semantic Match-Cut Zoom Exit (frames 430 to 450)
+  const exitScale = interpolate(frame, [430, 450], [1.0, 1.18], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const exitOpacity = interpolate(frame, [430, 450], [1.0, 0.0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+  // Continuous Camera Push-In & 3D Tilt Drift (Never Static)
+  const camScale = interpolate(frame, [0, 450], [1.0, 1.05]);
+  const camTiltY = Math.sin(frame * 0.025) * 2.2;
+  const camDriftY = Math.cos(frame * 0.02) * 6;
+
+  // Typing progress from frame 15 to 156
   const typedCharCount = Math.min(
-    fullPromptText.length,
-    Math.max(0, Math.floor(interpolate(frame, [25, 160], [0, fullPromptText.length], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })))
+    ACT1_PROMPT_TEXT.length,
+    Math.max(0, Math.floor(interpolate(frame, [15, 156], [0, ACT1_PROMPT_TEXT.length], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })))
   );
-  const displayedText = fullPromptText.slice(0, typedCharCount);
-  const cursorBlink = Math.floor(frame / 18) % 2 === 0 ? '█' : ' ';
+  const displayedText = ACT1_PROMPT_TEXT.slice(0, typedCharCount);
+  const cursorBlink = Math.floor(frame / 16) % 2 === 0 ? '█' : ' ';
 
   // Match-cut expansion from command bar into 4-stage pipeline (frame 180 to 240)
   const expandProgress = spring({
@@ -153,21 +160,26 @@ const Act1HookPipeline: React.FC<{ frame: number; fps: number }> = ({ frame, fps
   });
 
   // Stage nodes activation springs
-  const s1Spring = spring({ frame: frame - 195, fps, config: motionTokens.spring.snappy });
-  const s2Spring = spring({ frame: frame - 215, fps, config: motionTokens.spring.snappy });
-  const s3Spring = spring({ frame: frame - 235, fps, config: motionTokens.spring.snappy });
-  const s4Spring = spring({ frame: frame - 255, fps, config: motionTokens.spring.snappy });
+  const s1Spring = spring({ frame: frame - 200, fps, config: motionTokens.spring.snappy });
+  const s2Spring = spring({ frame: frame - 220, fps, config: motionTokens.spring.snappy });
+  const s3Spring = spring({ frame: frame - 240, fps, config: motionTokens.spring.snappy });
+  const s4Spring = spring({ frame: frame - 260, fps, config: motionTokens.spring.snappy });
+
+  // Active Data Pulse Beam (Frames 270 - 440) traveling down stages 01 -> 02 -> 03 -> 04
+  const pulsePhase = interpolate(frame, [270, 430], [0, 4], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const liveLatencyMs = (interpolate(frame, [270, 430], [1.2, 14.2], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })).toFixed(1);
 
   const stages = [
-    { num: '01', title: 'DIRECTING PROMPT', desc: 'Vision-grounded natural language specification', color: '#3B82F6', springVal: s1Spring },
-    { num: '02', title: 'STYLE CACHE (0-PASS A+)', desc: 'Zero-hallucination aesthetic locked AST', color: '#10B981', springVal: s2Spring },
-    { num: '03', title: 'DETERMINISTIC AST', desc: 'Frame-clock synchronized React + Remotion graph', color: '#8B5CF6', springVal: s3Spring },
-    { num: '04', title: '4K/60FPS MP4 RENDER', desc: 'Distributed multi-threaded headless chromium render', color: '#F59E0B', springVal: s4Spring },
+    { num: '01', title: 'DIRECTING PROMPT', desc: 'Vision-grounded natural language specification', color: '#3B82F6', springVal: s1Spring, idx: 0 },
+    { num: '02', title: 'STYLE CACHE (0-PASS A+)', desc: 'Zero-hallucination aesthetic locked AST', color: '#10B981', springVal: s2Spring, idx: 1 },
+    { num: '03', title: 'DETERMINISTIC AST', desc: 'Frame-clock synchronized React + Remotion graph', color: '#8B5CF6', springVal: s3Spring, idx: 2 },
+    { num: '04', title: '4K/60FPS MP4 RENDER', desc: 'Distributed multi-threaded headless chromium render', color: '#F59E0B', springVal: s4Spring, idx: 3 },
   ];
 
   return (
     <AbsoluteFill
       style={{
+        perspective: 1200,
         paddingTop: SAFE_ZONE_TOP,
         paddingBottom: SAFE_ZONE_BOTTOM,
         paddingLeft: 40,
@@ -176,8 +188,8 @@ const Act1HookPipeline: React.FC<{ frame: number; fps: number }> = ({ frame, fps
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        opacity: interpolate(frame, [0, 20, 420, 450], [0, 1, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
-        transform: `translateY(${interpolate(enterSpring, [0, 1], [40, 0])}px) scale(${interpolate(enterSpring, [0, 1], [0.94, 1])})`,
+        opacity: interpolate(frame, [0, 16], [0, 1], { extrapolateLeft: 'clamp' }) * exitOpacity,
+        transform: `scale(${camScale * exitScale}) rotateY(${camTiltY}deg) translateY(${camDriftY}px)`,
       }}
     >
       {/* Top Editorial Eyebrow */}
@@ -190,7 +202,7 @@ const Act1HookPipeline: React.FC<{ frame: number; fps: number }> = ({ frame, fps
         fontFamily="'JetBrains Mono', monospace"
         letterSpacing={3}
         textAlign="center"
-        style={{ marginBottom: 16 }}
+        style={{ marginBottom: 14 }}
       />
 
       {/* Main Authoritative Headline */}
@@ -203,7 +215,7 @@ const Act1HookPipeline: React.FC<{ frame: number; fps: number }> = ({ frame, fps
         fontFamily="'Playfair Display', Georgia, serif"
         lineHeight={1.15}
         textAlign="center"
-        style={{ marginBottom: 24 }}
+        style={{ marginBottom: 22 }}
       />
 
       {/* 3D Glassmorphic Command Bar */}
@@ -211,7 +223,7 @@ const Act1HookPipeline: React.FC<{ frame: number; fps: number }> = ({ frame, fps
         style={{
           width: SAFE_CONTENT_WIDTH,
           borderRadius: 20,
-          background: 'rgba(255, 255, 255, 0.84)',
+          background: 'rgba(255, 255, 255, 0.86)',
           backdropFilter: 'blur(28px)',
           border: '1.5px solid rgba(255, 255, 255, 0.95)',
           boxShadow: '0 20px 50px rgba(15, 23, 42, 0.08), 0 4px 16px rgba(15, 23, 42, 0.04)',
@@ -220,7 +232,7 @@ const Act1HookPipeline: React.FC<{ frame: number; fps: number }> = ({ frame, fps
           alignItems: 'center',
           gap: 14,
           boxSizing: 'border-box',
-          marginBottom: 24,
+          marginBottom: 20,
           transform: `scale(${interpolate(expandProgress, [0, 0.5, 1], [1, 1.02, 1])})`,
         }}
       >
@@ -275,114 +287,151 @@ const Act1HookPipeline: React.FC<{ frame: number; fps: number }> = ({ frame, fps
           width: SAFE_CONTENT_WIDTH,
           display: 'flex',
           flexDirection: 'column',
-          gap: 14,
+          gap: 12,
           opacity: interpolate(expandProgress, [0, 0.3, 1], [0, 0.8, 1]),
           transform: `translateY(${interpolate(expandProgress, [0, 1], [25, 0])}px)`,
+          position: 'relative',
         }}
       >
-        {stages.map((st, idx) => (
-          <div
-            key={idx}
-            style={{
-              width: '100%',
-              borderRadius: 16,
-              background: 'rgba(255, 255, 255, 0.78)',
-              backdropFilter: 'blur(24px)',
-              border: `1.5px solid rgba(255, 255, 255, 0.9)`,
-              boxShadow: '0 14px 36px rgba(15, 23, 42, 0.05)',
-              padding: '16px 20px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 18,
-              boxSizing: 'border-box',
-              opacity: interpolate(st.springVal, [0, 1], [0, 1]),
-              transform: `translateX(${interpolate(st.springVal, [0, 1], [-25, 0])}px) scale(${interpolate(st.springVal, [0, 1], [0.95, 1])})`,
-            }}
-          >
-            {/* Stage Number Badge */}
+        {stages.map((st) => {
+          const isPulseActive = frame >= 270 && pulsePhase >= st.idx && pulsePhase < st.idx + 1;
+          const pulseGlow = isPulseActive ? `0 0 24px ${st.color}88, inset 0 0 12px ${st.color}33` : 'none';
+          const pulseBorder = isPulseActive ? `2px solid ${st.color}` : '1.5px solid rgba(255, 255, 255, 0.9)';
+
+          return (
             <div
+              key={st.num}
               style={{
-                width: 40,
-                height: 40,
-                borderRadius: 10,
-                backgroundColor: st.color,
-                color: '#FFFFFF',
+                width: '100%',
+                borderRadius: 16,
+                background: isPulseActive ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.78)',
+                backdropFilter: 'blur(24px)',
+                border: pulseBorder,
+                boxShadow: `0 14px 36px rgba(15, 23, 42, 0.05), ${pulseGlow}`,
+                padding: '14px 20px',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 18,
-                fontWeight: 900,
-                flexShrink: 0,
-                boxShadow: `0 8px 18px ${st.color}55`,
+                gap: 16,
+                boxSizing: 'border-box',
+                opacity: interpolate(st.springVal, [0, 1], [0, 1]),
+                transform: `translateX(${interpolate(st.springVal, [0, 1], [-25, 0])}px) scale(${isPulseActive ? 1.02 : 1})`,
+                transition: 'none',
               }}
             >
-              {st.num}
-            </div>
+              {/* Stage Number Badge */}
+              <div
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: 10,
+                  backgroundColor: st.color,
+                  color: '#FFFFFF',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 17,
+                  fontWeight: 900,
+                  flexShrink: 0,
+                  boxShadow: `0 8px 18px ${st.color}55`,
+                }}
+              >
+                {st.num}
+              </div>
 
-            {/* Stage Details */}
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 3 }}>
-              <SafeTextContainer
-                text={st.title}
-                containerWidth={SAFE_CONTENT_WIDTH - 150}
-                baseFontSize={20}
-                color={SLATE_DARK}
-                fontWeight={800}
-                fontFamily="'Plus Jakarta Sans', sans-serif"
-              />
-              <SafeTextContainer
-                text={st.desc}
-                containerWidth={SAFE_CONTENT_WIDTH - 150}
-                baseFontSize={16}
-                color={SLATE_MUTED}
-                fontWeight={500}
-                fontFamily="'Plus Jakarta Sans', sans-serif"
-              />
-            </div>
+              {/* Stage Details */}
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <SafeTextContainer
+                  text={st.title}
+                  containerWidth={SAFE_CONTENT_WIDTH - 150}
+                  baseFontSize={19}
+                  color={SLATE_DARK}
+                  fontWeight={800}
+                  fontFamily="'Plus Jakarta Sans', sans-serif"
+                />
+                <SafeTextContainer
+                  text={st.desc}
+                  containerWidth={SAFE_CONTENT_WIDTH - 150}
+                  baseFontSize={15}
+                  color={SLATE_MUTED}
+                  fontWeight={500}
+                  fontFamily="'Plus Jakarta Sans', sans-serif"
+                />
+              </div>
 
-            {/* Status Tick */}
-            <div
-              style={{
-                color: EMERALD_ACCENT,
-                fontSize: 20,
-                fontWeight: 900,
-                fontFamily: "'JetBrains Mono', monospace",
-              }}
-            >
-              ✔
+              {/* Status Tick */}
+              <div
+                style={{
+                  color: isPulseActive ? st.color : EMERALD_ACCENT,
+                  fontSize: 20,
+                  fontWeight: 900,
+                  fontFamily: "'JetBrains Mono', monospace",
+                  transform: isPulseActive ? 'scale(1.2)' : 'scale(1)',
+                }}
+              >
+                ✔
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      {/* Kinetic Callout Footer */}
+      {/* Live Data Pulse & Telemetry Readout (Eliminating Dead Air Frames 270 - 450) */}
       <div
         style={{
-          marginTop: 22,
-          padding: '12px 28px',
-          borderRadius: 999,
-          background: 'rgba(15, 23, 42, 0.92)',
-          boxShadow: '0 12px 30px rgba(15, 23, 42, 0.18)',
-          opacity: interpolate(s4Spring, [0, 1], [0, 1]),
-          transform: `scale(${interpolate(s4Spring, [0, 1], [0.9, 1])})`,
+          marginTop: 18,
+          width: SAFE_CONTENT_WIDTH,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 12,
         }}
       >
-        <SafeTextContainer
-          text="Zero crude SVGs. 100% deterministic code."
-          containerWidth={SAFE_CONTENT_WIDTH - 80}
-          baseFontSize={19}
-          color="#FFFFFF"
-          fontWeight={700}
-          fontFamily="'Plus Jakarta Sans', sans-serif"
-          textAlign="center"
-        />
+        <div
+          style={{
+            padding: '10px 20px',
+            borderRadius: 999,
+            background: 'rgba(15, 23, 42, 0.92)',
+            boxShadow: '0 12px 30px rgba(15, 23, 42, 0.18)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+          }}
+        >
+          <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: EMERALD_ACCENT, boxShadow: `0 0 8px ${EMERALD_ACCENT}` }} />
+          <SafeTextContainer
+            text="Zero crude SVGs · 100% deterministic code"
+            containerWidth={SAFE_CONTENT_WIDTH - 300}
+            baseFontSize={16}
+            color="#FFFFFF"
+            fontWeight={700}
+            fontFamily="'Plus Jakarta Sans', sans-serif"
+          />
+        </div>
+
+        {/* Live Latency & Pipeline Flow Telemetry */}
+        <div
+          style={{
+            padding: '10px 18px',
+            borderRadius: 999,
+            background: 'rgba(56, 189, 248, 0.12)',
+            border: '1px solid rgba(56, 189, 248, 0.35)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+          }}
+        >
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 900, color: '#0284C7' }}>
+            LATENCY: {liveLatencyMs}ms · 60 FPS
+          </span>
+        </div>
       </div>
     </AbsoluteFill>
   );
 };
 
 // ---------------------------------------------------------------------------
-// Act 2: The 11 Certified Studio Engines (Frames 450 – 1,080)
+// Act 2: The 11 Certified Studio Engines (Frames 450 – 1,080 | 7.5s – 18.0s)
 // ---------------------------------------------------------------------------
 interface EngineCardMeta {
   id: string;
@@ -398,36 +447,41 @@ const CERTIFIED_ENGINES: EngineCardMeta[] = [
   { id: '01', name: 'Paper 2.5D', fpsTag: '16 FPS STOP-MOTION', themeColor: '#F59E0B', previewTitle: 'Tactile Cutting Mat & Stickers', previewSub: 'Layered drop shadows & paper slide foley', aesthetic: 'Artisan Paper Cutout' },
   { id: '02', name: 'Kurzgesagt Vector', fpsTag: '60 FPS ADDITIVE', themeColor: '#3B82F6', previewTitle: 'Solar Halos & Deep Cosmos', previewSub: 'Eye-tracking vector astronaut exploration', aesthetic: 'Geometric Editorial Space' },
   { id: '03', name: 'Claude / Movez Motion', fpsTag: '30 FPS EDITORIAL', themeColor: '#8B5CF6', previewTitle: '4:5 Coverflow & 3D Modals', previewSub: 'Bento UI grids & spring bezier curves', aesthetic: 'VisionOS Glassmorphic' },
-  { id: '04', name: 'RicksClips Hybrid 2.5D', fpsTag: '30 FPS VIRAL', themeColor: '#EC4899', previewTitle: '3D Dusty Frontier Perspective', previewSub: '72px stroke captions & saloon duel standoff', aesthetic: 'Viral Character Explainer' },
-  { id: '05', name: 'Pelagos Robotics HUD', fpsTag: '60 FPS TELEMETRY', themeColor: '#06B6D4', previewTitle: 'Articulated Subsea Cephalopod', previewSub: 'Depth telemetry & 360° sonar scan lines', aesthetic: 'Braun Engineering HUD' },
-  { id: '06', name: 'CAD Liquid Chrome', fpsTag: '60 FPS RAY-TRACED', themeColor: '#64748B', previewTitle: 'Millimeter Calipers & Chrome Emblem', previewSub: 'Liquid reflection & metallic highlights', aesthetic: 'Industrial Luxury CAD' },
-  { id: '07', name: 'Anime OP 175 BPM', fpsTag: '24 FPS BEAT-GRID', themeColor: '#EF4444', previewTitle: 'Fractional Beat-Grid Sync', previewSub: 'Pixel idol sprites & neon speedlines', aesthetic: 'J-Pop Idol Anime MV' },
-  { id: '08', name: 'Living Pixel Art', fpsTag: '12 FPS INTEGER GRID', themeColor: '#10B981', previewTitle: 'Procedural Rain & Lantern Glow', previewSub: 'Nearest-neighbor scaling & pixel audio loop', aesthetic: 'Claude Fable Pixel Art' },
-  { id: '09', name: 'Zhang Heng Seismo', fpsTag: '30 FPS HISTORICAL', themeColor: '#D97706', previewTitle: 'Bronze Dragon Telemetry', previewSub: 'Seismic wave detection & pendulum physics', aesthetic: 'Ancient Scientific Instrument' },
-  { id: '10', name: 'Neutron Star Core', fpsTag: '60 FPS RELATIVISTIC', themeColor: '#6366F1', previewTitle: 'Magnetic Pulsar Radiations', previewSub: 'Subatomic particle jets & gravitational warp', aesthetic: 'Deep Astrophysics Vector' },
-  { id: '11', name: 'Zenitsu Anime Shonen', fpsTag: '60 FPS PHONK EDIT', themeColor: '#EAB308', previewTitle: 'Thunder God Aura & 808 Shockwaves', previewSub: 'Sub-bass beat drops & time-freeze frames', aesthetic: 'High-Octane Battle Anime' },
+  { id: '04', name: 'RicksClips Hybrid 2.5D', fpsTag: '30 FPS HIGH-RETENTION', themeColor: '#EC4899', previewTitle: '2D Avatars in 3D Saloons', previewSub: '8px black strokes & 72px Montserrat typography', aesthetic: 'Viral Retention Master' },
+  { id: '05', name: 'Pelagos Subsea HUD', fpsTag: '60 FPS TELEMETRY', themeColor: '#06B6D4', previewTitle: 'Hydrothermal Vent Sonar', previewSub: 'Polar radar reticles & 3D manipulator rig', aesthetic: 'Industrial Sci-Fi Robotics' },
+  { id: '06', name: 'CAD Liquid Chrome', fpsTag: '60 FPS METALLIC', themeColor: '#64748B', previewTitle: '3D Chrome Refraction', previewSub: 'Solid fiberglass PCB traces & copper vias', aesthetic: 'Hardware Spec Macro' },
+  { id: '07', name: 'Anime Opening MV', fpsTag: '175 BPM HYPER-ACTION', themeColor: '#EF4444', previewTitle: '175 BPM Halftone Particles', previewSub: 'Pop-art screen tones & 808 speed lines', aesthetic: 'J-Pop Idol High-Energy' },
+  { id: '08', name: 'Claude Fable Pixel Art', fpsTag: '12 FPS RETRO', themeColor: '#10B981', previewTitle: '512px Grid Integer Scaling', previewSub: 'Discrete phase-stepping & ambient soundscape', aesthetic: 'Living Animated Pixel Art' },
+  { id: '09', name: 'GSAP Interactive Lab', fpsTag: '60 FPS PROCEDURAL', themeColor: '#F97316', previewTitle: '6 Interactive Studio Sliders', previewSub: 'Dynamic control parameters & SVG path morphs', aesthetic: 'Parametric Motion Studio' },
+  { id: '10', name: 'Subsea Hydrothermal', fpsTag: '60 FPS PRESSURE', themeColor: '#0284C7', previewTitle: 'Deep Oceanic Bathyal Trench', previewSub: 'Acoustic ping foley & depth gauges', aesthetic: 'Autonomous Deep Sub' },
+  { id: '11', name: 'Bento Architecture Climax', fpsTag: '60 FPS BROADCAST', themeColor: '#8B5CF6', previewTitle: 'Unified Studio Pipeline', previewSub: 'Zero SVG rectangles & verified AST compile', aesthetic: 'Enterprise Broadcast' },
 ];
 
 const Act2EngineCoverflow: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) => {
-  // Act 2 spans frames 450 to 1080 (630 frames = 10.5s)
   const actFrame = frame - 450;
+  const duration = 630; // frames 450 to 1080
 
-  // Carousel sweep progress across the 11 engines
-  // Smoothly advances through engine indices 0 to 10
-  const carouselIndex = Math.min(
-    10,
-    Math.max(0, interpolate(actFrame, [30, 580], [0, 10], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }))
+  // Semantic Match-Cut Zoom Entrance & Exit
+  const enterScale = interpolate(actFrame, [0, 20], [0.90, 1.0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const exitScale = interpolate(actFrame, [duration - 20, duration], [1.0, 1.18], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const exitOpacity = interpolate(actFrame, [duration - 20, duration], [1.0, 0.0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+  // Continuous Camera Push-In & 3D Tilt Drift
+  const camScale = interpolate(actFrame, [0, duration], [1.0, 1.05]);
+  const camTiltY = Math.sin(frame * 0.02) * 2.5;
+  const camDriftY = Math.cos(frame * 0.018) * 8;
+
+  const stepDuration = Math.floor(580 / CERTIFIED_ENGINES.length); // ~52 frames per engine
+  const activeIndex = Math.min(
+    CERTIFIED_ENGINES.length - 1,
+    Math.max(0, Math.floor(actFrame / stepDuration))
   );
-  const activeIdx = Math.round(carouselIndex);
-  const activeEngine = CERTIFIED_ENGINES[activeIdx];
-
-  // Circular progress ring value (0 to 1)
-  const progressRatio = (activeIdx + 1) / CERTIFIED_ENGINES.length;
-  const strokeDashoffset = 283 * (1 - progressRatio);
+  const activeEngine = CERTIFIED_ENGINES[activeIndex];
 
   return (
     <AbsoluteFill
       style={{
+        perspective: 1200,
         paddingTop: SAFE_ZONE_TOP,
         paddingBottom: SAFE_ZONE_BOTTOM,
         paddingLeft: 40,
@@ -436,92 +490,40 @@ const Act2EngineCoverflow: React.FC<{ frame: number; fps: number }> = ({ frame, 
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        opacity: interpolate(frame, [450, 480, 1050, 1080], [0, 1, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
+        opacity: interpolate(actFrame, [0, 16], [0, 1], { extrapolateLeft: 'clamp' }) * exitOpacity,
+        transform: `scale(${enterScale * camScale * exitScale}) rotateY(${camTiltY}deg) translateY(${camDriftY}px)`,
       }}
     >
-      {/* Top Header with Circular Progress Ring */}
+      {/* Top Editorial Eyebrow */}
+      <SafeTextContainer
+        text="REA ECOSYSTEM // 11 PRODUCTION ENGINES"
+        containerWidth={SAFE_CONTENT_WIDTH}
+        baseFontSize={18}
+        color={SLATE_MUTED}
+        fontWeight={800}
+        fontFamily="'JetBrains Mono', monospace"
+        letterSpacing={3}
+        textAlign="center"
+        style={{ marginBottom: 12 }}
+      />
+
+      {/* Main Authoritative Headline */}
+      <SafeTextContainer
+        text="11 Certified Studio Engines"
+        containerWidth={SAFE_CONTENT_WIDTH}
+        baseFontSize={52}
+        color={SLATE_DARK}
+        fontWeight={900}
+        fontFamily="'Playfair Display', Georgia, serif"
+        textAlign="center"
+        style={{ marginBottom: 28 }}
+      />
+
+      {/* 3D Coverflow Container */}
       <div
         style={{
           width: SAFE_CONTENT_WIDTH,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 24,
-        }}
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <SafeTextContainer
-            text="REA STUDIO ECOSYSTEM"
-            containerWidth={SAFE_CONTENT_WIDTH - 160}
-            baseFontSize={18}
-            color={SLATE_MUTED}
-            fontWeight={800}
-            fontFamily="'JetBrains Mono', monospace"
-            letterSpacing={3}
-          />
-          <SafeTextContainer
-            text="11 Certified Visual Engines"
-            containerWidth={SAFE_CONTENT_WIDTH - 160}
-            baseFontSize={46}
-            color={SLATE_DARK}
-            fontWeight={900}
-            fontFamily="'Playfair Display', Georgia, serif"
-          />
-        </div>
-
-        {/* Circular SVG Progress Ring (Ticking 01/11 to 11/11) */}
-        <div style={{ position: 'relative', width: 90, height: 90, flexShrink: 0 }}>
-          <svg width={90} height={90} viewBox="0 0 100 100">
-            {/* Background Track */}
-            <circle
-              cx={50}
-              cy={50}
-              r={45}
-              fill="none"
-              stroke="rgba(15, 23, 42, 0.08)"
-              strokeWidth={8}
-            />
-            {/* Animated Active Stroke */}
-            <circle
-              cx={50}
-              cy={50}
-              r={45}
-              fill="none"
-              stroke={EMERALD_ACCENT}
-              strokeWidth={8}
-              strokeDasharray={283}
-              strokeDashoffset={strokeDashoffset}
-              strokeLinecap="round"
-              transform="rotate(-90 50 50)"
-              style={{ transition: 'stroke-dashoffset 0.15s ease' }}
-            />
-          </svg>
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 16,
-              fontWeight: 900,
-              color: SLATE_DARK,
-            }}
-          >
-            <span>{String(activeIdx + 1).padStart(2, '0')}</span>
-            <span style={{ fontSize: 11, color: SLATE_MUTED }}>/11</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 3D Perspective Coverflow Carousel Container */}
-      <div
-        style={{
-          width: SAFE_CONTENT_WIDTH,
-          height: 640,
-          perspective: 1200,
+          height: 520,
           position: 'relative',
           display: 'flex',
           alignItems: 'center',
@@ -529,15 +531,15 @@ const Act2EngineCoverflow: React.FC<{ frame: number; fps: number }> = ({ frame, 
         }}
       >
         {CERTIFIED_ENGINES.map((eng, idx) => {
-          const offset = idx - carouselIndex;
-          if (Math.abs(offset) > 2.2) return null; // Cull distant cards
+          const offset = idx - activeIndex;
+          if (Math.abs(offset) > 2) return null;
 
-          const translateX = offset * 340;
-          const translateZ = -Math.abs(offset) * 220;
-          const rotateY = Math.max(-28, Math.min(28, -offset * 20));
-          const scale = Math.max(0.78, 1 - Math.abs(offset) * 0.14);
-          const opacity = Math.max(0, 1 - Math.abs(offset) * 0.45);
-          const isCenter = Math.abs(offset) < 0.5;
+          const isCenter = offset === 0;
+          const translateX = offset * 280;
+          const rotateY = offset * -28;
+          const scale = isCenter ? 1.05 : 0.85;
+          const opacity = isCenter ? 1 : 0.45;
+          const zIndex = 20 - Math.abs(offset);
 
           return (
             <div
@@ -545,74 +547,62 @@ const Act2EngineCoverflow: React.FC<{ frame: number; fps: number }> = ({ frame, 
               style={{
                 position: 'absolute',
                 width: 580,
-                height: 580,
-                borderRadius: 28,
-                background: 'rgba(255, 255, 255, 0.88)',
-                backdropFilter: 'blur(28px)',
-                border: isCenter
-                  ? `2.5px solid ${eng.themeColor}`
-                  : '1.5px solid rgba(255, 255, 255, 0.8)',
+                height: 480,
+                borderRadius: 24,
+                background: 'rgba(255, 255, 255, 0.90)',
+                backdropFilter: 'blur(30px)',
+                border: isCenter ? `2.5px solid ${eng.themeColor}` : '1.5px solid rgba(255, 255, 255, 0.9)',
                 boxShadow: isCenter
-                  ? `0 30px 80px rgba(15, 23, 42, 0.16), 0 0 35px ${eng.themeColor}33`
-                  : '0 16px 40px rgba(15, 23, 42, 0.08)',
-                padding: 36,
-                boxSizing: 'border-box',
+                  ? `0 30px 70px rgba(15, 23, 42, 0.16), 0 0 35px ${eng.themeColor}33`
+                  : '0 15px 40px rgba(15, 23, 42, 0.06)',
+                padding: 28,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                transform: `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
+                boxSizing: 'border-box',
+                transform: `translateX(${translateX}px) rotateY(${rotateY}deg) scale(${scale})`,
                 opacity,
-                zIndex: Math.round(100 - Math.abs(offset) * 10),
+                zIndex,
+                transition: 'none',
               }}
             >
-              {/* Card Top Row: Engine Number & FPS Tag */}
+              {/* Card Top: Tag + Engine ID */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div
+                <span
                   style={{
                     padding: '6px 14px',
-                    borderRadius: 10,
-                    backgroundColor: eng.themeColor,
-                    color: '#FFFFFF',
+                    borderRadius: 999,
+                    backgroundColor: `${eng.themeColor}18`,
+                    color: eng.themeColor,
                     fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: 900,
                   }}
                 >
-                  ENGINE {eng.id}
-                </div>
-                <div
-                  style={{
-                    padding: '6px 12px',
-                    borderRadius: 8,
-                    backgroundColor: 'rgba(15, 23, 42, 0.06)',
-                    color: SLATE_DARK,
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 14,
-                    fontWeight: 800,
-                  }}
-                >
                   {eng.fpsTag}
-                </div>
+                </span>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 20, fontWeight: 900, color: SLATE_MUTED }}>
+                  #{eng.id}
+                </span>
               </div>
 
-              {/* Card Center: Live Micro-Preview Graphical Plate */}
+              {/* Card Center: Visual Stage Preview Plate */}
               <div
                 style={{
                   width: '100%',
-                  height: 260,
-                  borderRadius: 18,
+                  height: 220,
+                  borderRadius: 16,
                   backgroundColor: SLATE_DARK,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  position: 'relative',
-                  overflow: 'hidden',
                   padding: 20,
                   boxSizing: 'border-box',
+                  position: 'relative',
+                  overflow: 'hidden',
                 }}
               >
-                {/* Visual Graphic Representation */}
                 <div
                   style={{
                     position: 'absolute',
@@ -719,7 +709,7 @@ const Act2EngineCoverflow: React.FC<{ frame: number; fps: number }> = ({ frame, 
         </span>
         <span style={{ color: EMERALD_ACCENT, fontWeight: 900 }}>•</span>
         <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 700, color: SLATE_MUTED }}>
-          1.20 Hits/Sec Foley Sync
+          1:1 Studio Foley Sync
         </span>
       </div>
     </AbsoluteFill>
@@ -727,30 +717,51 @@ const Act2EngineCoverflow: React.FC<{ frame: number; fps: number }> = ({ frame, 
 };
 
 // ---------------------------------------------------------------------------
-// Act 3: The Polish & Determinism Core (Frames 1,080 – 1,710)
+// Act 3: The Polish & Determinism Core (Frames 1,080 – 1,710 | 18.0s – 28.5s)
 // ---------------------------------------------------------------------------
 const Act3DeterminismWorkbench: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) => {
-  // Act 3 spans frames 1080 to 1710 (630 frames = 10.5s)
   const actFrame = frame - 1080;
+  const duration = 630; // frames 1080 to 1710
 
-  // Module 1: SafeTextContainer Dynamic Length Stress-Test
-  // Headline dynamically expands from 12 chars to 48 chars from frame 60 to 300
-  const stressProgress = interpolate(actFrame, [60, 240, 420, 560], [0, 1, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
-  const stressShortText = 'KINETIC TITLE';
-  const stressLongText = 'KINETIC HYBRID 2.5D HIGH-RETENTION MASTER STORY';
-  const charSlice = Math.round(interpolate(stressProgress, [0, 1], [stressShortText.length, stressLongText.length]));
-  const dynamicStressText = stressLongText.slice(0, Math.max(stressShortText.length, charSlice));
-  
-  // Real-time computed safe font size: 54px down to 26px
-  const liveFontSize = Math.round(interpolate(stressProgress, [0, 1], [54, 26]));
+  // Semantic Match-Cut Zoom Entrance & Exit
+  const enterScale = interpolate(actFrame, [0, 20], [0.90, 1.0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const exitScale = interpolate(actFrame, [duration - 20, duration], [1.0, 1.18], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const exitOpacity = interpolate(actFrame, [duration - 20, duration], [1.0, 0.0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
 
-  // Module 3: Scrolling 1.20 hits/sec audio waveform markers
-  // Every 50 frames @ 60 FPS fires a tactile marker
-  const waveformPhase = (actFrame * 3.5) % 360;
+  // Continuous Camera Push-In & 3D Tilt Drift
+  const camScale = interpolate(actFrame, [0, duration], [1.0, 1.05]);
+  const camTiltY = Math.sin(frame * 0.022) * 2.2;
+  const camDriftY = Math.cos(frame * 0.019) * 7;
+
+  // Typing simulation from frame 30 to 180
+  const typedCount = Math.min(
+    ACT3_DEMO_FULL_TEXT.length,
+    Math.max(0, Math.floor(interpolate(actFrame, [30, 180], [14, ACT3_DEMO_FULL_TEXT.length], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })))
+  );
+  const currentDemoText = ACT3_DEMO_FULL_TEXT.slice(0, typedCount);
+
+  // Live Continuous Container Morphing (Eliminating Dead Air Frames 180 - 580)
+  // Box dynamically narrows from 900px down to 620px, then widens back to 900px
+  const morphContainerWidth = Math.round(
+    interpolate(
+      actFrame,
+      [180, 290, 400, 520],
+      [SAFE_CONTENT_WIDTH - 60, 620, 620, SAFE_CONTENT_WIDTH - 60],
+      { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }
+    )
+  );
+
+  // Live Auto-Scaling Font Size reacting to container width
+  const liveSafeFontSize = Math.round(
+    interpolate(morphContainerWidth, [620, SAFE_CONTENT_WIDTH - 60], [22, 34], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })
+  );
+
+  const waveformPhase = (actFrame * 4) % 360;
 
   return (
     <AbsoluteFill
       style={{
+        perspective: 1200,
         paddingTop: SAFE_ZONE_TOP,
         paddingBottom: SAFE_ZONE_BOTTOM,
         paddingLeft: 40,
@@ -759,7 +770,8 @@ const Act3DeterminismWorkbench: React.FC<{ frame: number; fps: number }> = ({ fr
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        opacity: interpolate(frame, [1080, 1110, 1680, 1710], [0, 1, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
+        opacity: interpolate(actFrame, [0, 16], [0, 1], { extrapolateLeft: 'clamp' }) * exitOpacity,
+        transform: `scale(${enterScale * camScale * exitScale}) rotateY(${camTiltY}deg) translateY(${camDriftY}px)`,
       }}
     >
       {/* Top Section Header */}
@@ -782,110 +794,107 @@ const Act3DeterminismWorkbench: React.FC<{ frame: number; fps: number }> = ({ fr
         fontWeight={900}
         fontFamily="'Playfair Display', Georgia, serif"
         textAlign="center"
-        style={{ marginBottom: 32 }}
+        style={{ marginBottom: 26 }}
       />
 
       {/* 3 Split Workbench Guarantee Cards */}
-      <div style={{ width: SAFE_CONTENT_WIDTH, display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div style={{ width: SAFE_CONTENT_WIDTH, display: 'flex', flexDirection: 'column', gap: 16 }}>
         
-        {/* Guarantee 1: Zero-Overflow SafeTextContainer */}
+        {/* Guarantee 1: Zero-Overflow SafeTextContainer Live Morphing */}
         <div
           style={{
             width: '100%',
             borderRadius: 22,
-            background: 'rgba(255, 255, 255, 0.82)',
+            background: 'rgba(255, 255, 255, 0.85)',
             backdropFilter: 'blur(28px)',
             border: '2px solid rgba(255, 255, 255, 0.95)',
             boxShadow: '0 20px 50px rgba(15, 23, 42, 0.08)',
-            padding: 24,
+            padding: 22,
             boxSizing: 'border-box',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: EMERALD_ACCENT }} />
               <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 800, color: SLATE_DARK }}>
-                1. ZERO-OVERFLOW TYPOGRAPHY
+                1. DYNAMIC ZERO-OVERFLOW CONTAINER
               </span>
             </div>
             <div
               style={{
-                padding: '4px 10px',
-                borderRadius: 6,
+                padding: '4px 12px',
+                borderRadius: 999,
                 backgroundColor: 'rgba(16, 185, 129, 0.12)',
                 color: EMERALD_ACCENT,
                 fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: 900,
               }}
             >
-              computeSafeFontSize(): {liveFontSize}px
+              BOX: {morphContainerWidth}PX · FONT: {liveSafeFontSize}PX
             </div>
           </div>
 
-          {/* Strict 5px solid #0F172A Bounding Box Stress Demo */}
+          {/* Strict Morphing Bounding Box Stress Demo */}
           <div
             style={{
               width: '100%',
-              height: 110,
-              border: '5px solid #0F172A',
-              borderRadius: 14,
-              backgroundColor: '#FFFFFF',
               display: 'flex',
-              alignItems: 'center',
               justifyContent: 'center',
-              padding: 16,
-              boxSizing: 'border-box',
-              position: 'relative',
-              overflow: 'hidden',
+              alignItems: 'center',
+              padding: '6px 0',
             }}
           >
-            <SafeTextContainer
-              text={dynamicStressText}
-              containerWidth={SAFE_CONTENT_WIDTH - 90}
-              baseFontSize={liveFontSize}
-              minFontSize={24}
-              autoScale={false}
-              color={SLATE_DARK}
-              fontWeight={900}
-              fontFamily="'Plus Jakarta Sans', sans-serif"
-              textAlign="center"
-            />
-            {/* Safe Box Watermark */}
             <div
               style={{
-                position: 'absolute',
-                bottom: 4,
-                right: 8,
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 11,
-                fontWeight: 800,
-                color: 'rgba(15, 23, 42, 0.35)',
+                width: morphContainerWidth,
+                height: 95,
+                border: '4px solid #0F172A',
+                borderRadius: 14,
+                backgroundColor: '#FFFFFF',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '12px 18px',
+                boxSizing: 'border-box',
+                position: 'relative',
+                boxShadow: '0 8px 24px rgba(15, 23, 42, 0.08)',
+                transition: 'none',
               }}
             >
-              BOUNDING BOX CLAMPED • 0px CLIPPING
+              <SafeTextContainer
+                text={currentDemoText}
+                containerWidth={morphContainerWidth - 40}
+                baseFontSize={liveSafeFontSize}
+                minFontSize={18}
+                autoScale={false}
+                color={SLATE_DARK}
+                fontWeight={900}
+                fontFamily="'Plus Jakarta Sans', sans-serif"
+                textAlign="center"
+              />
             </div>
           </div>
         </div>
 
-        {/* Guarantee 2: Frame-Clock Determinism */}
+        {/* Guarantee 2: Deterministic Clock (Zero Math.random()) */}
         <div
           style={{
             width: '100%',
             borderRadius: 22,
-            background: 'rgba(255, 255, 255, 0.82)',
+            background: 'rgba(255, 255, 255, 0.85)',
             backdropFilter: 'blur(28px)',
             border: '2px solid rgba(255, 255, 255, 0.95)',
             boxShadow: '0 20px 50px rgba(15, 23, 42, 0.08)',
-            padding: 24,
+            padding: 22,
             boxSizing: 'border-box',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: CYAN_ACCENT }} />
               <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 800, color: SLATE_DARK }}>
-                2. FRAME-CLOCK DETERMINISM
+                2. DETERMINISTIC CLOCK ENGINE
               </span>
             </div>
             <div
@@ -895,77 +904,51 @@ const Act3DeterminismWorkbench: React.FC<{ frame: number; fps: number }> = ({ fr
                 backgroundColor: 'rgba(6, 182, 212, 0.12)',
                 color: CYAN_ACCENT,
                 fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: 900,
               }}
             >
-              tl.seek(frame / 60)
+              ZERO MATH.RANDOM()
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: 16 }}>
-            {/* Left: Non-Deterministic Random Disqualified */}
-            <div
-              style={{
-                flex: 1,
-                padding: 16,
-                borderRadius: 12,
-                backgroundColor: 'rgba(239, 68, 68, 0.08)',
-                border: '1.5px solid rgba(239, 68, 68, 0.25)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 6,
-              }}
-            >
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 14, fontWeight: 900, color: '#EF4444' }}>
-                ✕ Non-Deterministic Random (BANNED)
-              </span>
-              <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 15, color: SLATE_MUTED }}>
-                Thread race conditions, frame tearing, and non-reproducible artifacts.
-              </span>
-            </div>
-
-            {/* Right: REA Deterministic Clock */}
-            <div
-              style={{
-                flex: 1,
-                padding: 16,
-                borderRadius: 12,
-                backgroundColor: 'rgba(16, 185, 129, 0.08)',
-                border: '1.5px solid rgba(16, 185, 129, 0.3)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 6,
-              }}
-            >
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 14, fontWeight: 900, color: EMERALD_ACCENT }}>
-                ✔ useCurrentFrame() + LCG
-              </span>
-              <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 15, color: SLATE_DARK, fontWeight: 600 }}>
-                Bit-identical multi-threaded rendering across local & cloud clusters.
-              </span>
-            </div>
+          <div
+            style={{
+              padding: '12px 16px',
+              borderRadius: 12,
+              backgroundColor: SLATE_DARK,
+              color: '#38BDF8',
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 15,
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <span>frame: {frame} · seed(frame * 0.015)</span>
+            <span style={{ color: EMERALD_ACCENT }}>AST COMPLIANT</span>
           </div>
         </div>
 
-        {/* Guarantee 3: 1.20 Hits/Sec Psychoacoustic Foley */}
+        {/* Guarantee 3: 1:1 Studio Foley Scheduler */}
         <div
           style={{
             width: '100%',
             borderRadius: 22,
-            background: 'rgba(255, 255, 255, 0.82)',
+            background: 'rgba(255, 255, 255, 0.85)',
             backdropFilter: 'blur(28px)',
             border: '2px solid rgba(255, 255, 255, 0.95)',
             boxShadow: '0 20px 50px rgba(15, 23, 42, 0.08)',
-            padding: 24,
+            padding: 22,
             boxSizing: 'border-box',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: AMBER_ACCENT }} />
               <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 800, color: SLATE_DARK }}>
-                3. PSYCHOACOUSTIC FOLEY SCHEDULER
+                3. TACTILE STUDIO FOLEY
               </span>
             </div>
             <div
@@ -975,11 +958,11 @@ const Act3DeterminismWorkbench: React.FC<{ frame: number; fps: number }> = ({ fr
                 backgroundColor: 'rgba(245, 158, 11, 0.12)',
                 color: AMBER_ACCENT,
                 fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: 900,
               }}
             >
-              1.20 Hits/Sec (Every 50f @ 60FPS)
+              WARM RHODES + 116 BPM GROOVE
             </div>
           </div>
 
@@ -987,7 +970,7 @@ const Act3DeterminismWorkbench: React.FC<{ frame: number; fps: number }> = ({ fr
           <div
             style={{
               width: '100%',
-              height: 72,
+              height: 60,
               borderRadius: 12,
               backgroundColor: SLATE_DARK,
               display: 'flex',
@@ -996,11 +979,10 @@ const Act3DeterminismWorkbench: React.FC<{ frame: number; fps: number }> = ({ fr
               padding: '0 16px',
               boxSizing: 'border-box',
               overflow: 'hidden',
-              position: 'relative',
             }}
           >
             {Array.from({ length: 36 }).map((_, barIdx) => {
-              const barH = 16 + Math.abs(Math.sin((barIdx * 12 + waveformPhase) * (Math.PI / 180))) * 38;
+              const barH = 14 + Math.abs(Math.sin((barIdx * 12 + waveformPhase) * (Math.PI / 180))) * 34;
               const isHitBar = barIdx % 6 === 0;
               return (
                 <div
@@ -1016,26 +998,6 @@ const Act3DeterminismWorkbench: React.FC<{ frame: number; fps: number }> = ({ fr
               );
             })}
           </div>
-
-          {/* Foley Cue Tags */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 12 }}>
-            {['mechanical_click', 'whoosh_fast', 'card_pop', 'paper_slide', 'impact_thud'].map((sfx, i) => (
-              <span
-                key={i}
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: SLATE_MUTED,
-                  padding: '3px 8px',
-                  borderRadius: 6,
-                  backgroundColor: 'rgba(15, 23, 42, 0.04)',
-                }}
-              >
-                {sfx}
-              </span>
-            ))}
-          </div>
         </div>
 
       </div>
@@ -1044,48 +1006,43 @@ const Act3DeterminismWorkbench: React.FC<{ frame: number; fps: number }> = ({ fr
 };
 
 // ---------------------------------------------------------------------------
-// Act 4: Automated Quality Gatekeeper & Cloud Scale (Frames 1,710 – 2,250)
+// Act 4: Automated Quality Gatekeeper & Cloud Scale (Frames 1,710 – 2,250 | 28.5s – 37.5s)
 // ---------------------------------------------------------------------------
 const Act4TerminalGatekeeper: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) => {
-  // Act 4 spans frames 1710 to 2250 (540 frames = 9.0s)
   const actFrame = frame - 1710;
+  const duration = 540; // frames 1710 to 2250
+
+  // Semantic Match-Cut Zoom Entrance & Exit
+  const enterScale = interpolate(actFrame, [0, 20], [0.90, 1.0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const exitScale = interpolate(actFrame, [duration - 20, duration], [1.0, 1.18], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const exitOpacity = interpolate(actFrame, [duration - 20, duration], [1.0, 0.0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+  // Continuous Camera Push-In & 3D Tilt Drift
+  const camScale = interpolate(actFrame, [0, duration], [1.0, 1.05]);
+  const camTiltY = Math.sin(frame * 0.024) * 2.2;
+  const camDriftY = Math.cos(frame * 0.02) * 6;
 
   // Snappy spring checkmarks for CI verification steps
-  const c1Spring = spring({ frame: actFrame - 40, fps, config: { damping: 10, stiffness: 280, mass: 0.4 } });
-  const c2Spring = spring({ frame: actFrame - 100, fps, config: { damping: 10, stiffness: 280, mass: 0.4 } });
-  const c3Spring = spring({ frame: actFrame - 160, fps, config: { damping: 10, stiffness: 280, mass: 0.4 } });
-  const c4Spring = spring({ frame: actFrame - 220, fps, config: { damping: 10, stiffness: 280, mass: 0.4 } });
+  const c1Spring = spring({ frame: actFrame - 30, fps, config: { damping: 12, stiffness: 260, mass: 0.5 } });
+  const c2Spring = spring({ frame: actFrame - 80, fps, config: { damping: 12, stiffness: 260, mass: 0.5 } });
+  const c3Spring = spring({ frame: actFrame - 130, fps, config: { damping: 12, stiffness: 260, mass: 0.5 } });
+  const c4Spring = spring({ frame: actFrame - 180, fps, config: { damping: 12, stiffness: 260, mass: 0.5 } });
+
+  // Live Lambda Worker Progress & Telemetry (Eliminating Dead Air Frames 240 - 540)
+  const workerProgress = interpolate(actFrame, [230, 480], [0, 100], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const streamFrameNum = Math.min(2700, Math.round(interpolate(actFrame, [230, 480], [120, 2700], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })));
 
   const terminalChecks = [
-    {
-      cmd: 'npx tsc --noEmit',
-      result: '0 TypeScript errors (Strict AST Verified)',
-      springVal: c1Spring,
-      color: '#38BDF8',
-    },
-    {
-      cmd: 'rea motion-lint',
-      result: '294/294 files compliant with MOTION.md (Zero linear transitions)',
-      springVal: c2Spring,
-      color: '#34D399',
-    },
-    {
-      cmd: 'rea audit-polish',
-      result: '0 overflow warnings · 1.20 hits/s audio verified',
-      springVal: c3Spring,
-      color: '#A78BFA',
-    },
-    {
-      cmd: 'rea lambda-render --multi-region',
-      result: 'ap-south-1 → us-east-1 failover ready (<3s cold start · 128 workers)',
-      springVal: c4Spring,
-      color: '#FBBF24',
-    },
+    { cmd: 'npx tsc --noEmit', result: '0 TypeScript errors (Strict AST Verified)', springVal: c1Spring, color: '#38BDF8' },
+    { cmd: 'rea motion-lint', result: '294/294 files compliant with MOTION.md', springVal: c2Spring, color: '#34D399' },
+    { cmd: 'rea audit-polish', result: '0 overflow warnings · Studio Foley verified', springVal: c3Spring, color: '#A78BFA' },
+    { cmd: 'rea lambda-render', result: 'ap-south-1 → us-east-1 ready (128 workers)', springVal: c4Spring, color: '#FBBF24' },
   ];
 
   return (
     <AbsoluteFill
       style={{
+        perspective: 1200,
         paddingTop: SAFE_ZONE_TOP,
         paddingBottom: SAFE_ZONE_BOTTOM,
         paddingLeft: 40,
@@ -1094,12 +1051,13 @@ const Act4TerminalGatekeeper: React.FC<{ frame: number; fps: number }> = ({ fram
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        opacity: interpolate(frame, [1710, 1740, 2220, 2250], [0, 1, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
+        opacity: interpolate(actFrame, [0, 16], [0, 1], { extrapolateLeft: 'clamp' }) * exitOpacity,
+        transform: `scale(${enterScale * camScale * exitScale}) rotateY(${camTiltY}deg) translateY(${camDriftY}px)`,
       }}
     >
       {/* Top Editorial Eyebrow */}
       <SafeTextContainer
-        text="CI/CD AUTOMATED GATEKEEPER"
+        text="CI/CD VALIDATION // ZERO REGRESSION GATE"
         containerWidth={SAFE_CONTENT_WIDTH}
         baseFontSize={18}
         color={SLATE_MUTED}
@@ -1109,43 +1067,74 @@ const Act4TerminalGatekeeper: React.FC<{ frame: number; fps: number }> = ({ fram
         textAlign="center"
         style={{ marginBottom: 12 }}
       />
+
+      {/* Main Authoritative Headline */}
       <SafeTextContainer
-        text="Automated Verification Suite"
+        text="Automated Quality Gatekeeper"
         containerWidth={SAFE_CONTENT_WIDTH}
-        baseFontSize={50}
+        baseFontSize={52}
         color={SLATE_DARK}
         fontWeight={900}
         fontFamily="'Playfair Display', Georgia, serif"
         textAlign="center"
-        style={{ marginBottom: 36 }}
+        style={{ marginBottom: 28 }}
       />
 
-      {/* Dark Terminal Workbench (#0F172A) */}
+      {/* Dark Terminal Workbench Container */}
       <div
         style={{
           width: SAFE_CONTENT_WIDTH,
           borderRadius: 24,
-          backgroundColor: SLATE_DARK,
-          border: '1.5px solid rgba(255, 255, 255, 0.14)',
-          boxShadow: '0 30px 80px rgba(15, 23, 42, 0.28), 0 0 40px rgba(6, 182, 212, 0.12)',
-          padding: '28px 32px',
+          backgroundColor: '#0F172A',
+          border: '1.5px solid #334155',
+          boxShadow: '0 25px 60px rgba(15, 23, 42, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+          padding: '24px 28px',
           boxSizing: 'border-box',
           display: 'flex',
           flexDirection: 'column',
-          gap: 22,
+          gap: 16,
         }}
       >
-        {/* Terminal Title Bar */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 16, borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: '#EF4444' }} />
-            <div style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: '#F59E0B' }} />
-            <div style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: '#10B981' }} />
+        {/* Terminal Header */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderBottom: '1px solid #1E293B',
+            paddingBottom: 14,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#EF4444' }} />
+            <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#F59E0B' }} />
+            <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#10B981' }} />
+            <span
+              style={{
+                marginLeft: 12,
+                color: '#94A3B8',
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 14,
+                fontWeight: 700,
+              }}
+            >
+              rea-gatekeeper // bash
+            </span>
           </div>
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 700, color: '#94A3B8' }}>
-            rea-quality-gatekeeper — bash — 1080×1920 @ 60fps
-          </span>
-          <div style={{ width: 40 }} />
+
+          <div
+            style={{
+              padding: '4px 12px',
+              borderRadius: 6,
+              backgroundColor: 'rgba(16, 185, 129, 0.15)',
+              color: EMERALD_ACCENT,
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 13,
+              fontWeight: 800,
+            }}
+          >
+            ACTIVE WORKBENCH
+          </div>
         </div>
 
         {/* Terminal Checks */}
@@ -1155,16 +1144,16 @@ const Act4TerminalGatekeeper: React.FC<{ frame: number; fps: number }> = ({ fram
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: 8,
+              gap: 4,
               opacity: interpolate(tc.springVal, [0, 1], [0.15, 1]),
             }}
           >
             {/* Command Line */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <span style={{ color: '#06B6D4', fontFamily: "'JetBrains Mono', monospace", fontSize: 20, fontWeight: 800 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ color: '#06B6D4', fontFamily: "'JetBrains Mono', monospace", fontSize: 18, fontWeight: 800 }}>
                 &gt;
               </span>
-              <span style={{ color: '#FFFFFF', fontFamily: "'JetBrains Mono', monospace", fontSize: 22, fontWeight: 700 }}>
+              <span style={{ color: '#FFFFFF', fontFamily: "'JetBrains Mono', monospace", fontSize: 19, fontWeight: 700 }}>
                 {tc.cmd}
               </span>
             </div>
@@ -1174,16 +1163,16 @@ const Act4TerminalGatekeeper: React.FC<{ frame: number; fps: number }> = ({ fram
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 12,
-                marginLeft: 20,
-                transform: `scale(${interpolate(tc.springVal, [0, 1], [0.8, 1])})`,
+                gap: 10,
+                marginLeft: 16,
+                transform: `scale(${interpolate(tc.springVal, [0, 1], [0.85, 1])})`,
                 transformOrigin: 'left center',
               }}
             >
               <div
                 style={{
-                  width: 26,
-                  height: 26,
+                  width: 22,
+                  height: 22,
                   borderRadius: 6,
                   backgroundColor: EMERALD_ACCENT,
                   color: SLATE_DARK,
@@ -1191,9 +1180,9 @@ const Act4TerminalGatekeeper: React.FC<{ frame: number; fps: number }> = ({ fram
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: 900,
-                  boxShadow: `0 0 16px ${EMERALD_ACCENT}88`,
+                  boxShadow: `0 0 12px ${EMERALD_ACCENT}88`,
                 }}
               >
                 ✔
@@ -1201,7 +1190,7 @@ const Act4TerminalGatekeeper: React.FC<{ frame: number; fps: number }> = ({ fram
               <SafeTextContainer
                 text={tc.result}
                 containerWidth={SAFE_CONTENT_WIDTH - 140}
-                baseFontSize={19}
+                baseFontSize={17}
                 color="#E2E8F0"
                 fontWeight={600}
                 fontFamily="'JetBrains Mono', monospace"
@@ -1209,13 +1198,57 @@ const Act4TerminalGatekeeper: React.FC<{ frame: number; fps: number }> = ({ fram
             </div>
           </div>
         ))}
+
+        {/* Live Lambda Distributed Render Progress Bar (Eliminating Dead Air) */}
+        {actFrame >= 210 && (
+          <div
+            style={{
+              marginTop: 6,
+              padding: '14px 18px',
+              borderRadius: 14,
+              backgroundColor: '#1E293B',
+              border: '1px solid #334155',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 8,
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 800, color: '#38BDF8' }}>
+                128 AWS LAMBDA WORKERS RENDERING PARALLEL
+              </span>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 900, color: EMERALD_ACCENT }}>
+                {Math.round(workerProgress)}% COMPLETE
+              </span>
+            </div>
+            {/* Progress Bar Track */}
+            <div style={{ width: '100%', height: 8, borderRadius: 4, backgroundColor: '#0F172A', overflow: 'hidden' }}>
+              <div
+                style={{
+                  width: `${workerProgress}%`,
+                  height: '100%',
+                  background: 'linear-gradient(90deg, #38BDF8 0%, #10B981 100%)',
+                  boxShadow: '0 0 10px #10B981',
+                }}
+              />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 2 }}>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: '#94A3B8' }}>
+                STREAMING FRAME {streamFrameNum}/2700 · JITTER: 0.00ms
+              </span>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: '#FDE68A' }}>
+                FAILOVER READY
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Floating Status Pill */}
       <div
         style={{
-          marginTop: 32,
-          padding: '14px 32px',
+          marginTop: 22,
+          padding: '12px 28px',
           borderRadius: 999,
           background: 'rgba(16, 185, 129, 0.15)',
           border: '1.5px solid rgba(16, 185, 129, 0.4)',
@@ -1225,8 +1258,8 @@ const Act4TerminalGatekeeper: React.FC<{ frame: number; fps: number }> = ({ fram
           boxShadow: '0 12px 30px rgba(16, 185, 129, 0.12)',
         }}
       >
-        <span style={{ color: EMERALD_ACCENT, fontSize: 20, fontWeight: 900 }}>✔</span>
-        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 18, fontWeight: 900, color: SLATE_DARK }}>
+        <span style={{ color: EMERALD_ACCENT, fontSize: 18, fontWeight: 900 }}>✔</span>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 900, color: SLATE_DARK }}>
           PASS RATE: 100.0% · GRADE A+ PRODUCTION CERTIFIED
         </span>
       </div>
@@ -1235,7 +1268,7 @@ const Act4TerminalGatekeeper: React.FC<{ frame: number; fps: number }> = ({ fram
 };
 
 // ---------------------------------------------------------------------------
-// Act 5: Climax 4×3 System Architecture Bento Matrix (Frames 2,250 – 2,700)
+// Act 5: Climax 4×3 System Architecture Bento Matrix (Frames 2,250 – 2,700 | 37.5s – 45.0s)
 // ---------------------------------------------------------------------------
 interface BentoTile {
   title: string;
@@ -1255,24 +1288,42 @@ const BENTO_TILES: BentoTile[] = [
   { title: 'Pixel Art', category: 'RETRO', metric: '12 FPS Integer', color: '#10B981' },
   { title: 'StyleCache', category: 'CORE AST', metric: '0-Pass A+ Lock', color: '#14B8A6' },
   { title: 'SafeText', category: 'TYPOGRAPHY', metric: '0-Overflow Clamp', color: '#6366F1' },
-  { title: 'MicroSfx', category: 'AUDIO BED', metric: '1.20 Hits/Sec', color: '#F97316' },
+  { title: 'StudioFoley', category: 'AUDIO BED', metric: '116 BPM Rhodes', color: '#F97316' },
   { title: 'Cloud Lambda', category: 'SCALE', metric: 'Multi-Region CI', color: '#0EA5E9' },
 ];
 
 const Act5BentoMatrixClimax: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) => {
-  // Act 5 spans frames 2250 to 2700 (450 frames = 7.5s)
   const actFrame = frame - 2250;
 
-  // Climax camera pull-back with heavy cinematic settling
+  // Semantic Match-Cut Zoom Entrance
+  const enterScale = interpolate(actFrame, [0, 20], [0.90, 1.0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+
+  // Continuous Camera Push-In & 3D Tilt Drift
+  const camScale = interpolate(actFrame, [0, 450], [1.0, 1.04]);
+  const camTiltY = Math.sin(frame * 0.02) * 2.0;
+  const camDriftY = Math.cos(frame * 0.016) * 6;
+
+  // Final CTA Settle Spring
   const settleSpring = spring({
-    frame: actFrame,
+    frame: actFrame - 135,
     fps,
-    config: { damping: 16, stiffness: 130, mass: 1.0 },
+    config: motionTokens.spring.snappy,
   });
+
+  // Continuous Diagonal Specular Shimmer Wave (sweeping every 90 frames = 1.5s)
+  const shimmerCycle = (actFrame % 90) / 90;
+  const shimmerPos = interpolate(shimmerCycle, [0, 1], [-120, 220]);
+
+  // Simulated Interactive Developer Cursor path across modules
+  const cursorProgress = interpolate(actFrame, [140, 260, 310], [0, 1, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const cursorX = interpolate(cursorProgress, [0, 0.4, 0.8, 1], [240, 680, 520, 520]);
+  const cursorY = interpolate(cursorProgress, [0, 0.4, 0.8, 1], [380, 520, 840, 840]);
+  const isCtaClicked = actFrame >= 270;
 
   return (
     <AbsoluteFill
       style={{
+        perspective: 1200,
         paddingTop: SAFE_ZONE_TOP,
         paddingBottom: SAFE_ZONE_BOTTOM,
         paddingLeft: 40,
@@ -1281,13 +1332,14 @@ const Act5BentoMatrixClimax: React.FC<{ frame: number; fps: number }> = ({ frame
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        opacity: interpolate(frame, [2250, 2280], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
-        transform: `scale(${interpolate(settleSpring, [0, 1], [1.08, 1])}) translateY(${interpolate(settleSpring, [0, 1], [30, 0])}px)`,
+        opacity: interpolate(actFrame, [0, 16], [0, 1], { extrapolateLeft: 'clamp' }),
+        transform: `scale(${enterScale * camScale}) rotateY(${camTiltY}deg) translateY(${camDriftY}px)`,
+        position: 'relative',
       }}
     >
-      {/* Top Climax Header */}
+      {/* Top Editorial Eyebrow */}
       <SafeTextContainer
-        text="AUTONOMOUS MOTION DESIGN ARCHITECTURE"
+        text="REA ARCHITECTURE MATRIX // 12 MODULES"
         containerWidth={SAFE_CONTENT_WIDTH}
         baseFontSize={18}
         color={SLATE_MUTED}
@@ -1297,6 +1349,8 @@ const Act5BentoMatrixClimax: React.FC<{ frame: number; fps: number }> = ({ frame
         textAlign="center"
         style={{ marginBottom: 10 }}
       />
+
+      {/* Main Authoritative Headline */}
       <SafeTextContainer
         text="REA v2.4.0 Studio Matrix"
         containerWidth={SAFE_CONTENT_WIDTH}
@@ -1305,18 +1359,19 @@ const Act5BentoMatrixClimax: React.FC<{ frame: number; fps: number }> = ({ frame
         fontWeight={900}
         fontFamily="'Playfair Display', Georgia, serif"
         textAlign="center"
-        style={{ marginBottom: 28 }}
+        style={{ marginBottom: 24 }}
       />
 
-      {/* 4×3 Bento Grid (12 Connected Modules) */}
+      {/* 4×3 Bento Grid (12 Connected Modules) with Diagonal Shimmer */}
       <div
         style={{
           width: SAFE_CONTENT_WIDTH,
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: 16,
+          gap: 14,
           boxSizing: 'border-box',
-          marginBottom: 32,
+          marginBottom: 26,
+          position: 'relative',
         }}
       >
         {BENTO_TILES.map((tile, idx) => {
@@ -1331,20 +1386,32 @@ const Act5BentoMatrixClimax: React.FC<{ frame: number; fps: number }> = ({ frame
               key={idx}
               style={{
                 borderRadius: 18,
-                background: 'rgba(255, 255, 255, 0.86)',
+                background: 'rgba(255, 255, 255, 0.88)',
                 backdropFilter: 'blur(24px)',
                 border: '1.5px solid rgba(255, 255, 255, 0.95)',
                 boxShadow: '0 12px 30px rgba(15, 23, 42, 0.06)',
-                padding: '16px 18px',
+                padding: '14px 16px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 boxSizing: 'border-box',
-                minHeight: 115,
+                minHeight: 110,
                 transform: `scale(${interpolate(tileSpring, [0, 1], [0.85, 1])})`,
                 opacity: interpolate(tileSpring, [0, 1], [0, 1]),
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
+              {/* Shimmer Light Bar */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  pointerEvents: 'none',
+                  background: `linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.4) ${shimmerPos}%, transparent ${shimmerPos + 35}%)`,
+                }}
+              />
+
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <span
                   style={{
@@ -1370,7 +1437,7 @@ const Act5BentoMatrixClimax: React.FC<{ frame: number; fps: number }> = ({ frame
               <SafeTextContainer
                 text={tile.title}
                 containerWidth={SAFE_CONTENT_WIDTH / 3 - 50}
-                baseFontSize={20}
+                baseFontSize={19}
                 color={SLATE_DARK}
                 fontWeight={800}
                 fontFamily="'Plus Jakarta Sans', sans-serif"
@@ -1379,7 +1446,7 @@ const Act5BentoMatrixClimax: React.FC<{ frame: number; fps: number }> = ({ frame
               <SafeTextContainer
                 text={tile.metric}
                 containerWidth={SAFE_CONTENT_WIDTH / 3 - 50}
-                baseFontSize={14}
+                baseFontSize={13}
                 color={SLATE_MUTED}
                 fontWeight={600}
                 fontFamily="'JetBrains Mono', monospace"
@@ -1395,16 +1462,19 @@ const Act5BentoMatrixClimax: React.FC<{ frame: number; fps: number }> = ({ frame
           width: SAFE_CONTENT_WIDTH,
           borderRadius: 999,
           background: SLATE_DARK,
-          border: '2px solid rgba(255, 255, 255, 0.2)',
-          boxShadow: '0 20px 60px rgba(15, 23, 42, 0.25), 0 0 30px rgba(16, 185, 129, 0.2)',
-          padding: '20px 32px',
+          border: isCtaClicked ? '2.5px solid #10B981' : '2px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: isCtaClicked
+            ? '0 20px 60px rgba(16, 185, 129, 0.4), 0 0 35px #10B981'
+            : '0 20px 60px rgba(15, 23, 42, 0.25)',
+          padding: '18px 30px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           gap: 16,
           boxSizing: 'border-box',
           opacity: interpolate(settleSpring, [0.3, 1], [0, 1]),
-          transform: `scale(${interpolate(settleSpring, [0.3, 1], [0.92, 1])})`,
+          transform: `scale(${isCtaClicked ? 0.98 : interpolate(settleSpring, [0.3, 1], [0.92, 1])})`,
+          transition: 'none',
         }}
       >
         <div
@@ -1421,6 +1491,7 @@ const Act5BentoMatrixClimax: React.FC<{ frame: number; fps: number }> = ({ frame
             fontSize: 20,
             fontWeight: 900,
             flexShrink: 0,
+            boxShadow: `0 0 16px ${EMERALD_ACCENT}`,
           }}
         >
           ✔
@@ -1428,13 +1499,32 @@ const Act5BentoMatrixClimax: React.FC<{ frame: number; fps: number }> = ({ frame
         <SafeTextContainer
           text="REA v2.4.0 — Your Autonomous Motion Design Studio"
           containerWidth={SAFE_CONTENT_WIDTH - 120}
-          baseFontSize={24}
+          baseFontSize={23}
           color="#FFFFFF"
           fontWeight={800}
           fontFamily="'Plus Jakarta Sans', sans-serif"
           textAlign="center"
         />
       </div>
+
+      {/* Simulated Interactive Developer Cursor (Frames 140 - 320) */}
+      {actFrame >= 130 && (
+        <div
+          style={{
+            position: 'absolute',
+            top: cursorY,
+            left: cursorX,
+            pointerEvents: 'none',
+            zIndex: 99,
+            transform: isCtaClicked ? 'scale(0.88)' : 'scale(1)',
+            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.4))',
+          }}
+        >
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M4 4L10.5 20L13.5 13.5L20 10.5L4 4Z" fill="#10B981" stroke="#FFFFFF" strokeWidth="2" />
+          </svg>
+        </div>
+      )}
     </AbsoluteFill>
   );
 };
@@ -1446,51 +1536,31 @@ export const ReaSystemArchitectureShowcase: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Dynamic ducking calculation: ducks music during high-impact moments
-  const musicVolume = useMemo(() => {
-    // Duck at Act transitions (frames ~450, 1080, 1710, 2250)
-    if (
-      (frame >= 430 && frame <= 470) ||
-      (frame >= 1060 && frame <= 1100) ||
-      (frame >= 1690 && frame <= 1730) ||
-      (frame >= 2230 && frame <= 2270)
-    ) {
-      return 0.25;
-    }
-    return 0.52;
-  }, [frame]);
-
   return (
     <AbsoluteFill style={{ backgroundColor: CANVAS_BG, overflow: 'hidden' }}>
-      {/* 1. Event-Locked 44.1 kHz Frame-Exact Foley Bed (105 Cues Aligned 1:1) */}
+      {/* 1. Master Audio Bed: 116 BPM Warm Rhodes/Sub-Bass Underscore + 1:1 Tactile Foley Cues */}
       <Audio
-        src={staticFile('audio/rea_showcase_event_locked_sfx.wav')}
-        volume={0.95}
+        src={staticFile('audio/rea_master_studio_mix.wav')}
+        volume={1.0}
       />
 
-      {/* 2. Ambient Electronic / Lo-Fi Studio Underscore (Ducked to 0.20 for Vocal/SFX Clarity) */}
-      <Audio
-        src={staticFile('audio/rea_architecture_music_45s.wav')}
-        volume={musicVolume * 0.40}
-      />
-
-      {/* 3. Base High-Key Oyster Canvas + 4-Point Chromatic Mesh */}
+      {/* 2. Base High-Key Oyster Canvas + 4-Point Chromatic Mesh */}
       <OysterChromaticMesh frame={frame} />
 
       {/* Act 1: The Hook — "Prompts to Broadcast Video" (Frames 0 – 450 | 0.0s – 7.5s) */}
-      {frame < 460 && <Act1HookPipeline frame={frame} fps={fps} />}
+      {frame < 452 && <Act1HookPipeline frame={frame} fps={fps} />}
 
       {/* Act 2: The 11 Certified Studio Engines (Frames 450 – 1,080 | 7.5s – 18.0s) */}
-      {frame >= 440 && frame < 1090 && <Act2EngineCoverflow frame={frame} fps={fps} />}
+      {frame >= 445 && frame < 1082 && <Act2EngineCoverflow frame={frame} fps={fps} />}
 
       {/* Act 3: The Polish & Determinism Core (Frames 1,080 – 1,710 | 18.0s – 28.5s) */}
-      {frame >= 1070 && frame < 1720 && <Act3DeterminismWorkbench frame={frame} fps={fps} />}
+      {frame >= 1075 && frame < 1712 && <Act3DeterminismWorkbench frame={frame} fps={fps} />}
 
       {/* Act 4: Automated Quality Gatekeeper & Cloud Scale (Frames 1,710 – 2,250 | 28.5s – 37.5s) */}
-      {frame >= 1700 && frame < 2260 && <Act4TerminalGatekeeper frame={frame} fps={fps} />}
+      {frame >= 1705 && frame < 2252 && <Act4TerminalGatekeeper frame={frame} fps={fps} />}
 
       {/* Act 5: Climax 4×3 System Architecture Bento Matrix (Frames 2,250 – 2,700 | 37.5s – 45.0s) */}
-      {frame >= 2240 && <Act5BentoMatrixClimax frame={frame} fps={fps} />}
+      {frame >= 2245 && <Act5BentoMatrixClimax frame={frame} fps={fps} />}
     </AbsoluteFill>
   );
 };
