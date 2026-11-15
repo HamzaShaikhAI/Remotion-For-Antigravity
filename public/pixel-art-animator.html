@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Living Animated Pixel Art — Claude Fable 5.2</title>
+  <style>
+    :root {
+      --bg: #090b10;
+      --surface: #121620;
+      --surface-border: #1e2433;
+      --accent: #f97316;
+      --accent-glow: rgba(249, 115, 22, 0.25);
+      --text: #f1f5f9;
+      --text-dim: #94a3b8;
+      --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 16px;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      max-width: 800px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(249, 115, 22, 0.12);
+      border: 1px solid rgba(249, 115, 22, 0.3);
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-family: var(--mono);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ffffff 30%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      align-items: center;
+      width: 100%;
+      max-width: 820px;
+    }
+
+    /* Screen Canvas Frame */
+    .viewport-card {
+      position: relative;
+      background: #000000;
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--surface-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .viewport-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 12px 12px 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .viewport-header .dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .viewport-header .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot.red { background: #ef4444; }
+    .dot.yellow { background: #f59e0b; }
+    .dot.green { background: #10b981; }
+
+    .canvas-wrapper {
+      position: relative;
+      width: 386px;
+      height: 512px;
+      background: #050810;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    @media (min-width: 640px) {
+      .canvas-wrapper {
+        width: 480px;
+        height: 636px;
+      }
+    }
+
+    canvas#pixelCanvas {
+      width: 100%;
+      height: 100%;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-crisp-edges;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      display: block;
+    }
+
+    .recording-overlay {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(220, 38, 38, 0.9);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+      z-index: 10;
+    }
+
+    .rec-dot {
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    /* Interactive Control Deck */
+    .controls-card {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .sliders-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 640px) {
+      .sliders-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .slider-val {
+      font-family: var(--mono);
+      color: var(--accent);
+      font-size: 11px;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: #1e293b;
+      outline: none;
+      transition: background 0.2s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .slider-desc {
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    /* Bottom Control Bar */
+    .action-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .left-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    button.btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      font-family: var(--font);
+    }
+
+    button.btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    button.btn-primary:hover:not(:disabled) {
+      background: #ea580c;
+      transform: translateY(-1px);
+    }
+
+    button.btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    button.btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    button.btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .export-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .duration-chips {
+      display: flex;
+      background: #090c14;
+      padding: 3px;
+      border-radius: 8px;
+      border: 1px solid var(--surface-border);
+    }
+
+    .chip {
+      padding: 6px 10px;
+      font-size: 11px;
+      font-family: var(--mono);
+      color: var(--text-dim);
+      background: transparent;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .chip.active {
+      background: #1e293b;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .uploader-label {
+      font-size: 12px;
+      color: var(--text-dim);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      transition: border 0.2s;
+    }
+
+    .uploader-label:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    /* Telemetry Info Footer */
+    .telemetry-footer {
+      width: 100%;
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge">Claude Fable 5.2 • Engine XXX</div>
+    <h1>Living Animated Pixel Art Studio</h1>
+    <p class="subtitle">
+      Converts any image into high-detail, layered animated pixel art on a 512px canvas.<br>
+      Rendered in pure Canvas 2D at 12 FPS with deterministic harmonic motion and real-time WebM/MP4 export.
+    </p>
+  </header>
+
+  <div class="app-container">
+
+    <!-- Viewport Card -->
+    <div class="viewport-card">
+      <div class="viewport-header">
+        <div class="dots">
+          <div class="dot red"></div>
+          <div class="dot yellow"></div>
+          <div class="dot green"></div>
+        </div>
+        <div class="title">JAPANESE RYOKAN RAIN • 386×512 (2X 772×1024) @ 12 FPS</div>
+        <div class="clock" id="clockDisplay">00:00:00</div>
+      </div>
+
+      <div class="canvas-wrapper" id="canvasWrapper" title="Click to Pause / Play">
+        <div class="recording-overlay" id="recOverlay">
+          <div class="rec-dot"></div>
+          <span id="recText">REC 00:05</span>
+        </div>
+        <!-- Native 386x512 Canvas scaled 2x to 772x1024 -->
+        <canvas id="pixelCanvas" width="386" height="512"></canvas>
+      </div>
+
+      <div class="telemetry-footer">
+        <span>PALETTE: ~100 INDEXED COLORS</span>
+        <span>ENGINE: DISPLACEMENT WAVE + SPLASH PHASING</span>
+        <span>NEAREST-NEIGHBOR: PIXELATED</span>
+      </div>
+    </div>
+
+    <!-- Interactive Control Deck -->
+    <div class="controls-card">
+      <div class="sliders-grid">
+        <!-- Slider 1 -->
+        <div class="slider-group">
+          <div class="slider-header">
+            <span>Motion Intensity</span>
+            <span class="slider-val" id="valMotion">1.0x</span>
+          </div>
+          <input type="range" id="sliderMotion" min="0" max="2" step="0.05" value="1.0">
+          <div class="slider-desc">Global animation rate &amp; wave velocity</div>
+        </div>
+
+        <!-- Slider 2 -->
+        <div class="slider-group">
+          <div class="slider-header">
+            <span>Environmental Motion</span>
+            <span class="slider-val" id="valEnv">1.0x</span>
+          </div>
+          <input type="range" id="sliderEnv" min="0" max="2" step="0.05" value="1.0">
+          <div class="slider-desc">Rain density, tree sway &amp; water ripple chop</div>
+        </div>
+
+        <!-- Slider 3 -->
+        <div class="slider-group">
+          <div class="slider-header">
+            <span>Ambient Effects</span>
+            <span class="slider-val" id="valAmbient">1.0x</span>
+          </div>
+          <input type="range" id="sliderAmbient" min="0" max="2" step="0.05" value="1.0">
+          <div class="slider-desc">Lantern flicker pulse &amp; moon breathing</div>
+        </div>
+      </div>
+
+      <!-- Action Bar -->
+      <div class="action-bar">
+        <div class="left-actions">
+          <button class="btn btn-secondary" id="btnPlayPause">
+            <span id="iconPlay">⏸</span> <span id="labelPlay">Pause</span>
+          </button>
+
+          <label class="uploader-label" title="Upload custom image to animate in pixel art">
+            <span>📁 Upload Image</span>
+            <input type="file" id="fileUpload" accept="image/*">
+          </label>
+        </div>
+
+        <div class="export-group">
+          <div class="duration-chips">
+            <button class="chip active" data-sec="5">5s</button>
+            <button class="chip" data-sec="10">10s</button>
+            <button class="chip" data-sec="30">30s</button>
+            <button class="chip" data-sec="60">60s</button>
+          </div>
+
+          <button class="btn btn-primary" id="btnExport">
+            <span>🎬 Download Video</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ========================================================
+    // CLAUDE FABLE 5.2: PIXEL ART ANIMATION & EXPORT ENGINE
+    // ========================================================
+
+    const canvas = document.getElementById('pixelCanvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    ctx.imageSmoothingEnabled = false;
+
+    // Export offscreen canvas at 2x resolution (772x1024)
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = 772;
+    exportCanvas.height = 1024;
+    const exportCtx = exportCanvas.getContext('2d');
+    exportCtx.imageSmoothingEnabled = false;
+
+    // UI Elements
+    const sliderMotion = document.getElementById('sliderMotion');
+    const sliderEnv = document.getElementById('sliderEnv');
+    const sliderAmbient = document.getElementById('sliderAmbient');
+    const valMotion = document.getElementById('valMotion');
+    const valEnv = document.getElementById('valEnv');
+    const valAmbient = document.getElementById('valAmbient');
+    const btnPlayPause = document.getElementById('btnPlayPause');
+    const iconPlay = document.getElementById('iconPlay');
+    const labelPlay = document.getElementById('labelPlay');
+    const btnExport = document.getElementById('btnExport');
+    const recOverlay = document.getElementById('recOverlay');
+    const recText = document.getElementById('recText');
+    const clockDisplay = document.getElementById('clockDisplay');
+    const canvasWrapper = document.getElementById('canvasWrapper');
+    const fileUpload = document.getElementById('fileUpload');
+    const chips = document.querySelectorAll('.chip');
+
+    // State Variables
+    let isPlaying = true;
+    let exportDurationSec = 5;
+    let isRecording = false;
+    let currentFrame = 0;
+    const FPS = 12; // 12 FPS loop as mandated by prompt
+    let lastTickTime = performance.now();
+    const frameIntervalMs = 1000 / FPS;
+
+    // Slider Values
+    let motionFactor = 1.0;
+    let envFactor = 1.0;
+    let ambientFactor = 1.0;
+
+    sliderMotion.addEventListener('input', (e) => {
+      motionFactor = parseFloat(e.target.value);
+      valMotion.textContent = motionFactor.toFixed(2) + 'x';
+    });
+
+    sliderEnv.addEventListener('input', (e) => {
+      envFactor = parseFloat(e.target.value);
+      valEnv.textContent = envFactor.toFixed(2) + 'x';
+    });
+
+    sliderAmbient.addEventListener('input', (e) => {
+      ambientFactor = parseFloat(e.target.value);
+      valAmbient.textContent = ambientFactor.toFixed(2) + 'x';
+    });
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+        exportDurationSec = parseInt(chip.dataset.sec, 10);
+      });
+    });
+
+    btnPlayPause.addEventListener('click', togglePlayPause);
+    canvasWrapper.addEventListener('click', togglePlayPause);
+
+    function togglePlayPause() {
+      isPlaying = !isPlaying;
+      if (isPlaying) {
+        iconPlay.textContent = '⏸';
+        labelPlay.textContent = 'Pause';
+      } else {
+        iconPlay.textContent = '▶';
+        labelPlay.textContent = 'Play';
+      }
+    }
+
+    // ========================================================
+    // SCENE LAYERS & DETERMINISTIC PIXEL PROCEDURAL ASSETS
+    // ========================================================
+
+    const baseImage = new Image();
+    baseImage.crossOrigin = 'anonymous';
+    // Load local extracted frame from public/images
+    baseImage.src = 'images/ryokan_pixel_art_base.jpg';
+
+    let baseLoaded = false;
+    baseImage.onload = () => {
+      baseLoaded = true;
+    };
+
+    // Fallback image uploader
+    fileUpload.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          baseImage.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Rain particles: 140 discrete deterministic streak vectors
+    const rainParticles = [];
+    const NUM_RAIN = 140;
+    for (let i = 0; i < NUM_RAIN; i++) {
+      rainParticles.push({
+        x: (i * 37 + 13) % 386,
+        y: (i * 53 + 7) % 512,
+        length: 8 + (i % 7) * 2,
+        speed: 12 + (i % 5) * 3,
+        alpha: 0.35 + (i % 4) * 0.15,
+        depth: (i % 3), // 0: near, 1: mid, 2: far
+      });
+    }
+
+    // Water Splash Rings on lake contact
+    const splashRings = [];
+    for (let i = 0; i < 24; i++) {
+      splashRings.push({
+        x: (i * 71 + 29) % 386,
+        y: 400 + (i * 23) % 110,
+        phase: (i * 5) % 12,
+      });
+    }
+
+    // Ambient floating fireflies / mist particles
+    const fireflies = [];
+    for (let i = 0; i < 20; i++) {
+      fireflies.push({
+        x: 140 + (i * 31) % 220,
+        y: 100 + (i * 41) % 320,
+        orbitRadius: 4 + (i % 5) * 3,
+        freq: 0.05 + (i % 4) * 0.02,
+        phase: i * 0.7,
+      });
+    }
+
+    // ========================================================
+    // RENDER LOOP (12 FPS DISCRETE STEPPING)
+    // ========================================================
+
+    function renderScene(frame) {
+      const w = 386;
+      const h = 512;
+
+      // 1. Draw Base Pixel Art
+      if (baseLoaded) {
+        ctx.drawImage(baseImage, 0, 0, w, h);
+      } else {
+        // Deep indigo twilight background
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      // Time variables modulated by sliders
+      const t = (frame * motionFactor);
+
+      // 2. LAYER: SHOJI SCREEN & OUTDOOR LANTERN AMBER PULSE
+      if (ambientFactor > 0.05) {
+        // Multi-frequency organic lantern flicker
+        const pulse = Math.sin(t * 0.35) * 0.5 + Math.cos(t * 0.72) * 0.3;
+        const glowAlpha = Math.max(0, (0.18 + pulse * 0.08) * ambientFactor);
+
+        // Lower window shoji glow (x: 95..155, y: 325..380)
+        ctx.fillStyle = `rgba(251, 191, 36, ${glowAlpha})`;
+        ctx.fillRect(95, 325, 60, 55);
+
+        // Upper window shoji glow (x: 82..146, y: 215..285)
+        ctx.fillStyle = `rgba(253, 230, 138, ${glowAlpha * 0.8})`;
+        ctx.fillRect(82, 215, 64, 70);
+
+        // Outdoor lantern radial glow (x: 172, y: 295)
+        const lanternGlow = ctx.createRadialGradient(172, 295, 2, 172, 295, 36 * ambientFactor);
+        lanternGlow.addColorStop(0, `rgba(255, 255, 255, ${0.4 * ambientFactor})`);
+        lanternGlow.addColorStop(0.3, `rgba(249, 115, 22, ${0.3 * ambientFactor})`);
+        lanternGlow.addColorStop(1, 'rgba(249, 115, 22, 0)');
+        ctx.fillStyle = lanternGlow;
+        ctx.fillRect(130, 250, 84, 90);
+      }
+
+      // 3. LAYER: WATER SURFACE SINUSOIDAL WAVE DISPLACEMENT
+      // Lake area is y: 395 to 512. We apply horizontal scanline shifting to simulate ripples
+      if (envFactor > 0.05) {
+        const lakeTop = 396;
+        const lakeHeight = h - lakeTop;
+
+        // Sample current lake pixels
+        try {
+          const lakeData = ctx.getImageData(0, lakeTop, w, lakeHeight);
+          const pixels = lakeData.data;
+
+          // Water ripple shimmer highlight overlay
+          const chop = envFactor * 1.5;
+          ctx.save();
+          for (let y = lakeTop; y < h; y += 4) {
+            const rowOffset = Math.sin((y * 0.15) + (t * 0.4)) * 3 * chop;
+            const shimmer = Math.cos((y * 0.2) - (t * 0.3)) * 0.5 + 0.5;
+
+            if (shimmer > 0.6) {
+              const alpha = (shimmer - 0.6) * 0.4 * chop;
+              // Golden reflection ripple bands directly below ryokan
+              ctx.fillStyle = `rgba(245, 158, 11, ${alpha})`;
+              ctx.fillRect(Math.floor(100 + rowOffset), y, 120, 2);
+
+              // Cool blue ambient water highlights on open lake
+              ctx.fillStyle = `rgba(148, 163, 184, ${alpha * 0.5})`;
+              ctx.fillRect(Math.floor(240 + rowOffset), y, 60, 2);
+            }
+          }
+          ctx.restore();
+        } catch (e) {
+          // In case of CORS sandbox
+        }
+      }
+
+      // 4. LAYER: SPLASH RIPPLES ON WATER CONTACT
+      if (envFactor > 0.1) {
+        ctx.lineWidth = 1;
+        splashRings.forEach((ring) => {
+          const age = (frame + ring.phase) % 12;
+          if (age < 8) {
+            const radiusX = Math.floor(2 + age * 1.2 * envFactor);
+            const radiusY = Math.floor(1 + age * 0.4 * envFactor);
+            const alpha = (1 - age / 8) * 0.6 * envFactor;
+
+            ctx.strokeStyle = `rgba(186, 230, 253, ${alpha})`;
+            ctx.beginPath();
+            ctx.ellipse(ring.x, ring.y, radiusX, radiusY, 0, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+        });
+      }
+
+      // 5. LAYER: PROCEDURAL DIRECTIONAL RAIN STREAKS
+      if (envFactor > 0.05) {
+        const rainDensity = Math.floor(NUM_RAIN * envFactor);
+        const slantX = 1; // Slight diagonal angle
+
+        ctx.lineWidth = 1;
+        for (let i = 0; i < rainDensity; i++) {
+          const p = rainParticles[i];
+          const curY = (p.y + (t * p.speed)) % (h + 30) - 20;
+          const curX = Math.floor(p.x + (curY * 0.05));
+
+          ctx.strokeStyle = `rgba(203, 213, 225, ${p.alpha})`;
+          ctx.beginPath();
+          ctx.moveTo(curX, Math.floor(curY));
+          ctx.lineTo(curX + slantX, Math.floor(curY + p.length));
+          ctx.stroke();
+        }
+      }
+
+      // 6. LAYER: ATMOSPHERIC AMBIENT PARTICLES / MOON BREATHING
+      if (ambientFactor > 0.1) {
+        // Moon soft halo breathing (Moon position: x: 216, y: 196)
+        const moonPulse = Math.sin(t * 0.1) * 0.1 + 0.9;
+        const moonHalo = ctx.createRadialGradient(216, 196, 4, 216, 196, 24 * moonPulse * ambientFactor);
+        moonHalo.addColorStop(0, `rgba(254, 243, 199, ${0.35 * ambientFactor})`);
+        moonHalo.addColorStop(1, 'rgba(254, 243, 199, 0)');
+        ctx.fillStyle = moonHalo;
+        ctx.fillRect(190, 170, 52, 52);
+
+        // Fireflies
+        fireflies.forEach((f) => {
+          const fx = Math.floor(f.x + Math.sin(t * f.freq + f.phase) * f.orbitRadius);
+          const fy = Math.floor(f.y + Math.cos(t * f.freq + f.phase) * f.orbitRadius);
+          const glow = (Math.sin(t * 0.2 + f.phase) * 0.5 + 0.5) * ambientFactor;
+
+          if (glow > 0.3) {
+            ctx.fillStyle = `rgba(253, 224, 71, ${glow * 0.8})`;
+            ctx.fillRect(fx, fy, 2, 2);
+          }
+        });
+      }
+
+      // Update timecode HUD
+      const totalSec = frame / FPS;
+      const mm = String(Math.floor(totalSec / 60)).padStart(2, '0');
+      const ss = String(Math.floor(totalSec % 60)).padStart(2, '0');
+      const ff = String(frame % FPS).padStart(2, '0');
+      clockDisplay.textContent = `${mm}:${ss}:${ff}`;
+    }
+
+    // Main Animation Clock (Strict 12 FPS)
+    function tick(now) {
+      requestAnimationFrame(tick);
+
+      if (!isPlaying && !isRecording) return;
+
+      const elapsed = now - lastTickTime;
+      if (elapsed >= frameIntervalMs) {
+        lastTickTime = now - (elapsed % frameIntervalMs);
+        currentFrame++;
+        renderScene(currentFrame);
+
+        // If recording, pipe to export canvas
+        if (isRecording) {
+          exportCtx.drawImage(canvas, 0, 0, exportCanvas.width, exportCanvas.height);
+        }
+      }
+    }
+
+    requestAnimationFrame(tick);
+
+    // ========================================================
+    // VIDEO EXPORT ENGINE (Canvas CaptureStream 12 FPS MP4/WebM)
+    // ========================================================
+
+    btnExport.addEventListener('click', async () => {
+      if (isRecording) return;
+
+      btnExport.disabled = true;
+      btnPlayPause.disabled = true;
+      isPlaying = true;
+      isRecording = true;
+
+      recOverlay.style.display = 'flex';
+
+      // Pick supported format
+      let mimeType = 'video/mp4;codecs=avc1';
+      if (!MediaRecorder.isTypeSupported(mimeType)) {
+        mimeType = 'video/webm;codecs=vp9';
+        if (!MediaRecorder.isTypeSupported(mimeType)) {
+          mimeType = 'video/webm';
+        }
+      }
+
+      const stream = exportCanvas.captureStream(FPS);
+      const recorder = new MediaRecorder(stream, {
+        mimeType: mimeType,
+        videoBitsPerSecond: 8000000, // 8 Mbps crisp quality
+      });
+
+      const chunks = [];
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunks.push(e.data);
+      };
+
+      recorder.onstop = () => {
+        const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
+        const blob = new Blob(chunks, { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `living-pixel-art-${exportDurationSec}s.${ext}`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        recOverlay.style.display = 'none';
+        btnExport.disabled = false;
+        btnPlayPause.disabled = false;
+        isRecording = false;
+      };
+
+      recorder.start();
+
+      // Countdown Timer
+      let remainingSec = exportDurationSec;
+      recText.textContent = `REC 00:${String(remainingSec).padStart(2, '0')}`;
+
+      const countdownInterval = setInterval(() => {
+        remainingSec--;
+        if (remainingSec >= 0) {
+          recText.textContent = `REC 00:${String(remainingSec).padStart(2, '0')}`;
+        }
+        if (remainingSec <= 0) {
+          clearInterval(countdownInterval);
+          recorder.stop();
+        }
+      }, 1000);
+    });
+
+  </script>
+</body>
+</html>

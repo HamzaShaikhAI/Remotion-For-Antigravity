@@ -4586,6 +4586,69 @@ async function handleGsapLab(rawArgs) {
   }
 }
 
+async function handlePixelArt(rawArgs) {
+  const flags = rawArgs.filter((a) => a.startsWith('-'));
+  const positional = rawArgs.filter((a) => !a.startsWith('-'));
+  const artTitle = positional[1] || 'Living Animated Pixel Art';
+  const outArg = flags.find((a) => a.startsWith('--out='))?.split('=')[1] || 'living-pixel-art-loop.mp4';
+  const stillArg = flags.find((a) => a.startsWith('--still'));
+  const isStudio = flags.includes('--studio');
+  const isPreview = flags.includes('--preview');
+  const isRender = flags.includes('--render');
+  const isHtml = flags.includes('--html');
+  const forceArg = flags.includes('--force');
+
+  console.log(`\n${colors.bold}${colors.cyan}🎮 [REA Claude Fable 5.2 Living Animated Pixel Art Engine XXX]${colors.reset}`);
+  console.log(`📌 Topic Title: "${colors.yellow}${artTitle}${colors.reset}"`);
+  console.log(`⏱  Duration: 10.00s @ 12.00 FPS (120 frames, 772x1024 2x Crisp Pixel Canvas)`);
+  console.log(`🎨 Architecture & Pipeline:`);
+  console.log(`   ├── Grid: Max 512px (386x512) scaled 2x nearest-neighbor to 772x1024`);
+  console.log(`   ├── Palette: ~100 sampled scene colors (indigo twilight, amber shoji, lantern gold)`);
+  console.log(`   ├── Animation: 12 FPS discrete phase-stepping (directional rain, wave shimmer, splash rings)`);
+  console.log(`   ├── Controls: Motion Intensity (1.0x), Environmental Motion (1.0x), Ambient Effects (1.0x)`);
+  console.log(`   └── Interactive App: public/pixel-art-animator.html (Canvas 2D + MediaRecorder)`);
+
+  const compId = isStudio ? 'LivingPixelArtStudioShowcase' : 'LivingPixelArtLoop';
+  const issues = handleValidate(compId, true);
+  if (issues.length > 0) {
+    logError(`Validation found issues in ${compId}:`);
+    issues.forEach((iss) => console.log(`  - ${iss}`));
+    process.exit(1);
+  }
+  logSuccess(`${compId} validated! 0 staticFile or rendering collisions.`);
+
+  if (isHtml) {
+    console.log(`\n🌐 Standalone interactive HTML app ready at: ${colors.green}public/pixel-art-animator.html${colors.reset}`);
+    return;
+  }
+
+  if (stillArg) {
+    const frameNum = stillArg.split('=')[1] || '12';
+    const stillOut = outArg.endsWith('.mp4') ? `pixelart-still-f${frameNum}.jpeg` : outArg;
+    console.log(`\n📸 Exporting verification still at frame ${frameNum}...`);
+    handleStill(['still', compId, stillOut, `--frame=${frameNum}`]);
+    return;
+  }
+
+  if (isPreview) {
+    console.log(`\n📺 Launching Remotion Studio for Living Pixel Art preview...`);
+    handlePreview(['preview', 'src/compositions/LivingPixelArtShowcase.tsx']);
+    return;
+  }
+
+  if (isRender) {
+    console.log(`\n🚀 Compiling broadcast master pixel art loop: ${outArg}...`);
+    const extraArgs = forceArg ? ['--force'] : [];
+    handleRender(compId, outArg, extraArgs);
+  } else {
+    console.log(`\n💡 ${colors.dim}To render pure 12 FPS loop MP4:     ${colors.reset}${colors.green}rea pixel-art --render --out=pixel-loop.mp4${colors.reset}`);
+    console.log(`💡 ${colors.dim}To render full studio showcase:     ${colors.reset}${colors.green}rea pixel-art --render --studio --out=pixel-studio.mp4${colors.reset}`);
+    console.log(`💡 ${colors.dim}To export a still frame:            ${colors.reset}${colors.green}rea pixel-art --still=12 --out=rain.jpeg${colors.reset}`);
+    console.log(`💡 ${colors.dim}To open interactive HTML app:       ${colors.reset}${colors.green}rea pixel-art --html${colors.reset}`);
+    console.log(`💡 ${colors.dim}To preview in Remotion Studio:      ${colors.reset}${colors.green}rea pixel-art --preview${colors.reset}`);
+  }
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -4606,6 +4669,7 @@ ${colors.bold}EDITORIAL INTUITION & TASTE COMMANDS (V2.2):${colors.reset}
   ${colors.green}intuition-fork${colors.reset}                        Platform Forks: Tailor for TikTok (15s), Shorts (30s) & Reels (20s)
 
 ${colors.bold}NEXT-GEN GENERATIVE & INTERACTIVE COMMANDS (V2.3):${colors.reset}
+  ${colors.green}pixel-art [topic] [--render|--still|--html]${colors.reset} Claude Fable 5.2 Living Animated Pixel Art Engine (12 FPS, 512px Grid)
   ${colors.green}gsap-lab [topic] [--render|--still]${colors.reset}         Claude GSAP Motion Design Lab Studio Engine (6 Editable Controls)
   ${colors.green}ricksclips [topic] [--render|--still]${colors.reset}       RicksClips Hybrid 2.5D Western Storytelling Engine (150M-View Formula)
   ${colors.green}robotics [model] [--render|--still]${colors.reset}         Industrial Robotics & Subsea HUD Simulator Engine (Pelagos OC-8)
@@ -4921,6 +4985,11 @@ async function main() {
     case 'gsaplab':
     case 'motiondesignlab':
       await handleGsapLab(args);
+      break;
+    case 'pixel-art':
+    case 'pixelart':
+    case 'fable':
+      await handlePixelArt(args);
       break;
     case 'motion-lint':
     case 'motionlint': {

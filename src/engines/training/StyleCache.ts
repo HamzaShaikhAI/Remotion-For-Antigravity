@@ -3,7 +3,7 @@ import path from 'path';
 
 export interface StyleBlueprint {
   name: string;
-  archetype: 'tech' | 'paper-2.5d' | 'saas' | 'cinematic' | 'abstract' | 'kurzgesagt' | 'motion-lab' | 'cad-chrome' | 'anime-op' | 'robotics' | 'ricksclips' | 'gsap-lab';
+  archetype: 'tech' | 'paper-2.5d' | 'saas' | 'cinematic' | 'abstract' | 'kurzgesagt' | 'motion-lab' | 'cad-chrome' | 'anime-op' | 'robotics' | 'ricksclips' | 'gsap-lab' | 'pixel-art';
   springPhysics: {
     damping: number;
     stiffness: number;
@@ -235,6 +235,28 @@ const BUILTIN_STYLES: Record<string, StyleBlueprint> = {
       border: '1.5px solid #e7e0d3',
       shadow: '0 20px 40px rgba(0, 0, 0, 0.08)',
       accentColor: '#ea580c',
+    },
+    certifiedGrade: 'A+',
+    cachedAt: new Date().toISOString(),
+  },
+  'pixel-art': {
+    name: 'pixel-art',
+    archetype: 'pixel-art',
+    springPhysics: { damping: 12, stiffness: 200, mass: 0.9 },
+    fpsThrottle: 12,
+    typography: {
+      fontPrimary: "'JetBrains Mono', 'Courier New', monospace",
+      fontAccent: "'Press Start 2P', monospace",
+      headlineWeight: 800,
+      letterSpacing: 1.0,
+    },
+    safeZones: { bottomClearancePx: 120, rightMarginPx: 60 },
+    palette: {
+      background: '#090b10',
+      surface: '#111520',
+      border: '1px solid #1e2638',
+      shadow: '0 12px 32px rgba(0, 0, 0, 0.6)',
+      accentColor: '#f97316',
     },
     certifiedGrade: 'A+',
     cachedAt: new Date().toISOString(),

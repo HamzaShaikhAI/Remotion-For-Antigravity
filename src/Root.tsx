@@ -36,10 +36,34 @@ import { AnimeOpeningMVShowcase } from './compositions/AnimeOpeningMVShowcase';
 import { PelagosSubseaSimulator } from './compositions/PelagosSubseaSimulator';
 import { RicksClipsSecondDrawShowcase } from './compositions/RicksClipsSecondDrawShowcase';
 import { ClaudeGsapMotionLabShowcase } from './compositions/ClaudeGsapMotionLabShowcase';
+import {
+  LivingPixelArtLoop,
+  LivingPixelArtStudioShowcase,
+} from './compositions/LivingPixelArtShowcase';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* Living Pixel Art Loop — Claude Fable 5.2 (772x1024, 10.0s @ 12fps) */}
+      <Composition
+        id="LivingPixelArtLoop"
+        component={LivingPixelArtLoop}
+        durationInFrames={120}
+        fps={12}
+        width={772}
+        height={1024}
+      />
+
+      {/* Living Pixel Art Studio Showcase (1200x1600, 10.0s @ 12fps) */}
+      <Composition
+        id="LivingPixelArtStudioShowcase"
+        component={LivingPixelArtStudioShowcase}
+        durationInFrames={120}
+        fps={12}
+        width={1200}
+        height={1600}
+      />
+
       {/* Claude GSAP Motion Design Lab Studio Engine (1584x2016, 15.2s @ 30fps) */}
       <Composition
         id="ClaudeGsapMotionLabShowcase"

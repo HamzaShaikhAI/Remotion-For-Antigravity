@@ -113,6 +113,9 @@ export * from './ricksclips';
 // Engine XXIX: Claude GSAP Motion Design Lab Studio Engine
 export * from './motiondesignlab';
 
+// Engine XXX: Living Animated Pixel Art Studio Engine
+export * from './pixelart';
+
 
 
 

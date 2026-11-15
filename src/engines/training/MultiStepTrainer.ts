@@ -80,6 +80,12 @@ export class MultiStepTrainer {
           promptLower.includes('motion design lab') ||
           promptLower.includes('design engineer')
         ? 'gsap-lab'
+        : promptLower.includes('pixel') ||
+          promptLower.includes('fable') ||
+          promptLower.includes('living pixel') ||
+          promptLower.includes('pixelated') ||
+          promptLower.includes('pixel art')
+        ? 'pixel-art'
         : promptLower.includes('motion') ||
           promptLower.includes('glass') ||
           promptLower.includes('bento') ||
