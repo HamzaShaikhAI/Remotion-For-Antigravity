@@ -8,9 +8,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { MicroSfxEngine } = require('../src/engines/psychoacoustic/MicroSfxEngine');
+const { StudioFoleyEngine } = require('../src/engines/psychoacoustic/StudioFoleyEngine');
 const {
-  buildReaShowcaseSfxTimeline,
+  buildReaShowcaseStudioSfxTimeline,
   SHOWCASE_TOTAL_FRAMES,
   SHOWCASE_FPS,
 } = require('../src/compositions/reaShowcaseEvents');
@@ -55,13 +55,13 @@ function createWavBuffer(samples, sampleRate = 44100) {
 // ---------------------------------------------------------------------------
 function synthesizeEventLockedBed() {
   console.log('⚡ Synthesizing 105-cue event-locked showcase audio bed...');
-  const cues = buildReaShowcaseSfxTimeline();
+  const cues = buildReaShowcaseStudioSfxTimeline();
   const audioDir = path.resolve(__dirname, '../public/audio');
   if (!fs.existsSync(audioDir)) fs.mkdirSync(audioDir, { recursive: true });
 
   const outPath = path.join(audioDir, 'rea_showcase_event_locked_sfx.wav');
-  MicroSfxEngine.generateMultiTrackSfx(cues, SHOWCASE_TOTAL_FRAMES, SHOWCASE_FPS, outPath);
-  console.log(`✔ Generated ${cues.length} frame-locked SFX cues -> ${outPath}`);
+  StudioFoleyEngine.renderPureFoleyBed(cues, SHOWCASE_TOTAL_FRAMES, SHOWCASE_FPS, outPath);
+  console.log(`✔ Generated ${cues.length} frame-locked pure tactile SFX cues -> ${outPath}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -82,6 +82,7 @@ function synthesizeComprehensiveLibrary() {
 
   const soundDefinitions = [
     // 1. UI & Interaction (15 sounds)
+    { id: 'ui_keystroke_tick', cat: 'UI & Interaction', dur: 0.045, desc: 'Damped mechanical keycap switch with 150Hz body and 2.1kHz transient', fn: (t) => Math.exp(-t * 95) * (Math.sin(2 * Math.PI * 155 * t) * 0.65 + (rng() * 2 - 1) * 0.25) },
     { id: 'ui_button_click', cat: 'UI & Interaction', dur: 0.05, desc: 'Sharp micro tactile click for button presses', fn: (t) => Math.exp(-t * 120) * (Math.sin(2 * Math.PI * 3200 * t) * 0.7 + Math.sin(2 * Math.PI * 4800 * t) * 0.3) },
     { id: 'ui_toggle_switch', cat: 'UI & Interaction', dur: 0.08, desc: 'Clean modern toggle on/off switch', fn: (t) => Math.exp(-t * 70) * (Math.sin(2 * Math.PI * 2600 * t) * 0.6 + Math.sin(2 * Math.PI * 1800 * t) * 0.4) },
     { id: 'ui_card_pop', cat: 'UI & Interaction', dur: 0.12, desc: 'Resonant acoustic pop for card reveals and badge reveals', fn: (t) => Math.exp(-t * 35) * Math.sin(2 * Math.PI * (1200 * Math.exp(-t * 45) + 220) * t) },
@@ -107,6 +108,7 @@ function synthesizeComprehensiveLibrary() {
     { id: 'ui_delete_trash', cat: 'UI & Interaction', dur: 0.14, desc: 'Subtle snap-crunch for item deletion', fn: (t) => Math.exp(-t * 30) * (rng() * 2 - 1) * 0.5 + Math.exp(-t * 50) * Math.sin(2 * Math.PI * 600 * t) * 0.5 },
 
     // 2. Motion & Transitions (12 sounds)
+    { id: 'slide_in_card', cat: 'Motion & Transitions', dur: 0.12, desc: 'Crisp damped tactile card slide and snap', fn: (t) => Math.exp(-t * 45) * Math.sin(2 * Math.PI * (280 * Math.exp(-t * 30) + 120) * t) },
     { id: 'whoosh_fast', cat: 'Motion & Transitions', dur: 0.18, desc: 'High-speed directional whip whoosh', fn: (t, d) => Math.sin(Math.PI * (t / d)) * (rng() * 2 - 1) * Math.sin(2 * Math.PI * (400 + Math.sin(Math.PI * (t / d)) * 1800) * t) },
     { id: 'whoosh_cinematic', cat: 'Motion & Transitions', dur: 0.45, desc: 'Heavy cinematic transition swoosh', fn: (t, d) => Math.sin(Math.PI * (t / d)) * (rng() * 2 - 1) * Math.sin(2 * Math.PI * (200 + Math.sin(Math.PI * (t / d)) * 900) * t) * 1.2 },
     { id: 'whoosh_subtle', cat: 'Motion & Transitions', dur: 0.14, desc: 'Soft organic air flutter for small UI cards', fn: (t, d) => Math.sin(Math.PI * (t / d)) * (rng() * 2 - 1) * 0.6 },
@@ -177,6 +179,7 @@ function synthesizeComprehensiveLibrary() {
     }},
 
     // 4. Bell & Chimes (10 sounds)
+    { id: 'chime_celesta_accent', cat: 'Bell & Chimes', dur: 0.55, desc: 'Warm celestial celesta chime accent (C6 + G6 + E7)', fn: (t) => Math.exp(-t * 6) * (Math.sin(2 * Math.PI * 1046.5 * t) * 0.5 + Math.sin(2 * Math.PI * 1567.98 * t) * 0.35 + Math.sin(2 * Math.PI * 2637 * t) * 0.15) },
     { id: 'bell_ding', cat: 'Bell & Chimes', dur: 0.85, desc: 'Pure 2100Hz crystalline success bell ding', fn: (t) => {
       return (Math.sin(2 * Math.PI * 2100 * t) * 0.65 + Math.sin(2 * Math.PI * 4200 * t) * 0.25 + Math.sin(2 * Math.PI * 6300 * t) * 0.1) * Math.exp(-t * 3.8);
     }},
@@ -380,6 +383,8 @@ function synthesizeComprehensiveLibrary() {
     }},
 
     // 10. Camera & Media Hardware (8 sounds)
+    { id: 'hardware_pcie_slot_snap', cat: 'Camera & Media', dur: 0.09, desc: 'PCIe 3.0 x16 slot physical insertion lock and latch snap', fn: (t) => Math.exp(-t * 65) * (Math.sin(2 * Math.PI * 180 * t) * 0.7 + Math.sin(2 * Math.PI * 850 * t) * 0.5 + (rng() * 2 - 1) * 0.3) },
+    { id: 'hardware_fan_spinup', cat: 'Camera & Media', dur: 0.35, desc: 'Axial cooling fan motor spin-up and air acceleration whoosh', fn: (t, d) => Math.sin(Math.PI * (t / d)) * (Math.sin(2 * Math.PI * (120 + Math.pow(t / d, 2) * 450) * t) * 0.45 + (rng() * 2 - 1) * 0.35) },
     { id: 'camera_shutter', cat: 'Camera & Media', dur: 0.22, desc: 'Mirror flip + curtain slide + latch click', fn: (t) => {
       const click1 = Math.exp(-t * 120.0) * Math.sin(2 * Math.PI * 2800 * t);
       const slide = t > 0.04 && t < 0.16 ? (rng() * 2 - 1) * Math.sin(Math.PI * ((t - 0.04) / 0.12)) * 0.4 : 0;

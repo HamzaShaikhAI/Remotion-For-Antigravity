@@ -150,4 +150,57 @@ export class StudioFoleyEngine {
 
     fs.writeFileSync(outPath, wavBuffer);
   }
+
+  /**
+   * Generates a pure tactile foley bed (zero background synthesizer)
+   * designed specifically to be layered over library background music tracks.
+   */
+  static renderPureFoleyBed(
+    cues: Array<{ frame: number; sfx: StudioSfxType; gain: number }>,
+    totalFrames: number,
+    fps: number,
+    outPath: string
+  ): void {
+    const sampleRate = 44100;
+    const totalSamples = Math.ceil((totalFrames / fps) * sampleRate);
+    const left = new Float32Array(totalSamples);
+    const right = new Float32Array(totalSamples);
+
+    cues.forEach((cue, idx) => {
+      const startSample = Math.floor((cue.frame / fps) * sampleRate);
+      const samples = this.synthesizeCue(cue.sfx, sampleRate, idx + 1);
+      const pan = ((idx % 5) - 2) * 0.08;
+      const gainL = cue.gain * (1 - pan);
+      const gainR = cue.gain * (1 + pan);
+
+      for (let s = 0; s < samples.length && startSample + s < totalSamples; s++) {
+        left[startSample + s] += samples[s] * gainL;
+        right[startSample + s] += samples[s] * gainR;
+      }
+    });
+
+    const wavBuffer = Buffer.alloc(44 + totalSamples * 4);
+    wavBuffer.write('RIFF', 0);
+    wavBuffer.writeUInt32LE(36 + totalSamples * 4, 4);
+    wavBuffer.write('WAVE', 8);
+    wavBuffer.write('fmt ', 12);
+    wavBuffer.writeUInt32LE(16, 16);
+    wavBuffer.writeUInt16LE(1, 20);
+    wavBuffer.writeUInt16LE(2, 22);
+    wavBuffer.writeUInt32LE(sampleRate, 24);
+    wavBuffer.writeUInt32LE(sampleRate * 4, 28);
+    wavBuffer.writeUInt16LE(4, 32);
+    wavBuffer.writeUInt16LE(16, 34);
+    wavBuffer.write('data', 36);
+    wavBuffer.writeUInt32LE(totalSamples * 4, 40);
+
+    for (let i = 0; i < totalSamples; i++) {
+      const l = Math.tanh(left[i]) * 0.92;
+      const r = Math.tanh(right[i]) * 0.92;
+      wavBuffer.writeInt16LE(Math.round(l * 32767), 44 + i * 4);
+      wavBuffer.writeInt16LE(Math.round(r * 32767), 44 + i * 4 + 2);
+    }
+
+    fs.writeFileSync(outPath, wavBuffer);
+  }
 }

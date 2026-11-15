@@ -9,6 +9,30 @@ export interface MultiStepTrainingOptions {
   ratio?: string;
 }
 
+export interface AutoDiscoveredAssets {
+  matchedLogos: Array<{ name: string; category: string; color: string }>;
+  typographyPreset: { name: string; preset: any };
+  matchedMusic: {
+    id: string;
+    title: string;
+    bpm: number;
+    genre: string;
+    staticPath: string;
+    description: string;
+  };
+  matchedSfxCues: Array<{
+    id: string;
+    category: string;
+    description: string;
+    path: string;
+  }>;
+  gradientShaders: {
+    preset: string;
+    backgroundShader: any;
+    accentShader: any;
+  };
+}
+
 export interface MultiStepTrainingResult {
   success: boolean;
   finalGrade: string;
@@ -16,6 +40,7 @@ export interface MultiStepTrainingResult {
   compositionName: string;
   reportPath?: string;
   styleBlueprint?: StyleBlueprint | null;
+  discoveredAssets?: AutoDiscoveredAssets;
 }
 
 export class MultiStepTrainer {
@@ -110,10 +135,15 @@ export class MultiStepTrainer {
     await new Promise((r) => setTimeout(r, 400));
     console.log(`   ✔ 4 Scene acts identified (Hook, Tension, Climax, CTA). Target duration: 30s @ 60 FPS.`);
 
-    // Phase 2: Draft Composition & Code Compilation
-    console.log(`\n💻 Phase 2: Synthesizing deterministic Remotion code with Brand Asset injection...`);
+    // Phase 2: Draft Composition & Code Compilation with Auto-Asset Discovery
+    console.log(`\n💻 Phase 2: Auto-discovering assets & synthesizing deterministic Remotion code...`);
+    const autoAssets = this.discoverAssetsForPrompt(prompt);
+    console.log(`   ✔ Auto-discovered ${autoAssets.matchedLogos.length} domain logos: [${autoAssets.matchedLogos.map((l) => l.name).join(', ')}]`);
+    console.log(`   ✔ Matched BPM-aligned music stem: "${autoAssets.matchedMusic.title}" (${autoAssets.matchedMusic.bpm} BPM)`);
+    console.log(`   ✔ Linked ${autoAssets.matchedSfxCues.length} frame-locked SFX library cues (${autoAssets.matchedSfxCues.map((s) => s.id).slice(0, 4).join(', ')}...)`);
+    console.log(`   ✔ Applied Typography Preset: "${autoAssets.typographyPreset.name}"`);
     await new Promise((r) => setTimeout(r, 500));
-    console.log(`   ✔ Injected BrandAssets vectors and KeyframeLockedSFX hooks.`);
+    console.log(`   ✔ Injected BrandAssets vectors, typography presets, and KeyframeLockedSFX hooks.`);
 
     let grade = 'C+';
     let iterations = 1;
@@ -175,6 +205,7 @@ export class MultiStepTrainer {
       styleProfile: cachedBlueprint?.name,
       certifiedAt: new Date().toISOString(),
       standards: 'Claude Opus 5.5 Smoothness & Deterministic Motion',
+      discoveredAssets: autoAssets,
     };
 
     const outDir = path.resolve(process.cwd(), 'src/compositions');
@@ -192,6 +223,147 @@ export class MultiStepTrainer {
       compositionName,
       reportPath,
       styleBlueprint: cachedBlueprint,
+      discoveredAssets: autoAssets,
+    };
+  }
+
+  /**
+   * Queries sfx-catalog.json, music-catalog.json, and src/tokens/logos/
+   * to automatically discover domain-specific icons, typography presets, and BPM-aligned music stems.
+   */
+  static discoverAssetsForPrompt(prompt: string): AutoDiscoveredAssets {
+    const p = prompt.toLowerCase();
+
+    // 1. Query Brand / Tech Logos from src/tokens/logos/
+    let matchedLogos: Array<{ name: string; category: string; color: string }> = [];
+    try {
+      const { LOGO_DEFINITIONS } = require('../../tokens/logos/catalog.ts');
+      const allNames = Object.keys(LOGO_DEFINITIONS);
+      const matched = allNames.filter((name) => {
+        const cleanName = name.replace(/_/g, ' ');
+        return p.includes(name) || p.includes(cleanName);
+      });
+
+      if (p.includes('kepler') || p.includes('gpu') || p.includes('hardware') || p.includes('nvidia') || p.includes('silicon')) {
+        ['nvidia', 'pcie', 'hdmi', 'fan_axial', 'ram_dimm'].forEach((n) => {
+          if (!matched.includes(n) && LOGO_DEFINITIONS[n]) matched.push(n);
+        });
+      }
+      if (p.includes('architecture') || p.includes('system') || p.includes('rea') || p.includes('studio') || p.includes('remotion')) {
+        ['remotion', 'typescript', 'aws', 'github'].forEach((n) => {
+          if (!matched.includes(n) && LOGO_DEFINITIONS[n]) matched.push(n);
+        });
+      }
+
+      matchedLogos = matched.slice(0, 8).map((name) => ({
+        name,
+        category: LOGO_DEFINITIONS[name].category,
+        color: LOGO_DEFINITIONS[name].color,
+      }));
+    } catch {
+      matchedLogos = [
+        { name: 'remotion', category: 'creative_tools', color: '#0B84FF' },
+        { name: 'typescript', category: 'dev_languages', color: '#3178C6' },
+      ];
+    }
+
+    // 2. Query Music Catalog (public/audio/music_library/music-catalog.json)
+    let matchedMusic: any = {
+      id: 'minimal_tech_pulse_125bpm',
+      title: 'Silicon Flow 125 (Clean Tech Pulse)',
+      bpm: 125,
+      genre: 'Minimal Tech / Corporate Modern',
+      staticPath: 'audio/music_library/minimal_tech_pulse_125bpm.wav',
+      description: 'Precise micro-percussion, muted modern plucks, and a steady driving bassline.',
+    };
+    try {
+      const musicCatalogPath = path.resolve(process.cwd(), 'public/audio/music_library/music-catalog.json');
+      if (fs.existsSync(musicCatalogPath)) {
+        const musicList: any[] = JSON.parse(fs.readFileSync(musicCatalogPath, 'utf8'));
+        if (p.includes('phonk') || p.includes('drift') || p.includes('aggressive')) {
+          matchedMusic = musicList.find((m) => m.id === 'phonk_drift_160bpm') || matchedMusic;
+        } else if (p.includes('lofi') || p.includes('chill') || p.includes('study')) {
+          matchedMusic = musicList.find((m) => m.id === 'lofi_chillhop_85bpm') || matchedMusic;
+        } else if (p.includes('cyberpunk') || p.includes('synthwave')) {
+          matchedMusic = musicList.find((m) => m.id === 'cyberpunk_synthwave_120bpm') || matchedMusic;
+        } else if (p.includes('western') || p.includes('duel') || p.includes('cowboy')) {
+          matchedMusic = musicList.find((m) => m.id === 'western_standoff_tension_45s') || matchedMusic;
+        } else if (p.includes('space') || p.includes('ambient') || p.includes('abyss')) {
+          matchedMusic = musicList.find((m) => m.id === 'cinematic_ambient_drone_45s') || matchedMusic;
+        } else if (p.includes('arcade') || p.includes('chiptune') || p.includes('8bit')) {
+          matchedMusic = musicList.find((m) => m.id === 'arcade_chiptune_adventure_140bpm') || matchedMusic;
+        } else {
+          matchedMusic = musicList.find((m) => m.id === 'minimal_tech_pulse_125bpm') || matchedMusic;
+        }
+      }
+    } catch {
+      // Fallback already assigned
+    }
+
+    // 3. Query SFX Catalog (public/sfx/library/sfx-catalog.json)
+    let matchedSfxCues: any[] = [];
+    try {
+      const sfxCatalogPath = path.resolve(process.cwd(), 'public/sfx/library/sfx-catalog.json');
+      if (fs.existsSync(sfxCatalogPath)) {
+        const raw = JSON.parse(fs.readFileSync(sfxCatalogPath, 'utf8'));
+        const catalog: any[] = raw.catalog || [];
+
+        if (p.includes('hardware') || p.includes('silicon') || p.includes('kepler')) {
+          const targetIds = ['hardware_pcie_slot_snap', 'hardware_fan_spinup', 'ui_keystroke_tick', 'slide_in_card', 'impact_thud', 'chime_celesta_accent'];
+          matchedSfxCues = catalog.filter((c) => targetIds.includes(c.id));
+        } else if (p.includes('architecture') || p.includes('showcase') || p.includes('system') || p.includes('code')) {
+          const targetIds = ['ui_keystroke_tick', 'slide_in_card', 'whoosh_subtle', 'chime_celesta_accent', 'impact_thud', 'ui_card_pop'];
+          matchedSfxCues = catalog.filter((c) => targetIds.includes(c.id));
+        } else if (p.includes('cartoon') || p.includes('fun')) {
+          matchedSfxCues = catalog.filter((c) => c.category === 'Cartoon & Fun FX').slice(0, 6);
+        } else {
+          matchedSfxCues = catalog.filter((c) => c.category === 'UI & Interaction' || c.category === 'Motion & Transitions').slice(0, 6);
+        }
+      }
+    } catch {
+      // Fallback
+    }
+
+    // 4. Match Typography Preset
+    let typographyPresetName = 'swissIndustrial';
+    if (p.includes('editorial') || p.includes('magazine') || p.includes('playfair')) {
+      typographyPresetName = 'playfairEditorial';
+    } else if (p.includes('telemetry') || p.includes('subsea') || p.includes('marine')) {
+      typographyPresetName = 'subseaTelemetry';
+    } else if (p.includes('terminal') || p.includes('hacker') || p.includes('cyberpunk')) {
+      typographyPresetName = 'cyberpunkTerminal';
+    } else if (p.includes('phonk') || p.includes('street')) {
+      typographyPresetName = 'phonkStreet';
+    } else if (p.includes('western') || p.includes('cowboy')) {
+      typographyPresetName = 'westernOutlaw';
+    }
+
+    let typographyPreset: any = {};
+    try {
+      const { getTypographyPreset } = require('../../tokens/typography/index.ts');
+      typographyPreset = getTypographyPreset(typographyPresetName as any);
+    } catch {
+      typographyPreset = { fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800 };
+    }
+
+    // 5. Match Gradient Shaders
+    let gradientPreset = 'blueprintGrid';
+    if (p.includes('oyster') || p.includes('dawn') || p.includes('editorial')) {
+      gradientPreset = 'oysterDawn';
+    } else if (p.includes('cyberpunk')) {
+      gradientPreset = 'cyberpunkObsidian';
+    }
+
+    return {
+      matchedLogos,
+      typographyPreset: { name: typographyPresetName, preset: typographyPreset },
+      matchedMusic,
+      matchedSfxCues,
+      gradientShaders: {
+        preset: gradientPreset,
+        backgroundShader: gradientPreset,
+        accentShader: 'linearMetals.liquidChrome',
+      },
     };
   }
 

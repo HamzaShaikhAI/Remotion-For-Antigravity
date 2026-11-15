@@ -30,8 +30,8 @@ export type MicroSfxPreset =
 export interface SfxCue {
   timeSec?: number;
   frame?: number;
-  preset?: MicroSfxPreset;
-  sfx?: MicroSfxPreset;
+  preset?: MicroSfxPreset | string;
+  sfx?: MicroSfxPreset | string;
   volume?: number; // 0.0 to 1.0 (default 0.8)
   gain?: number;
 }
@@ -409,7 +409,7 @@ export class MicroSfxEngine {
       const startIdx = Math.floor(timeSec * sampleRate);
       if (startIdx >= totalSamples) continue;
 
-      const preset = cue.preset || cue.sfx || 'mechanical_click';
+      const preset = (cue.preset || cue.sfx || 'mechanical_click') as MicroSfxPreset;
       const vol = cue.volume ?? cue.gain ?? 0.8;
       const sfxSamples = this.synthesizePreset(preset, sampleRate);
 

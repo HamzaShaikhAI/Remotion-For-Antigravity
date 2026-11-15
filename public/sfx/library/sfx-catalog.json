@@ -1,6 +1,14 @@
 {
-  "total": 131,
+  "total": 136,
   "catalog": [
+    {
+      "id": "ui_keystroke_tick",
+      "category": "UI & Interaction",
+      "durationSec": 0.045,
+      "description": "Damped mechanical keycap switch with 150Hz body and 2.1kHz transient",
+      "fileName": "ui_keystroke_tick.wav",
+      "path": "public/sfx/library/ui_keystroke_tick.wav"
+    },
     {
       "id": "ui_button_click",
       "category": "UI & Interaction",
@@ -120,6 +128,14 @@
       "description": "Subtle snap-crunch for item deletion",
       "fileName": "ui_delete_trash.wav",
       "path": "public/sfx/library/ui_delete_trash.wav"
+    },
+    {
+      "id": "slide_in_card",
+      "category": "Motion & Transitions",
+      "durationSec": 0.12,
+      "description": "Crisp damped tactile card slide and snap",
+      "fileName": "slide_in_card.wav",
+      "path": "public/sfx/library/slide_in_card.wav"
     },
     {
       "id": "whoosh_fast",
@@ -312,6 +328,14 @@
       "description": "Authoritative wooden courtroom gavel strike",
       "fileName": "impact_gavel_strike.wav",
       "path": "public/sfx/library/impact_gavel_strike.wav"
+    },
+    {
+      "id": "chime_celesta_accent",
+      "category": "Bell & Chimes",
+      "durationSec": 0.55,
+      "description": "Warm celestial celesta chime accent (C6 + G6 + E7)",
+      "fileName": "chime_celesta_accent.wav",
+      "path": "public/sfx/library/chime_celesta_accent.wav"
     },
     {
       "id": "bell_ding",
@@ -808,6 +832,22 @@
       "description": "Reverse bass swell pulling downward",
       "fileName": "subliminal_drop_swell.wav",
       "path": "public/sfx/library/subliminal_drop_swell.wav"
+    },
+    {
+      "id": "hardware_pcie_slot_snap",
+      "category": "Camera & Media",
+      "durationSec": 0.09,
+      "description": "PCIe 3.0 x16 slot physical insertion lock and latch snap",
+      "fileName": "hardware_pcie_slot_snap.wav",
+      "path": "public/sfx/library/hardware_pcie_slot_snap.wav"
+    },
+    {
+      "id": "hardware_fan_spinup",
+      "category": "Camera & Media",
+      "durationSec": 0.35,
+      "description": "Axial cooling fan motor spin-up and air acceleration whoosh",
+      "fileName": "hardware_fan_spinup.wav",
+      "path": "public/sfx/library/hardware_fan_spinup.wav"
     },
     {
       "id": "camera_shutter",

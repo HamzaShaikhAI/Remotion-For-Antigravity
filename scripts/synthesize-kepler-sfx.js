@@ -73,7 +73,18 @@ for (const cue of cues) {
 
   const preset = cue.preset || cue.sfx || 'mechanical_click';
   const vol = cue.volume ?? cue.gain ?? 0.8;
-  const sfxSamples = MicroSfxEngine.synthesizePreset(preset, sampleRate);
+  let sfxSamples;
+  const libFile = path.join(__dirname, '../public/sfx/library', `${preset}.wav`);
+  if (fs.existsSync(libFile)) {
+    const rawBuf = fs.readFileSync(libFile);
+    const num = (rawBuf.length - 44) / 2;
+    sfxSamples = new Float32Array(num);
+    for (let j = 0; j < num; j++) {
+      sfxSamples[j] = rawBuf.readInt16LE(44 + j * 2) / 32768;
+    }
+  } else {
+    sfxSamples = MicroSfxEngine.synthesizePreset(preset, sampleRate);
+  }
 
   for (let i = 0; i < sfxSamples.length; i++) {
     const targetIdx = startIdx + i;

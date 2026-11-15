@@ -11,6 +11,9 @@ import {
 } from 'remotion';
 import { SafeTextContainer } from '../engines/typography/SafeTextContainer.tsx';
 import { motionTokens } from '../tokens/motion.ts';
+import { BrandLogo } from '../tokens/logos/BrandLogo.tsx';
+import { getTypographyPreset } from '../tokens/typography/index.ts';
+import { paperTextures, linearMetals, glassmorphism } from '../tokens/gradients/index.tsx';
 import {
   KEPLER_ACT_BOUNDARIES,
   ACT1_GIT_COMMAND,
@@ -38,6 +41,9 @@ const SAFE_ZONE_BOTTOM = 280;
 const SAFE_ZONE_RIGHT = 90;
 const SAFE_CONTENT_WIDTH = 1080 - SAFE_ZONE_RIGHT - 40; // ~950px
 
+const swissIndustrial = getTypographyPreset('swissIndustrial');
+const subseaTelemetry = getTypographyPreset('subseaTelemetry');
+
 // ---------------------------------------------------------------------------
 // 1. Engineering CAD Drafting Grid & Millimeter Coordinate Calipers
 // ---------------------------------------------------------------------------
@@ -45,9 +51,17 @@ const CadDraftingGrid: React.FC<{ frame: number }> = ({ frame }) => {
   // Harmonic 1.2 px/sec drift
   const driftY = (frame * 0.4) % 40;
   const driftX = (frame * 0.25) % 40;
+  const subsea = subseaTelemetry;
 
   return (
-    <AbsoluteFill style={{ backgroundColor: OBSIDIAN_BG, overflow: 'hidden' }}>
+    <AbsoluteFill
+      style={{
+        ...paperTextures.blueprintGrid,
+        backgroundColor: OBSIDIAN_BG,
+        backgroundPosition: `${-driftX}px ${-driftY}px`,
+        overflow: 'hidden',
+      }}
+    >
       {/* 20x20mm Technical Grid Pattern */}
       <svg
         width="100%"
@@ -107,16 +121,26 @@ const CadDraftingGrid: React.FC<{ frame: number }> = ({ frame }) => {
           top: 48,
           left: 48,
           display: 'flex',
-          flexDirection: 'column',
-          gap: 4,
-          fontFamily: "'JetBrains Mono', monospace",
-          fontSize: 11,
-          color: CYAN_MUTED,
-          letterSpacing: 1.5,
+          alignItems: 'center',
+          gap: 12,
         }}
       >
-        <span>SPEC-GK107-D3D12 // KEPLERBRIDGE</span>
-        <span>LAT: 37°23'19"N · LON: 121°58'48"W</span>
+        <BrandLogo name="nvidia" size={22} color="#76B900" glow glowColor="rgba(118, 185, 0, 0.6)" />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            fontFamily: subsea.fontFamily,
+            fontSize: 11,
+            color: subsea.color,
+            textShadow: subsea.textShadow,
+            letterSpacing: '0.12em',
+          }}
+        >
+          <span>SPEC-GK107-D3D12 // KEPLERBRIDGE</span>
+          <span>LAT: 37°23'19"N · LON: 121°58'48"W</span>
+        </div>
       </div>
 
       <div
@@ -200,12 +224,12 @@ const Act1RepoAwakening: React.FC<{ frame: number; fps: number }> = ({ frame, fp
         text="KeplerBridge: Legacy Silicon, Modern Pipeline."
         containerWidth={SAFE_CONTENT_WIDTH}
         baseFontSize={48}
-        color={SLATE_LIGHT}
-        fontWeight={900}
-        fontFamily="'Plus Jakarta Sans', sans-serif"
-        lineHeight={1.18}
+        color={swissIndustrial.color}
+        fontWeight={swissIndustrial.fontWeight}
+        fontFamily={swissIndustrial.fontFamily}
+        lineHeight={1.15}
         textAlign="center"
-        style={{ marginBottom: 28 }}
+        style={{ marginBottom: 28, textShadow: swissIndustrial.textShadow }}
       />
 
       {/* Engineering Command Bar */}
@@ -226,6 +250,7 @@ const Act1RepoAwakening: React.FC<{ frame: number; fps: number }> = ({ frame, fp
           transform: `scale(${interpolate(expandProgress, [0, 0.5, 1], [1, 1.02, 1])})`,
         }}
       >
+        <BrandLogo name="nvidia" size={24} color="#76B900" glow glowColor="rgba(118, 185, 0, 0.5)" />
         <div
           style={{
             width: 14,
@@ -554,6 +579,8 @@ const Act2HardwareAnatomy: React.FC<{ frame: number; fps: number }> = ({ frame, 
             { top: 200, left: 30 },
           ];
           const pos = cardPositions[idx] || cardPositions[0];
+          const calloutLogos = ['gpu_die', 'fan_axial', 'ram_dimm', 'pcie', 'hdmi'];
+          const logoName = calloutLogos[idx] || 'gpu_die';
 
           return (
             <div
@@ -563,19 +590,39 @@ const Act2HardwareAnatomy: React.FC<{ frame: number; fps: number }> = ({ frame, 
                 ...pos,
                 padding: '10px 16px',
                 borderRadius: 12,
-                background: 'rgba(5, 7, 10, 0.90)',
+                background: 'rgba(5, 7, 10, 0.92)',
                 backdropFilter: 'blur(20px)',
                 border: '1.5px solid rgba(0, 245, 255, 0.5)',
                 boxShadow: '0 10px 30px rgba(0, 0, 0, 0.7)',
                 transform: `scale(${popSpring})`,
                 maxWidth: 340,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
               }}
             >
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 900, color: CYAN_BLUEPRINT, marginBottom: 2 }}>
-                {item.title}
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 8,
+                  backgroundColor: 'rgba(0, 245, 255, 0.12)',
+                  border: '1px solid rgba(0, 245, 255, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <BrandLogo name={logoName} size={22} color={CYAN_BLUEPRINT} glow glowColor={CYAN_BLUEPRINT} />
               </div>
-              <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, color: SLATE_LIGHT, fontWeight: 700 }}>
-                {item.spec}
+              <div>
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 900, color: CYAN_BLUEPRINT, marginBottom: 2 }}>
+                  {item.title}
+                </div>
+                <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, color: SLATE_LIGHT, fontWeight: 700 }}>
+                  {item.spec}
+                </div>
               </div>
             </div>
           );
@@ -681,7 +728,7 @@ const Act3RuntimeLayer: React.FC<{ frame: number; fps: number }> = ({ frame, fps
             />
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: GOLD_PCIE }} />
+            <BrandLogo name="pcie" size={24} color={GOLD_PCIE} glow glowColor={GOLD_PCIE} />
             <div>
               <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 15, fontWeight: 900, color: GOLD_PCIE }}>
                 LAYER 01 // PHYSICAL SILICON & PCIE BUS
@@ -691,7 +738,7 @@ const Act3RuntimeLayer: React.FC<{ frame: number; fps: number }> = ({ frame, fps
               </div>
             </div>
           </div>
-          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: GOLD_PCIE, fontWeight: 800 }}>
+          <div style={{ fontFamily: subseaTelemetry.fontFamily, fontSize: 13, color: GOLD_PCIE, fontWeight: 800, textShadow: '0 0 10px rgba(245, 158, 11, 0.6)' }}>
             PCI 10DE:0FC8
           </div>
         </div>
@@ -724,7 +771,7 @@ const Act3RuntimeLayer: React.FC<{ frame: number; fps: number }> = ({ frame, fps
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-              <div style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: CYAN_BLUEPRINT, boxShadow: '0 0 10px #00F5FF' }} />
+              <BrandLogo name="nvidia" size={24} color={CYAN_BLUEPRINT} glow glowColor={CYAN_BLUEPRINT} />
               <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 900, color: CYAN_BLUEPRINT }}>
                 LAYER 02 // KEPLERBRIDGE TRANSLATION CORE
               </div>
@@ -767,7 +814,7 @@ const Act3RuntimeLayer: React.FC<{ frame: number; fps: number }> = ({ frame, fps
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: EMERALD_PASS }} />
+            <BrandLogo name="hdmi" size={24} color={EMERALD_PASS} glow glowColor={EMERALD_PASS} />
             <div>
               <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 15, fontWeight: 900, color: EMERALD_PASS }}>
                 LAYER 03 // MODERN DIRECTX 12 / VULKAN OUTPUT
@@ -869,10 +916,13 @@ const Act4BenchmarkGate: React.FC<{ frame: number; fps: number }> = ({ frame, fp
       >
         {/* Terminal Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255, 255, 255, 0.12)', paddingBottom: 14, marginBottom: 20 }}>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#EF4444' }} />
-            <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#F59E0B' }} />
-            <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#10B981' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#EF4444' }} />
+              <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#F59E0B' }} />
+              <div style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#10B981' }} />
+            </div>
+            <BrandLogo name="nvidia" size={20} color="#76B900" glow glowColor="rgba(118, 185, 0, 0.6)" />
           </div>
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: SLATE_MUTED, fontWeight: 700 }}>
             keplerbridge-diagnostics-v2.4.0 — bash
@@ -881,17 +931,20 @@ const Act4BenchmarkGate: React.FC<{ frame: number; fps: number }> = ({ frame, fp
 
         {/* 4 Interactive Benchmark Execution Steps */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-          {ACT4_BENCHMARK_STEPS.map((step) => {
+          {ACT4_BENCHMARK_STEPS.map((step, idx) => {
             const isExecuted = frame >= step.execFrame;
             const isPassed = frame >= step.passFrame;
             const passSpring = spring({ frame: frame - step.passFrame, fps, config: motionTokens.spring.snappy });
+            const stepLogos = ['gpu_die', 'nvidia', 'hdmi', 'pcie'];
+            const stepLogo = stepLogos[idx] || 'gpu_die';
 
             if (!isExecuted) return null;
 
             return (
               <div key={step.cmd} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, color: CYAN_BLUEPRINT, fontWeight: 800 }}>
-                  {step.cmd}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontFamily: "'JetBrains Mono', monospace", fontSize: 16, color: CYAN_BLUEPRINT, fontWeight: 800 }}>
+                  <BrandLogo name={stepLogo} size={18} color={CYAN_BLUEPRINT} />
+                  <span>{step.cmd}</span>
                 </div>
                 {isPassed && (
                   <div
@@ -1051,9 +1104,11 @@ const Act5HardwareClimax: React.FC<{ frame: number; fps: number }> = ({ frame, f
 
       {/* 4 Floating Feature Pills */}
       <div style={{ width: SAFE_CONTENT_WIDTH, display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center', marginBottom: 32 }}>
-        {ACT5_PILL_EVENTS.map((pill) => {
+        {ACT5_PILL_EVENTS.map((pill, idx) => {
           const isPop = frame >= pill.frame;
           const popSpring = spring({ frame: frame - pill.frame, fps, config: motionTokens.spring.snappy });
+          const pillLogos = ['gpu_die', 'pcie', 'fan_axial', 'hdmi'];
+          const pillLogo = pillLogos[idx] || 'gpu_die';
 
           return (
             <div
@@ -1070,9 +1125,13 @@ const Act5HardwareClimax: React.FC<{ frame: number; fps: number }> = ({ frame, f
                 fontWeight: 800,
                 transform: `scale(${isPop ? popSpring : 0})`,
                 boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
               }}
             >
-              ★ {pill.label}
+              <BrandLogo name={pillLogo} size={18} color={CYAN_BLUEPRINT} />
+              <span>{pill.label}</span>
             </div>
           );
         })}
@@ -1084,11 +1143,15 @@ const Act5HardwareClimax: React.FC<{ frame: number; fps: number }> = ({ frame, f
           style={{
             padding: '16px 36px',
             borderRadius: 999,
-            background: 'linear-gradient(135deg, #00F5FF 0%, #10B981 100%)',
-            boxShadow: '0 0 45px rgba(0, 245, 255, 0.6)',
+            background: linearMetals.liquidChrome,
+            boxShadow: '0 0 45px rgba(0, 245, 255, 0.6), 0 10px 30px rgba(0,0,0,0.8)',
             transform: `scale(${spring({ frame: frame - 2430, fps, config: motionTokens.spring.snappy })})`,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 14,
           }}
         >
+          <BrandLogo name="nvidia" size={26} color="#05070A" />
           <span
             style={{
               fontFamily: "'JetBrains Mono', monospace",
@@ -1100,6 +1163,7 @@ const Act5HardwareClimax: React.FC<{ frame: number; fps: number }> = ({ frame, f
           >
             ✔ github.com/HamzaShaikhAI/KeplerBridge
           </span>
+          <BrandLogo name="github" size={24} color="#05070A" />
         </div>
       )}
     </AbsoluteFill>

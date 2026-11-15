@@ -7,9 +7,11 @@ import {
   interpolate,
   staticFile,
   Audio,
+  Loop,
 } from 'remotion';
 import { SafeTextContainer } from '../engines/typography/SafeTextContainer.tsx';
 import { motionTokens } from '../tokens/motion.ts';
+import { BrandLogo } from '../tokens/logos/BrandLogo.tsx';
 import {
   ACT_BOUNDARIES,
   ACT1_PROMPT_TEXT,
@@ -170,10 +172,10 @@ const Act1HookPipeline: React.FC<{ frame: number; fps: number }> = ({ frame, fps
   const liveLatencyMs = (interpolate(frame, [270, 430], [1.2, 14.2], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })).toFixed(1);
 
   const stages = [
-    { num: '01', title: 'DIRECTING PROMPT', desc: 'Vision-grounded natural language specification', color: '#3B82F6', springVal: s1Spring, idx: 0 },
-    { num: '02', title: 'STYLE CACHE (0-PASS A+)', desc: 'Zero-hallucination aesthetic locked AST', color: '#10B981', springVal: s2Spring, idx: 1 },
-    { num: '03', title: 'DETERMINISTIC AST', desc: 'Frame-clock synchronized React + Remotion graph', color: '#8B5CF6', springVal: s3Spring, idx: 2 },
-    { num: '04', title: '4K/60FPS MP4 RENDER', desc: 'Distributed multi-threaded headless chromium render', color: '#F59E0B', springVal: s4Spring, idx: 3 },
+    { num: '01', title: 'DIRECTING PROMPT', desc: 'Vision-grounded natural language specification', color: '#3B82F6', springVal: s1Spring, idx: 0, logo: 'github' },
+    { num: '02', title: 'STYLE CACHE (0-PASS A+)', desc: 'Zero-hallucination aesthetic locked AST', color: '#10B981', springVal: s2Spring, idx: 1, logo: 'typescript' },
+    { num: '03', title: 'DETERMINISTIC AST', desc: 'Frame-clock synchronized React + Remotion graph', color: '#8B5CF6', springVal: s3Spring, idx: 2, logo: 'remotion' },
+    { num: '04', title: '4K/60FPS MP4 RENDER', desc: 'Distributed multi-threaded headless chromium render', color: '#F59E0B', springVal: s4Spring, idx: 3, logo: 'aws' },
   ];
 
   return (
@@ -236,17 +238,26 @@ const Act1HookPipeline: React.FC<{ frame: number; fps: number }> = ({ frame, fps
           transform: `scale(${interpolate(expandProgress, [0, 0.5, 1], [1, 1.02, 1])})`,
         }}
       >
-        {/* Terminal Indicator */}
+        {/* Terminal Indicator & Remotion Badge */}
         <div
           style={{
-            width: 14,
-            height: 14,
-            borderRadius: '50%',
-            backgroundColor: frame >= 180 ? EMERALD_ACCENT : AMBER_ACCENT,
-            boxShadow: `0 0 12px ${frame >= 180 ? EMERALD_ACCENT : AMBER_ACCENT}`,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
             flexShrink: 0,
           }}
-        />
+        >
+          <div
+            style={{
+              width: 14,
+              height: 14,
+              borderRadius: '50%',
+              backgroundColor: frame >= 180 ? EMERALD_ACCENT : AMBER_ACCENT,
+              boxShadow: `0 0 12px ${frame >= 180 ? EMERALD_ACCENT : AMBER_ACCENT}`,
+            }}
+          />
+          <BrandLogo name="remotion" size={24} color={SLATE_DARK} glow glowColor="rgba(16, 185, 129, 0.4)" />
+        </div>
 
         <div style={{ flex: 1, overflow: 'hidden' }}>
           <SafeTextContainer
@@ -337,6 +348,23 @@ const Act1HookPipeline: React.FC<{ frame: number; fps: number }> = ({ frame, fps
                 }}
               >
                 {st.num}
+              </div>
+
+              {/* Brand Logo Badge */}
+              <div
+                style={{
+                  width: 34,
+                  height: 34,
+                  borderRadius: 8,
+                  backgroundColor: `${st.color}18`,
+                  border: `1px solid ${st.color}44`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <BrandLogo name={st.logo} size={20} color={st.color} glow glowColor={`${st.color}66`} />
               </div>
 
               {/* Stage Details */}
@@ -1033,10 +1061,10 @@ const Act4TerminalGatekeeper: React.FC<{ frame: number; fps: number }> = ({ fram
   const streamFrameNum = Math.min(2700, Math.round(interpolate(actFrame, [230, 480], [120, 2700], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })));
 
   const terminalChecks = [
-    { cmd: 'npx tsc --noEmit', result: '0 TypeScript errors (Strict AST Verified)', springVal: c1Spring, color: '#38BDF8' },
-    { cmd: 'rea motion-lint', result: '294/294 files compliant with MOTION.md', springVal: c2Spring, color: '#34D399' },
-    { cmd: 'rea audit-polish', result: '0 overflow warnings · Studio Foley verified', springVal: c3Spring, color: '#A78BFA' },
-    { cmd: 'rea lambda-render', result: 'ap-south-1 → us-east-1 ready (128 workers)', springVal: c4Spring, color: '#FBBF24' },
+    { cmd: 'npx tsc --noEmit', result: '0 TypeScript errors (Strict AST Verified)', springVal: c1Spring, color: '#38BDF8', logo: 'typescript' },
+    { cmd: 'rea motion-lint', result: '294/294 files compliant with MOTION.md', springVal: c2Spring, color: '#34D399', logo: 'remotion' },
+    { cmd: 'rea audit-polish', result: '0 overflow warnings · Studio Foley verified', springVal: c3Spring, color: '#A78BFA', logo: 'github' },
+    { cmd: 'rea lambda-render', result: 'ap-south-1 → us-east-1 ready (128 workers)', springVal: c4Spring, color: '#FBBF24', logo: 'aws' },
   ];
 
   return (
@@ -1150,6 +1178,7 @@ const Act4TerminalGatekeeper: React.FC<{ frame: number; fps: number }> = ({ fram
           >
             {/* Command Line */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <BrandLogo name={tc.logo} size={20} color={tc.color} glow glowColor={`${tc.color}88`} />
               <span style={{ color: '#06B6D4', fontFamily: "'JetBrains Mono', monospace", fontSize: 18, fontWeight: 800 }}>
                 &gt;
               </span>
@@ -1496,6 +1525,7 @@ const Act5BentoMatrixClimax: React.FC<{ frame: number; fps: number }> = ({ frame
         >
           ✔
         </div>
+        <BrandLogo name="remotion" size={26} color="#FFFFFF" glow glowColor="rgba(16, 185, 129, 0.8)" />
         <SafeTextContainer
           text="REA v2.4.0 — Your Autonomous Motion Design Studio"
           containerWidth={SAFE_CONTENT_WIDTH - 120}
@@ -1536,31 +1566,59 @@ export const ReaSystemArchitectureShowcase: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  // Continuous Camera Push-In & 3D Spatial Drift (Guarantees zero static hold frames)
+  const masterCameraScale = 1.0 + Math.sin(frame * 0.007) * 0.014 + (frame / 2700) * 0.022;
+  const masterCameraRotX = Math.sin(frame * 0.005) * 0.35;
+  const masterCameraRotY = Math.cos(frame * 0.006) * 0.45;
+  const masterCameraTransY = Math.sin(frame * 0.009) * 4.5;
+
   return (
     <AbsoluteFill style={{ backgroundColor: CANVAS_BG, overflow: 'hidden' }}>
-      {/* 1. Master Audio Bed: 116 BPM Warm Rhodes/Sub-Bass Underscore + 1:1 Tactile Foley Cues */}
+      {/* 1. Master Underscore: 125 BPM Minimal Tech Pulse with Beat-Synced Sidechain Ducking */}
+      <Loop durationInFrames={922}>
+        <Audio
+          src={staticFile('audio/music_library/minimal_tech_pulse_125bpm.wav')}
+          volume={(f) => {
+            const beatPhase = (f % 28.8) / 28.8;
+            return interpolate(beatPhase, [0, 0.12, 0.45, 1], [0.26, 0.44, 0.38, 0.28]);
+          }}
+        />
+      </Loop>
+
+      {/* 2. Pure Event-Locked Foley Bed (122 cues: keycap thocks, card snaps, velvet whooshes, celesta accents) */}
       <Audio
-        src={staticFile('audio/rea_master_studio_mix.wav')}
-        volume={1.0}
+        src={staticFile('audio/rea_showcase_event_locked_sfx.wav')}
+        volume={0.94}
       />
 
-      {/* 2. Base High-Key Oyster Canvas + 4-Point Chromatic Mesh */}
+      {/* 3. Base High-Key Oyster Canvas + 4-Point Chromatic Mesh */}
       <OysterChromaticMesh frame={frame} />
 
-      {/* Act 1: The Hook — "Prompts to Broadcast Video" (Frames 0 – 450 | 0.0s – 7.5s) */}
-      {frame < 452 && <Act1HookPipeline frame={frame} fps={fps} />}
+      {/* 4. Continuous Cinematic 3D Camera Rig */}
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          perspective: 1400,
+          transform: `scale(${masterCameraScale}) rotateX(${masterCameraRotX}deg) rotateY(${masterCameraRotY}deg) translateY(${masterCameraTransY}px)`,
+          transformOrigin: '50% 50%',
+        }}
+      >
+        {/* Act 1: The Hook — "Prompts to Broadcast Video" (Frames 0 – 450 | 0.0s – 7.5s) */}
+        {frame < 452 && <Act1HookPipeline frame={frame} fps={fps} />}
 
-      {/* Act 2: The 11 Certified Studio Engines (Frames 450 – 1,080 | 7.5s – 18.0s) */}
-      {frame >= 445 && frame < 1082 && <Act2EngineCoverflow frame={frame} fps={fps} />}
+        {/* Act 2: The 11 Certified Studio Engines (Frames 450 – 1,080 | 7.5s – 18.0s) */}
+        {frame >= 445 && frame < 1082 && <Act2EngineCoverflow frame={frame} fps={fps} />}
 
-      {/* Act 3: The Polish & Determinism Core (Frames 1,080 – 1,710 | 18.0s – 28.5s) */}
-      {frame >= 1075 && frame < 1712 && <Act3DeterminismWorkbench frame={frame} fps={fps} />}
+        {/* Act 3: The Polish & Determinism Core (Frames 1,080 – 1,710 | 18.0s – 28.5s) */}
+        {frame >= 1075 && frame < 1712 && <Act3DeterminismWorkbench frame={frame} fps={fps} />}
 
-      {/* Act 4: Automated Quality Gatekeeper & Cloud Scale (Frames 1,710 – 2,250 | 28.5s – 37.5s) */}
-      {frame >= 1705 && frame < 2252 && <Act4TerminalGatekeeper frame={frame} fps={fps} />}
+        {/* Act 4: Automated Quality Gatekeeper & Cloud Scale (Frames 1,710 – 2,250 | 28.5s – 37.5s) */}
+        {frame >= 1705 && frame < 2252 && <Act4TerminalGatekeeper frame={frame} fps={fps} />}
 
-      {/* Act 5: Climax 4×3 System Architecture Bento Matrix (Frames 2,250 – 2,700 | 37.5s – 45.0s) */}
-      {frame >= 2245 && <Act5BentoMatrixClimax frame={frame} fps={fps} />}
+        {/* Act 5: Climax 4×3 System Architecture Bento Matrix (Frames 2,250 – 2,700 | 37.5s – 45.0s) */}
+        {frame >= 2245 && <Act5BentoMatrixClimax frame={frame} fps={fps} />}
+      </div>
     </AbsoluteFill>
   );
 };

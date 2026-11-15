@@ -3169,6 +3169,27 @@ export const LOGO_DEFINITIONS: Record<string, IconDefinition> = {
     viewBox: '0 0 24 24',
     path: '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
   },
+  'pcie': {
+    name: 'pcie',
+    category: 'tech_hardware',
+    color: '#EAB308',
+    viewBox: '0 0 24 24',
+    path: '<path d="M2 4h20v5H2V4zm0 7h7v9H2v-9zm9 0h11v9H11v-9z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 14h1v3H4zm3 0h1v3H7zm6 0h1v3h-1zm3 0h1v3h-1zm3 0h1v3h-1z" fill="#EAB308"/>',
+  },
+  'hdmi': {
+    name: 'hdmi',
+    category: 'tech_hardware',
+    color: '#38BDF8',
+    viewBox: '0 0 24 24',
+    path: '<path d="M3 7h18l-2.5 11H5.5L3 7z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 10h12v5H6z" fill="currentColor" opacity="0.3"/><line x1="7" y1="12.5" x2="17" y2="12.5" stroke="currentColor" stroke-width="1.5"/>',
+  },
+  'fan_axial': {
+    name: 'fan_axial',
+    category: 'tech_hardware',
+    color: '#10B981',
+    viewBox: '0 0 24 24',
+    path: '<circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/><path d="M12 2a10 10 0 0 1 7 3l-5 5M22 12a10 10 0 0 1-3 7l-5-5M12 22a10 10 0 0 1-7-3l5-5M2 12a10 10 0 0 1 3-7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  },
   'power_supply': {
     name: 'power_supply',
     category: 'tech_hardware',

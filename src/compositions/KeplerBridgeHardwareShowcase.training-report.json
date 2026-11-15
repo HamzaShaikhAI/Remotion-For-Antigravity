@@ -1,0 +1,120 @@
+{
+  "compositionName": "KeplerBridgeHardwareShowcase",
+  "prompt": "KeplerBridge hardware GT 740 NVIDIA PCIe fan",
+  "finalGrade": "A+",
+  "iterations": 2,
+  "styleProfile": "keplerbridgehardwareshowcase",
+  "certifiedAt": "2026-11-15T14:33:59.985Z",
+  "standards": "Claude Opus 5.5 Smoothness & Deterministic Motion",
+  "discoveredAssets": {
+    "matchedLogos": [
+      {
+        "name": "nvidia",
+        "category": "tech_titans",
+        "color": "#EF4444"
+      },
+      {
+        "name": "c",
+        "category": "backend_languages",
+        "color": "#22C55E"
+      },
+      {
+        "name": "pcie",
+        "category": "tech_hardware",
+        "color": "#EAB308"
+      },
+      {
+        "name": "hdmi",
+        "category": "tech_hardware",
+        "color": "#38BDF8"
+      },
+      {
+        "name": "fan_axial",
+        "category": "tech_hardware",
+        "color": "#10B981"
+      },
+      {
+        "name": "ram_dimm",
+        "category": "tech_hardware",
+        "color": "#E11D48"
+      }
+    ],
+    "typographyPreset": {
+      "name": "swissIndustrial",
+      "preset": {
+        "fontFamily": "'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif",
+        "fontWeight": 900,
+        "letterSpacing": "-0.04em",
+        "lineHeight": 1.05,
+        "textTransform": "uppercase",
+        "color": "#FFFFFF",
+        "textShadow": "0 4px 20px rgba(0, 0, 0, 0.45)"
+      }
+    },
+    "matchedMusic": {
+      "id": "minimal_tech_pulse_125bpm",
+      "title": "Silicon Flow 125 (Clean Tech Pulse)",
+      "genre": "Minimal Tech / Corporate Modern",
+      "bpm": 125,
+      "durationSec": 15.36,
+      "description": "Precise micro-percussion, muted modern plucks, and a steady driving bassline for technical showcases.",
+      "staticPath": "audio/music_library/minimal_tech_pulse_125bpm.wav",
+      "relPath": "public/audio/music_library/minimal_tech_pulse_125bpm.wav"
+    },
+    "matchedSfxCues": [
+      {
+        "id": "ui_keystroke_tick",
+        "category": "UI & Interaction",
+        "durationSec": 0.045,
+        "description": "Damped mechanical keycap switch with 150Hz body and 2.1kHz transient",
+        "fileName": "ui_keystroke_tick.wav",
+        "path": "public/sfx/library/ui_keystroke_tick.wav"
+      },
+      {
+        "id": "slide_in_card",
+        "category": "Motion & Transitions",
+        "durationSec": 0.12,
+        "description": "Crisp damped tactile card slide and snap",
+        "fileName": "slide_in_card.wav",
+        "path": "public/sfx/library/slide_in_card.wav"
+      },
+      {
+        "id": "impact_thud",
+        "category": "Impacts & Hits",
+        "durationSec": 0.45,
+        "description": "Heavy 55Hz sub punch with initial transient click",
+        "fileName": "impact_thud.wav",
+        "path": "public/sfx/library/impact_thud.wav"
+      },
+      {
+        "id": "chime_celesta_accent",
+        "category": "Bell & Chimes",
+        "durationSec": 0.55,
+        "description": "Warm celestial celesta chime accent (C6 + G6 + E7)",
+        "fileName": "chime_celesta_accent.wav",
+        "path": "public/sfx/library/chime_celesta_accent.wav"
+      },
+      {
+        "id": "hardware_pcie_slot_snap",
+        "category": "Camera & Media",
+        "durationSec": 0.09,
+        "description": "PCIe 3.0 x16 slot physical insertion lock and latch snap",
+        "fileName": "hardware_pcie_slot_snap.wav",
+        "path": "public/sfx/library/hardware_pcie_slot_snap.wav"
+      },
+      {
+        "id": "hardware_fan_spinup",
+        "category": "Camera & Media",
+        "durationSec": 0.35,
+        "description": "Axial cooling fan motor spin-up and air acceleration whoosh",
+        "fileName": "hardware_fan_spinup.wav",
+        "path": "public/sfx/library/hardware_fan_spinup.wav"
+      }
+    ],
+    "gradientShaders": {
+      "preset": "blueprintGrid",
+      "backgroundShader": "blueprintGrid",
+      "accentShader": "linearMetals.liquidChrome"
+    }
+  }
+}

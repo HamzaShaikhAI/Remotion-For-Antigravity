@@ -1,0 +1,24 @@
+{
+  "name": "keplerbridgehardwareshowcase",
+  "archetype": "tech",
+  "springPhysics": {
+    "damping": 11,
+    "stiffness": 220,
+    "mass": 0.8
+  },
+  "typography": {
+    "fontPrimary": "'Inter', sans-serif",
+    "headlineWeight": 900
+  },
+  "safeZones": {
+    "bottomClearancePx": 280,
+    "rightMarginPx": 140
+  },
+  "palette": {
+    "background": "#090A0F",
+    "surface": "rgba(255, 255, 255, 0.05)",
+    "accentColor": "#D97757"
+  },
+  "certifiedGrade": "A+",
+  "cachedAt": "2026-11-15T14:33:59.984Z"
+}

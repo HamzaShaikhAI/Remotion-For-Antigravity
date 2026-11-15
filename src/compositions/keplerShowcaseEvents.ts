@@ -20,9 +20,9 @@ export const ACT1_HEADLINE_FRAME = 310;
 
 export const ACT2_CALLOUT_EVENTS = [
   { id: '01', title: 'GK107 KEPLER CORE', spec: '384 CUDA Cores · 28nm TSMC · 993 MHz', frame: 520, sfx: 'servo_whirr' },
-  { id: '02', title: '9-BLADE AXIAL COOLER', spec: 'Extruded Aluminum Radial Fin Array', frame: 630, sfx: 'whoosh_fast' },
+  { id: '02', title: '9-BLADE AXIAL COOLER', spec: 'Extruded Aluminum Radial Fin Array', frame: 630, sfx: 'hardware_fan_spinup' },
   { id: '03', title: 'GDDR5 MEMORY & SOLID CAPS', spec: '128-Bit Bus · 5.0 Gbps · Japanese Caps', frame: 740, sfx: 'mechanical_click' },
-  { id: '04', title: 'PCIE 3.0 X16 GOLD CONNECTOR', spec: '164-Pin Gold-Plated Fingers · 10DE:0FC8', frame: 850, sfx: 'electric_spark' },
+  { id: '04', title: 'PCIE 3.0 X16 GOLD CONNECTOR', spec: '164-Pin Gold-Plated Fingers · 10DE:0FC8', frame: 850, sfx: 'hardware_pcie_slot_snap' },
   { id: '05', title: 'STEEL I/O BRACKET', spec: 'Dual-Link DVI-I · Mini-HDMI · D-Sub VGA', frame: 960, sfx: 'sword_clash' },
 ] as const;
 
@@ -81,7 +81,7 @@ export function buildKeplerShowcaseSfxTimeline(): SfxCue[] {
   for (let i = 0; i < ACT1_GIT_COMMAND.length; i += 2) {
     cues.push({
       frame: ACT1_TYPE_START + i * ACT1_FRAMES_PER_CHAR,
-      sfx: 'keyboard_keystroke',
+      sfx: 'ui_keystroke_tick',
       gain: 0.28 + (i % 3) * 0.04,
     });
   }
