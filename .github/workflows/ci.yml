@@ -115,6 +115,8 @@ jobs:
 
       - name: Project Asset Validation Dry-Run
         run: |
+          # Synthesize deterministic foley soundscapes
+          node scripts/synthesize-density-foley.js
           # Ensure starter audio asset exists before validation
           node bin/rea-cli.js pick-track --mood=aggressive
           # Pre-flight asset check to catch missing staticFile references

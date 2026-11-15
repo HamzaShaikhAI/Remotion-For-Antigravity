@@ -40,10 +40,21 @@ import {
   LivingPixelArtLoop,
   LivingPixelArtStudioShowcase,
 } from './compositions/LivingPixelArtShowcase';
+import { ReaSystemArchitectureShowcase } from './compositions/ReaSystemArchitectureShowcase';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* REA System Architecture Showcase — 45s Master Showcase (1080x1920, 45.0s @ 60fps) */}
+      <Composition
+        id="ReaSystemArchitectureShowcase"
+        component={ReaSystemArchitectureShowcase}
+        durationInFrames={2700}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+
       {/* Living Pixel Art Loop — Claude Fable 5.2 (772x1024, 10.0s @ 12fps) */}
       <Composition
         id="LivingPixelArtLoop"

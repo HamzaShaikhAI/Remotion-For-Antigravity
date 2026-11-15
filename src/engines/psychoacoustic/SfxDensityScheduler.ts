@@ -133,6 +133,35 @@ export class SfxDensityScheduler {
   }
 
   /**
+   * Generates REA studio architecture tactile micro-SFX cues
+   * Presets: mechanical_click, whoosh_fast, card_pop, paper_slide, impact_thud, bell_ding
+   * Calibrated: 54 cues across 2700 frames @ 60 FPS (1.20 hits/sec)
+   */
+  public static generateArchitectureFoleyCues(
+    totalFrames: number = 2700,
+    fps: number = 60,
+    baseVolume: number = 0.58
+  ): SfxCue[] {
+    const architecturePresets: MicroSfxPreset[] = [
+      'mechanical_click',
+      'whoosh_fast',
+      'card_pop',
+      'paper_slide',
+      'impact_thud',
+      'bell_ding',
+    ];
+
+    return this.scheduleDensityCues({
+      totalFrames,
+      fps,
+      hitsPerSec: 1.20,
+      presets: architecturePresets,
+      baseVolume,
+      startFrame: 0,
+    });
+  }
+
+  /**
    * Synthesizes and writes the multi-track foley WAV file to disk
    */
   public static synthesizeToWav(

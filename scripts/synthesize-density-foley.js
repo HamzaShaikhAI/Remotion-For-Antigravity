@@ -18,6 +18,10 @@ function synthesizePreset(preset, sampleRate = 44100) {
   if (preset === 'whoosh_fast') durationSec = 0.18;
   if (preset === 'impact_thud') durationSec = 0.45;
   if (preset === 'mechanical_click') durationSec = 0.08;
+  if (preset === 'water_drip') durationSec = 0.15;
+  if (preset === 'bell_ding') durationSec = 0.85;
+  if (preset === 'vinyl_crackle') durationSec = 0.25;
+  if (preset === 'servo_whirr') durationSec = 0.40;
 
   const numSamples = Math.floor(sampleRate * durationSec);
   const samples = new Float32Array(numSamples);
@@ -94,6 +98,28 @@ function synthesizePreset(preset, sampleRate = 44100) {
         const tone1 = Math.sin(2 * Math.PI * 3200 * t) * env1;
         const tone2 = Math.sin(2 * Math.PI * 2400 * (t - 0.018)) * env2;
         samples[i] = (tone1 * 0.6 + tone2 * 0.4) * 0.85;
+      }
+      break;
+    }
+    case 'bell_ding': {
+      for (let i = 0; i < numSamples; i++) {
+        const t = i / sampleRate;
+        const env = Math.exp(-t * 4.5);
+        const fundamental = Math.sin(2 * Math.PI * 1760 * t);
+        const harmonic1 = Math.sin(2 * Math.PI * 3520 * t) * 0.35;
+        const harmonic2 = Math.sin(2 * Math.PI * 5280 * t) * 0.12;
+        const shimmer = Math.sin(2 * Math.PI * 880 * t) * 0.2;
+        samples[i] = (fundamental + harmonic1 + harmonic2 + shimmer) * env * 0.75;
+      }
+      break;
+    }
+    case 'servo_whirr': {
+      for (let i = 0; i < numSamples; i++) {
+        const t = i / sampleRate;
+        const env = Math.sin(Math.PI * (t / durationSec));
+        const freq = 480 + Math.sin(2 * Math.PI * 35 * t) * 120;
+        const buzz = (rng() * 2 - 1) * 0.15;
+        samples[i] = (Math.sin(2 * Math.PI * freq * t) * 0.7 + buzz) * env * 0.6;
       }
       break;
     }
@@ -233,7 +259,109 @@ function synthesizeDensityFoley() {
   generateMultiTrackSfx(westernCues, 1684 / 30, westernOut, 44100);
   console.log(`✔ Western Foley generated: ${westernCues.length} cues across 1,684 frames (56.13s) -> ${westernOut}`);
 
+  // 3. REA System Architecture Showcase (2700 frames = 45.0s @ 60fps)
+  const architecturePresets = ['mechanical_click', 'whoosh_fast', 'card_pop', 'paper_slide', 'impact_thud', 'bell_ding'];
+  const architectureCues = scheduleDensityCues({
+    totalFrames: 2700,
+    fps: 60,
+    hitsPerSec: 1.20,
+    presets: architecturePresets,
+    baseVolume: 0.58,
+  });
+
+  const architectureOut = path.join(audioDir, 'rea_architecture_foley_2700f.wav');
+  generateMultiTrackSfx(architectureCues, 2700 / 60, architectureOut, 44100);
+  console.log(`✔ Architecture Foley generated: ${architectureCues.length} cues across 2,700 frames (45.0s) -> ${architectureOut}`);
+
+  // 4. Ambient Electronic / Lo-Fi Studio Underscore (45.0s @ 118 BPM)
+  const musicOut = path.join(audioDir, 'rea_architecture_music_45s.wav');
+  synthesizeAmbientLoFiScore(45.0, musicOut, 44100);
+  console.log(`✔ Ambient Lo-Fi Studio Score synthesized: 45.0s @ 118 BPM -> ${musicOut}`);
+
   console.log('\n✨ All foley tracks synthesized deterministically with 16-bit 44.1kHz PCM fidelity.');
+}
+
+function synthesizeAmbientLoFiScore(durationSec = 45.0, outputPath, sampleRate = 44100) {
+  const totalSamples = Math.floor(sampleRate * durationSec);
+  const buffer = new Float32Array(totalSamples);
+  const bpm = 118;
+  const beatSec = 60 / bpm;
+  const barSec = beatSec * 4;
+
+  const chordProgression = [
+    { bass: 87.31, freqs: [174.61, 220.00, 261.63, 329.63] }, // Fmaj7
+    { bass: 98.00, freqs: [196.00, 246.94, 293.66, 349.23] }, // G7
+    { bass: 110.00, freqs: [220.00, 261.63, 329.63, 392.00] }, // Am7
+    { bass: 82.41, freqs: [164.81, 196.00, 246.94, 293.66] }, // Em7
+  ];
+
+  let seed = 999;
+  const rng = () => {
+    seed = (seed * 1664525 + 1013904223) % 4294967296;
+    return seed / 4294967296;
+  };
+
+  for (let i = 0; i < totalSamples; i++) {
+    const t = i / sampleRate;
+    const barIndex = Math.floor(t / barSec) % chordProgression.length;
+    const chord = chordProgression[barIndex];
+    const tInBar = t % barSec;
+
+    // Warm Rhodes / Pad synth
+    const env = Math.exp(-tInBar * 0.45) * 0.28 + 0.12 * Math.sin(Math.PI * (tInBar / barSec));
+    let chordTone = 0;
+    for (const freq of chord.freqs) {
+      const vibrato = Math.sin(2 * Math.PI * 4.5 * t) * 0.8;
+      chordTone += Math.sin(2 * Math.PI * (freq + vibrato) * t) * 0.25;
+      chordTone += Math.sin(2 * Math.PI * (freq * 2) * t) * 0.08;
+    }
+
+    // Sub-bass sine
+    const bassEnv = Math.exp(-(t % beatSec) * 2.5) * 0.35 + 0.15;
+    const subBass = Math.sin(2 * Math.PI * chord.bass * t) * bassEnv;
+
+    // Soft tape warmth & subtle vinyl air
+    const vinyl = (rng() * 2 - 1) * 0.006;
+
+    buffer[i] = (chordTone * env + subBass * 0.4 + vinyl);
+  }
+
+  // Master brickwall limiter & soft saturation
+  for (let i = 0; i < totalSamples; i++) {
+    buffer[i] = Math.tanh(buffer[i] * 1.15) * 0.88;
+  }
+
+  // Write WAV
+  const numChannels = 1;
+  const bitsPerSample = 16;
+  const byteRate = (sampleRate * numChannels * bitsPerSample) / 8;
+  const blockAlign = (numChannels * bitsPerSample) / 8;
+  const dataSize = totalSamples * 2;
+  const wavBuffer = Buffer.alloc(44 + dataSize);
+
+  wavBuffer.write('RIFF', 0);
+  wavBuffer.writeUInt32LE(36 + dataSize, 4);
+  wavBuffer.write('WAVE', 8);
+  wavBuffer.write('fmt ', 12);
+  wavBuffer.writeUInt32LE(16, 16);
+  wavBuffer.writeUInt16LE(1, 20);
+  wavBuffer.writeUInt16LE(numChannels, 22);
+  wavBuffer.writeUInt32LE(sampleRate, 24);
+  wavBuffer.writeUInt32LE(byteRate, 28);
+  wavBuffer.writeUInt16LE(blockAlign, 32);
+  wavBuffer.writeUInt16LE(bitsPerSample, 34);
+  wavBuffer.write('data', 36);
+  wavBuffer.writeUInt32LE(dataSize, 40);
+
+  let offset = 44;
+  for (let i = 0; i < totalSamples; i++) {
+    const s = Math.max(-1, Math.min(1, buffer[i]));
+    const val = s < 0 ? s * 0x8000 : s * 0x7fff;
+    wavBuffer.writeInt16LE(Math.round(val), offset);
+    offset += 2;
+  }
+
+  fs.writeFileSync(outputPath, wavBuffer);
 }
 
 if (require.main === module) {
