@@ -56,6 +56,7 @@ export const RicksClipsCaptions: React.FC<RicksClipsCaptionsProps> = ({
         lineHeight={1.1}
         textStyle={{
           WebkitTextStroke: '8px #000000',
+          paintOrder: 'stroke fill',
           textShadow: '0 6px 20px rgba(0, 0, 0, 0.9)',
           textTransform: 'uppercase',
         }}
