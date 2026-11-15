@@ -1,0 +1,503 @@
+{
+  "totalCount": 61,
+  "categories": [
+    "UI & Interaction",
+    "Motion & Transitions",
+    "Impacts & Hits",
+    "Paper & Artisan",
+    "Digital & Sci-Fi",
+    "Anime & Action",
+    "Retro & Gaming",
+    "Cinematic & Ambient"
+  ],
+  "items": [
+    {
+      "id": "ui_button_click",
+      "category": "UI & Interaction",
+      "filename": "ui_button_click.wav",
+      "durationSec": 0.05,
+      "description": "Sharp micro tactile click for button presses",
+      "relPath": "public/sfx/library/ui_button_click.wav"
+    },
+    {
+      "id": "ui_toggle_switch",
+      "category": "UI & Interaction",
+      "filename": "ui_toggle_switch.wav",
+      "durationSec": 0.08,
+      "description": "Clean modern toggle on/off switch",
+      "relPath": "public/sfx/library/ui_toggle_switch.wav"
+    },
+    {
+      "id": "ui_card_pop",
+      "category": "UI & Interaction",
+      "filename": "ui_card_pop.wav",
+      "durationSec": 0.12,
+      "description": "Resonant acoustic pop for card reveals and badge reveals",
+      "relPath": "public/sfx/library/ui_card_pop.wav"
+    },
+    {
+      "id": "ui_modal_open",
+      "category": "UI & Interaction",
+      "filename": "ui_modal_open.wav",
+      "durationSec": 0.18,
+      "description": "Smooth ascending whoosh-pop for modal dialog entrance",
+      "relPath": "public/sfx/library/ui_modal_open.wav"
+    },
+    {
+      "id": "ui_modal_close",
+      "category": "UI & Interaction",
+      "filename": "ui_modal_close.wav",
+      "durationSec": 0.16,
+      "description": "Soft descending pop for modal exit",
+      "relPath": "public/sfx/library/ui_modal_close.wav"
+    },
+    {
+      "id": "ui_tab_switch",
+      "category": "UI & Interaction",
+      "filename": "ui_tab_switch.wav",
+      "durationSec": 0.06,
+      "description": "Subtle high-frequency tab navigation click",
+      "relPath": "public/sfx/library/ui_tab_switch.wav"
+    },
+    {
+      "id": "ui_tooltip_pop",
+      "category": "UI & Interaction",
+      "filename": "ui_tooltip_pop.wav",
+      "durationSec": 0.09,
+      "description": "Quick buoyant bubble tick for hover states",
+      "relPath": "public/sfx/library/ui_tooltip_pop.wav"
+    },
+    {
+      "id": "ui_mechanical_click",
+      "category": "UI & Interaction",
+      "filename": "ui_mechanical_click.wav",
+      "durationSec": 0.08,
+      "description": "Double-transient relay switch click",
+      "relPath": "public/sfx/library/ui_mechanical_click.wav"
+    },
+    {
+      "id": "ui_notification_chime",
+      "category": "UI & Interaction",
+      "filename": "ui_notification_chime.wav",
+      "durationSec": 0.45,
+      "description": "Harmonic two-tone notification chime",
+      "relPath": "public/sfx/library/ui_notification_chime.wav"
+    },
+    {
+      "id": "ui_counter_tick",
+      "category": "UI & Interaction",
+      "filename": "ui_counter_tick.wav",
+      "durationSec": 0.04,
+      "description": "Rapid telemetry counter tick for number scrollers",
+      "relPath": "public/sfx/library/ui_counter_tick.wav"
+    },
+    {
+      "id": "whoosh_fast",
+      "category": "Motion & Transitions",
+      "filename": "whoosh_fast.wav",
+      "durationSec": 0.18,
+      "description": "High-speed directional whip whoosh",
+      "relPath": "public/sfx/library/whoosh_fast.wav"
+    },
+    {
+      "id": "whoosh_cinematic",
+      "category": "Motion & Transitions",
+      "filename": "whoosh_cinematic.wav",
+      "durationSec": 0.45,
+      "description": "Heavy cinematic transition swoosh",
+      "relPath": "public/sfx/library/whoosh_cinematic.wav"
+    },
+    {
+      "id": "whoosh_subtle",
+      "category": "Motion & Transitions",
+      "filename": "whoosh_subtle.wav",
+      "durationSec": 0.14,
+      "description": "Soft organic air flutter for small UI cards",
+      "relPath": "public/sfx/library/whoosh_subtle.wav"
+    },
+    {
+      "id": "whip_pan",
+      "category": "Motion & Transitions",
+      "filename": "whip_pan.wav",
+      "durationSec": 0.22,
+      "description": "Aggressive camera whip pan whoosh",
+      "relPath": "public/sfx/library/whip_pan.wav"
+    },
+    {
+      "id": "glitch_swoosh",
+      "category": "Motion & Transitions",
+      "filename": "glitch_swoosh.wav",
+      "durationSec": 0.25,
+      "description": "Digital distortion swept transition",
+      "relPath": "public/sfx/library/glitch_swoosh.wav"
+    },
+    {
+      "id": "air_slice",
+      "category": "Motion & Transitions",
+      "filename": "air_slice.wav",
+      "durationSec": 0.15,
+      "description": "Sharp razor air cut",
+      "relPath": "public/sfx/library/air_slice.wav"
+    },
+    {
+      "id": "zoom_in_whoosh",
+      "category": "Motion & Transitions",
+      "filename": "zoom_in_whoosh.wav",
+      "durationSec": 0.28,
+      "description": "Rising frequency suction whoosh into focus",
+      "relPath": "public/sfx/library/zoom_in_whoosh.wav"
+    },
+    {
+      "id": "zoom_out_whoosh",
+      "category": "Motion & Transitions",
+      "filename": "zoom_out_whoosh.wav",
+      "durationSec": 0.28,
+      "description": "Dropping frequency whoosh pulling back",
+      "relPath": "public/sfx/library/zoom_out_whoosh.wav"
+    },
+    {
+      "id": "impact_thud",
+      "category": "Impacts & Hits",
+      "filename": "impact_thud.wav",
+      "durationSec": 0.45,
+      "description": "Heavy 55Hz sub punch with initial transient click",
+      "relPath": "public/sfx/library/impact_thud.wav"
+    },
+    {
+      "id": "heavy_impact",
+      "category": "Impacts & Hits",
+      "filename": "heavy_impact.wav",
+      "durationSec": 0.65,
+      "description": "Massive trailer hit with sub-bass rumble",
+      "relPath": "public/sfx/library/heavy_impact.wav"
+    },
+    {
+      "id": "sub_bass_drop",
+      "category": "Impacts & Hits",
+      "filename": "sub_bass_drop.wav",
+      "durationSec": 0.9,
+      "description": "Sub-bass 808 frequency dive (120Hz -> 36Hz)",
+      "relPath": "public/sfx/library/sub_bass_drop.wav"
+    },
+    {
+      "id": "cinematic_boom",
+      "category": "Impacts & Hits",
+      "filename": "cinematic_boom.wav",
+      "durationSec": 1.4,
+      "description": "Deep atmospheric cinematic sub boom",
+      "relPath": "public/sfx/library/cinematic_boom.wav"
+    },
+    {
+      "id": "kick_thud",
+      "category": "Impacts & Hits",
+      "filename": "kick_thud.wav",
+      "durationSec": 0.28,
+      "description": "Tight acoustic punchy kick hit",
+      "relPath": "public/sfx/library/kick_thud.wav"
+    },
+    {
+      "id": "punch_impact",
+      "category": "Impacts & Hits",
+      "filename": "punch_impact.wav",
+      "durationSec": 0.35,
+      "description": "Crisp physical strike impact",
+      "relPath": "public/sfx/library/punch_impact.wav"
+    },
+    {
+      "id": "anvil_strike",
+      "category": "Impacts & Hits",
+      "filename": "anvil_strike.wav",
+      "durationSec": 0.55,
+      "description": "Heavy metallic anvil strike with ringing overtone",
+      "relPath": "public/sfx/library/anvil_strike.wav"
+    },
+    {
+      "id": "glass_hit",
+      "category": "Impacts & Hits",
+      "filename": "glass_hit.wav",
+      "durationSec": 0.3,
+      "description": "High metallic glass tap resonance",
+      "relPath": "public/sfx/library/glass_hit.wav"
+    },
+    {
+      "id": "paper_slide",
+      "category": "Paper & Artisan",
+      "filename": "paper_slide.wav",
+      "durationSec": 0.22,
+      "description": "Smooth cardstock paper sliding across mat",
+      "relPath": "public/sfx/library/paper_slide.wav"
+    },
+    {
+      "id": "paper_tear",
+      "category": "Paper & Artisan",
+      "filename": "paper_tear.wav",
+      "durationSec": 0.35,
+      "description": "Gritty organic paper tear crackle",
+      "relPath": "public/sfx/library/paper_tear.wav"
+    },
+    {
+      "id": "card_shuffle",
+      "category": "Paper & Artisan",
+      "filename": "card_shuffle.wav",
+      "durationSec": 0.4,
+      "description": "Rapid flutter of poker deck card edges",
+      "relPath": "public/sfx/library/card_shuffle.wav"
+    },
+    {
+      "id": "page_flip",
+      "category": "Paper & Artisan",
+      "filename": "page_flip.wav",
+      "durationSec": 0.25,
+      "description": "Quick tactile book or magazine page turn",
+      "relPath": "public/sfx/library/page_flip.wav"
+    },
+    {
+      "id": "stamp_press",
+      "category": "Paper & Artisan",
+      "filename": "stamp_press.wav",
+      "durationSec": 0.2,
+      "description": "Rubber stamp ink impression on paper",
+      "relPath": "public/sfx/library/stamp_press.wav"
+    },
+    {
+      "id": "pencil_sketch",
+      "category": "Paper & Artisan",
+      "filename": "pencil_sketch.wav",
+      "durationSec": 0.3,
+      "description": "Graphite pencil stroke friction",
+      "relPath": "public/sfx/library/pencil_sketch.wav"
+    },
+    {
+      "id": "digital_glitch",
+      "category": "Digital & Sci-Fi",
+      "filename": "digital_glitch.wav",
+      "durationSec": 0.18,
+      "description": "Bitcrushed stepped noise glitch pulse",
+      "relPath": "public/sfx/library/digital_glitch.wav"
+    },
+    {
+      "id": "cyber_beep",
+      "category": "Digital & Sci-Fi",
+      "filename": "cyber_beep.wav",
+      "durationSec": 0.08,
+      "description": "Clean high-pitch HUD confirmation chirp",
+      "relPath": "public/sfx/library/cyber_beep.wav"
+    },
+    {
+      "id": "telemetry_chirp",
+      "category": "Digital & Sci-Fi",
+      "filename": "telemetry_chirp.wav",
+      "durationSec": 0.12,
+      "description": "Fast dual frequency data transmission chirp",
+      "relPath": "public/sfx/library/telemetry_chirp.wav"
+    },
+    {
+      "id": "laser_blaster",
+      "category": "Digital & Sci-Fi",
+      "filename": "laser_blaster.wav",
+      "durationSec": 0.28,
+      "description": "Sci-fi blaster laser discharge",
+      "relPath": "public/sfx/library/laser_blaster.wav"
+    },
+    {
+      "id": "matrix_scan",
+      "category": "Digital & Sci-Fi",
+      "filename": "matrix_scan.wav",
+      "durationSec": 0.35,
+      "description": "High frequency sonar scan line pulse",
+      "relPath": "public/sfx/library/matrix_scan.wav"
+    },
+    {
+      "id": "servo_whirr",
+      "category": "Digital & Sci-Fi",
+      "filename": "servo_whirr.wav",
+      "durationSec": 0.4,
+      "description": "Precision robotic actuator servo motor whirr",
+      "relPath": "public/sfx/library/servo_whirr.wav"
+    },
+    {
+      "id": "data_stream",
+      "category": "Digital & Sci-Fi",
+      "filename": "data_stream.wav",
+      "durationSec": 0.3,
+      "description": "Rapid packet telemetry streaming tick stream",
+      "relPath": "public/sfx/library/data_stream.wav"
+    },
+    {
+      "id": "sonar_ping",
+      "category": "Digital & Sci-Fi",
+      "filename": "sonar_ping.wav",
+      "durationSec": 0.85,
+      "description": "Subsea acoustic sonar ping with long reverberant decay",
+      "relPath": "public/sfx/library/sonar_ping.wav"
+    },
+    {
+      "id": "sword_clash",
+      "category": "Anime & Action",
+      "filename": "sword_clash.wav",
+      "durationSec": 0.45,
+      "description": "Heavy katana blade collision with ringing harmonic",
+      "relPath": "public/sfx/library/sword_clash.wav"
+    },
+    {
+      "id": "sword_slice",
+      "category": "Anime & Action",
+      "filename": "sword_slice.wav",
+      "durationSec": 0.24,
+      "description": "High-speed katana air slice",
+      "relPath": "public/sfx/library/sword_slice.wav"
+    },
+    {
+      "id": "katana_sheathe",
+      "category": "Anime & Action",
+      "filename": "katana_sheathe.wav",
+      "durationSec": 0.32,
+      "description": "Tactile metallic scabbard blade sheathe click",
+      "relPath": "public/sfx/library/katana_sheathe.wav"
+    },
+    {
+      "id": "thunder_strike",
+      "category": "Anime & Action",
+      "filename": "thunder_strike.wav",
+      "durationSec": 0.75,
+      "description": "Sharp lightning bolt strike with sub roll",
+      "relPath": "public/sfx/library/thunder_strike.wav"
+    },
+    {
+      "id": "lightning_flash",
+      "category": "Anime & Action",
+      "filename": "lightning_flash.wav",
+      "durationSec": 0.35,
+      "description": "High voltage electrical arc discharge",
+      "relPath": "public/sfx/library/lightning_flash.wav"
+    },
+    {
+      "id": "aura_charge",
+      "category": "Anime & Action",
+      "filename": "aura_charge.wav",
+      "durationSec": 0.6,
+      "description": "Rising energy aura hum",
+      "relPath": "public/sfx/library/aura_charge.wav"
+    },
+    {
+      "id": "energy_blast",
+      "category": "Anime & Action",
+      "filename": "energy_blast.wav",
+      "durationSec": 0.5,
+      "description": "Shockwave pulse discharge",
+      "relPath": "public/sfx/library/energy_blast.wav"
+    },
+    {
+      "id": "coin_pickup",
+      "category": "Retro & Gaming",
+      "filename": "coin_pickup.wav",
+      "durationSec": 0.35,
+      "description": "Classic 8-bit double chime coin grab",
+      "relPath": "public/sfx/library/coin_pickup.wav"
+    },
+    {
+      "id": "jump_beep",
+      "category": "Retro & Gaming",
+      "filename": "jump_beep.wav",
+      "durationSec": 0.16,
+      "description": "8-bit pitch-rising player jump",
+      "relPath": "public/sfx/library/jump_beep.wav"
+    },
+    {
+      "id": "power_up",
+      "category": "Retro & Gaming",
+      "filename": "power_up.wav",
+      "durationSec": 0.45,
+      "description": "Arpeggiated 8-bit power-up fan-fare",
+      "relPath": "public/sfx/library/power_up.wav"
+    },
+    {
+      "id": "pixel_hit",
+      "category": "Retro & Gaming",
+      "filename": "pixel_hit.wav",
+      "durationSec": 0.12,
+      "description": "Chiptune noise damage impact",
+      "relPath": "public/sfx/library/pixel_hit.wav"
+    },
+    {
+      "id": "game_over_beep",
+      "category": "Retro & Gaming",
+      "filename": "game_over_beep.wav",
+      "durationSec": 0.6,
+      "description": "Descending 8-bit game over sequence",
+      "relPath": "public/sfx/library/game_over_beep.wav"
+    },
+    {
+      "id": "health_regen",
+      "category": "Retro & Gaming",
+      "filename": "health_regen.wav",
+      "durationSec": 0.38,
+      "description": "Warm ascending chime pulses",
+      "relPath": "public/sfx/library/health_regen.wav"
+    },
+    {
+      "id": "bell_ding",
+      "category": "Cinematic & Ambient",
+      "filename": "bell_ding.wav",
+      "durationSec": 0.85,
+      "description": "Pure harmonic brass chime for success notifications",
+      "relPath": "public/sfx/library/bell_ding.wav"
+    },
+    {
+      "id": "cinematic_riser",
+      "category": "Cinematic & Ambient",
+      "filename": "cinematic_riser.wav",
+      "durationSec": 1.2,
+      "description": "Exponential tension building riser",
+      "relPath": "public/sfx/library/cinematic_riser.wav"
+    },
+    {
+      "id": "tape_stop",
+      "category": "Cinematic & Ambient",
+      "filename": "tape_stop.wav",
+      "durationSec": 0.55,
+      "description": "Vinyl friction turntable brake",
+      "relPath": "public/sfx/library/tape_stop.wav"
+    },
+    {
+      "id": "vinyl_crackle",
+      "category": "Cinematic & Ambient",
+      "filename": "vinyl_crackle.wav",
+      "durationSec": 0.4,
+      "description": "Analog vinyl dust and subtle crackle",
+      "relPath": "public/sfx/library/vinyl_crackle.wav"
+    },
+    {
+      "id": "countdown_beep",
+      "category": "Cinematic & Ambient",
+      "filename": "countdown_beep.wav",
+      "durationSec": 0.12,
+      "description": "Standard 1000Hz reference sync beep",
+      "relPath": "public/sfx/library/countdown_beep.wav"
+    },
+    {
+      "id": "water_drip",
+      "category": "Cinematic & Ambient",
+      "filename": "water_drip.wav",
+      "durationSec": 0.15,
+      "description": "Acoustic water droplet chirp",
+      "relPath": "public/sfx/library/water_drip.wav"
+    },
+    {
+      "id": "clock_tick",
+      "category": "Cinematic & Ambient",
+      "filename": "clock_tick.wav",
+      "durationSec": 0.05,
+      "description": "Precision mechanical clock tick",
+      "relPath": "public/sfx/library/clock_tick.wav"
+    },
+    {
+      "id": "camera_shutter",
+      "category": "Cinematic & Ambient",
+      "filename": "camera_shutter.wav",
+      "durationSec": 0.22,
+      "description": "SLR camera shutter actuation",
+      "relPath": "public/sfx/library/camera_shutter.wav"
+    }
+  ]
+}

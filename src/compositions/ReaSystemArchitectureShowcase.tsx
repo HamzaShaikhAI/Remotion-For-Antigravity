@@ -10,6 +10,11 @@ import {
 } from 'remotion';
 import { SafeTextContainer } from '../engines/typography/SafeTextContainer.tsx';
 import { motionTokens } from '../tokens/motion.ts';
+import {
+  ACT_BOUNDARIES,
+  ACT1_PROMPT_TEXT,
+  ACT3_DEMO_FULL_TEXT,
+} from './reaShowcaseEvents.ts';
 
 // ---------------------------------------------------------------------------
 // Design Constants & Colors
@@ -838,9 +843,9 @@ const Act3DeterminismWorkbench: React.FC<{ frame: number; fps: number }> = ({ fr
             <SafeTextContainer
               text={dynamicStressText}
               containerWidth={SAFE_CONTENT_WIDTH - 90}
-              baseFontSize={54}
+              baseFontSize={liveFontSize}
               minFontSize={24}
-              autoScale={true}
+              autoScale={false}
               color={SLATE_DARK}
               fontWeight={900}
               fontFamily="'Plus Jakarta Sans', sans-serif"
@@ -1457,16 +1462,16 @@ export const ReaSystemArchitectureShowcase: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: CANVAS_BG, overflow: 'hidden' }}>
-      {/* 1. Deterministic 44.1 kHz 1.20 Hits/Sec Foley Bed (54 Cues) */}
+      {/* 1. Event-Locked 44.1 kHz Frame-Exact Foley Bed (105 Cues Aligned 1:1) */}
       <Audio
-        src={staticFile('audio/rea_architecture_foley_2700f.wav')}
-        volume={0.88}
+        src={staticFile('audio/rea_showcase_event_locked_sfx.wav')}
+        volume={0.95}
       />
 
-      {/* 2. Ambient Electronic / Lo-Fi Studio Underscore (118 BPM) */}
+      {/* 2. Ambient Electronic / Lo-Fi Studio Underscore (Ducked to 0.20 for Vocal/SFX Clarity) */}
       <Audio
         src={staticFile('audio/rea_architecture_music_45s.wav')}
-        volume={musicVolume}
+        volume={musicVolume * 0.40}
       />
 
       {/* 3. Base High-Key Oyster Canvas + 4-Point Chromatic Mesh */}
