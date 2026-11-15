@@ -84,11 +84,11 @@ export class AiMusicGenerator {
           timeout: 15000,
         });
 
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
           const writer = fs.createWriteStream(resolvedPath);
           audioStream.data.pipe(writer);
-          writer.on('finish', resolve);
-          writer.on('error', reject);
+          writer.on('finish', () => resolve());
+          writer.on('error', (err) => reject(err));
         });
 
         // Generate companion metadata
