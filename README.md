@@ -351,6 +351,230 @@ export const MyVfxComposition: React.FC = () => {
 
 ---
 
+## 🎬 REA Specialized Prompt Engine (Motion Studio Prompt Engineering)
+
+> **"Anyone can prompt an animation. Few know how to direct one. The AI model doesn't replace your taste—it becomes your production layer: writing the tokens, building the prototypes, and auditing the work, while your prompt enforces the director's voice."**
+
+The **REA Specialized Prompt Engine** is a rigorous prompt-engineering framework designed specifically for programmatic video in Google Antigravity. It eliminates the guesswork, amateur aesthetics, and fragile visual bugs common to generic LLM video generation by turning unstructured natural language into a mathematically disciplined, multi-layered motion production brief.
+
+---
+
+### 1. Why Traditional Video Prompts Fail vs. Why REA Wins
+
+| Problem in Standard Prompts | Why It Happens in LLMs | How REA Specialized Prompt Engine Solves It |
+| :--- | :--- | :--- |
+| **Crude Geometric Visuals** | Prompts like *"create an anime opening"* force LLMs to draw primitive SVG shapes from scratch. | Directs the model to anchor onto **authentic high-resolution plates** in `public/assets/`, dynamic camera zooms, and 3D perspective depth. |
+| **Text Overflowing Mobile Viewports** | LLMs generate hardcoded `fontSize: 72px` spans without bounding-box awareness or margin safe zones. | Mandates **`<typography_containment>`** using [`SafeTextContainer`](src/engines/typography/SafeTextContainer.tsx) with strict `maxLines`, `containerWidth`, and `autoScale={true}`. |
+| **Lifeless, Muted Renders** | Prompts omit sound design or relegate it to an afterthought background music track. | Enforces **`<psychoacoustic_design>`** with calibrated micro-SFX foley (1.20 hits/sec via [`SfxDensityScheduler`](src/engines/psychoacoustic/SfxDensityScheduler.ts)), beat-drop transients, and EBU R128 mastering. |
+| **Robotic, Snapping Motion** | Models default to linear CSS transitions (`ease-in-out` or linear `interpolate`). | Injects **`<motion_tokens>`** from [`MOTION.md`](MOTION.md): strictly using physics-driven `spring({ damping, stiffness })`, zero linear curves, and stop-motion framerate throttling. |
+| **Worker Frame Desyncs & Flicker** | LLMs invoke non-deterministic functions (`Math.random()`, `Date.now()`) inside render loops. | Strictly bans non-determinism via pre-render AST linters; all animations are derived as pure functions of `useCurrentFrame()`. |
+
+---
+
+### 2. The 6-Pillar Production Prompt Layout
+
+To direct an AI model like a high-budget motion studio, structure your prompt using the standardized **REA 6-Pillar XML Architecture**:
+
+```xml
+<role>
+  You are an elite motion design studio, executive creative director,
+  cinematographer, typographer, and psychoacoustic sound designer.
+</role>
+
+<context>
+  Project Specifications:
+  - Resolution: 1080×1920 (9:16 vertical) or 1920×1080 (16:9 landscape)
+  - Frame Rate: 30 FPS or 60 FPS
+  - Exact Frame Budget: [e.g. 1,684 frames / 56.13 seconds]
+  - Visual Language & Style: [e.g. Hybrid 2.5D, Stop-Motion Paper, 175 BPM Anime, CAD-to-Chrome]
+</context>
+
+<motion_tokens>
+  Enforce MOTION.md design tokens:
+  - Entering elements: spring({ stiffness: 220, damping: 11 })
+  - Heavy kinetic elements: spring({ stiffness: 380, damping: 32 })
+  - Stop-Motion Throttling: quantize frames to 12 FPS or 16 FPS when simulating handmade craft
+  - Zero linear transitions (strictly forbidden)
+</motion_tokens>
+
+<typography_containment>
+  Strict Zero-Overflow Protocol:
+  - Wrap all dynamic titles, badges, and word-synced subtitles in SafeTextContainer
+  - Provide containerWidth, maxLines, and autoScale={true}
+  - Enforce mobile safe-zones: 280px bottom margin for TikTok, 80px for YouTube Shorts
+  - Text must never breach cardstock borders or screen bounds under any headline length
+</typography_containment>
+
+<psychoacoustic_design>
+  Sound Architecture:
+  - Narration Track: -14 LUFS broadcast normalized EBU R128 master
+  - Tactile Foley Density: Calibrate to 1.20 hits/sec (one micro-SFX event every 25 frames @ 30 FPS)
+  - Micro-SFX Palette: Rotate whoosh_fast, impact_thud, card_pop, paper_slide, mechanical_click
+  - Beat Synchronization: Lock camera zooms and match cuts to downbeats and transient drops
+</psychoacoustic_design>
+
+<constraints_and_execution>
+  - Zero Math.random(): Derivations must use (frame * hash) % N or deterministic seed
+  - Asset Routing: All images and textures must load via staticFile('assets/...')
+  - Output Contract: Self-contained React Remotion composition registered in src/Root.tsx
+</constraints_and_execution>
+```
+
+---
+
+### 3. Production Blueprints & Compositions Made From Them
+
+The REA repository includes production-certified compositions created directly using this Specialized Prompt Engine:
+
+#### 🤠 Blueprint A: Hybrid 2.5D Western Storytelling (The RicksClips Formula)
+* **Target Video Style:** 150M-view storytelling format combining hand-drawn 2D stick characters with photorealistic 3D depth, cinematic perspective, and high-impact word-synced captions.
+* **Composition Produced:** [`RicksClipsSecondDrawShowcase`](src/compositions/RicksClipsSecondDrawShowcase.tsx) (1080×1920 9:16, 56.13s @ 30 FPS, 1,684 frames).
+* **The Exact Prompt Used:**
+  ```xml
+  <role>
+    You are my AI animation studio, director, 3D cinematographer, and sound designer.
+    Create a high-retention animated Short in the HYBRID 2.5D storytelling style.
+  </role>
+  <context>
+    Resolution: 1080×1920 (9:16) | FPS: 30 | Duration: 1,684 frames (56.13s)
+    Topic: "Why the Second Draw Always Wins in Western Duels"
+  </context>
+  <visual_execution>
+    - Stick figure characters with expressive outfits, hats, and holsters in 2D.
+    - Photorealistic 3D dusty western frontier town, saloon, and bullet flybys in perspective.
+    - Camera: Dynamic dutch angles, slow dolly drift, and dramatic standoffs.
+  </visual_execution>
+  <typography_containment>
+    - Word-synced 72px Montserrat ExtraBold captions with 8px black stroke.
+    - Wrap in SafeTextContainer with containerWidth={980} and autoScale={true} so long phrases scale down smoothly to 42px without horizontal viewport clipping.
+  </typography_containment>
+  <psychoacoustic_design>
+    - Primary narration track at volume={0.96}.
+    - Inject 68 tactile Western foley cues at 1.20 hits/sec (whoosh_fast, impact_thud, card_pop, paper_slide, mechanical_click) at volume={0.42}.
+  </psychoacoustic_design>
+  ```
+* **Visual Result:** Authentic 3D duel standoff, zero text spill, and 68 tactile foley cues.
+
+---
+
+#### ⚡ Blueprint B: J-Pop Idol Anime Opening & Music Video (MV)
+* **Target Video Style:** High-velocity, 175 BPM anime opening with kinetic typography, speed ramps, match cuts, halftone raster shaders, retro arcade HUDs, and animated pixel-art idol sprites.
+* **Composition Produced:** [`AnimeOpeningMVShowcase`](src/compositions/AnimeOpeningMVShowcase.tsx) (1080×1920 9:16, 175 BPM, 720 frames @ 60 FPS).
+* **The Exact Prompt Used:**
+  ```xml
+  <role>
+    You are a high-budget modern anime opening director, motion graphics artist, and sound designer.
+  </role>
+  <context>
+    Song: 175 BPM J-Pop Idol Rock | Resolution: 1080×1920 | Frame Rate: 60 FPS | Duration: 720 frames (12s)
+  </context>
+  <motion_and_effects>
+    - Beat sync: Downbeats occur every 20.57 frames @ 60fps (175 BPM).
+    - Animate 8-bit/16-bit pixel-art idol dance sprites synchronized with the downbeat bounce.
+    - Dynamic camera zooms, speed ramps on drum fills, and halftone dot raster overlays.
+    - Confetti explosion and retro arcade HUD overlay with glowing neon borders.
+  </motion_and_effects>
+  <typography_containment>
+    - Japanese + English kinetic lyric typography with drop-shadows and bounding box auto-scaling.
+  </typography_containment>
+  ```
+* **Visual Result:** Studio-grade anime idol reveal, pixel dance stages, and rhythmic 175 BPM sync.
+
+---
+
+#### ✂️ Blueprint C: 2.5D Paper Cutout & Stop-Motion Explainer
+* **Target Video Style:** Tactile handmade stop-motion papercraft with textured cutting mat backgrounds, thick sticker borders, stacked physical shadows, and chunky 16 FPS framerate throttling.
+* **Composition Produced:** [`PaperStyleEngine`](src/compositions/PaperStyleEngine.tsx) (1080×1920 9:16, 480 frames @ 30 FPS).
+* **The Exact Prompt Used:**
+  ```xml
+  <role>
+    You are a handmade 2.5D stop-motion artist and physical prop fabricator.
+  </role>
+  <context>
+    Resolution: 1080×1920 | FPS: 30 throttled to 16 FPS stop-motion | Duration: 480 frames (16s)
+  </context>
+  <tactile_craft>
+    - Background: Green self-healing cutting mat with grid texture and rough paper noise overlay.
+    - Character Cutouts: Big-head cutout with 6px red/white sticker border and stacked drop shadows.
+    - Cardstock Box: 5px solid #0F172A border with 8px hard offset paper shadow.
+  </tactile_craft>
+  <typography_containment>
+    - Wrap character badge (JED // 2.5D CUTOUT) in SafeTextContainer.
+    - Wrap title and subtitle in SafeTextContainer with autoScale={true} and maxHeight: 280px so long headlines dynamically compress rather than breaching card borders.
+  </typography_containment>
+  <psychoacoustic_design>
+    - Synthesize 20 tactile foley events (paper_slide, card_pop, paper_tear, whoosh_fast, mechanical_click) scheduled at 1.20 hits/sec via SfxDensityScheduler.
+  </psychoacoustic_design>
+  ```
+* **Visual Result:** Authentic paper stop-motion feel, zero text breaches, and satisfying cardboard acoustics.
+
+---
+
+#### 🕹️ Blueprint D: Living Animated Pixel Art Studio (Claude Fable 5.2)
+* **Target Video Style:** Retro 512px canvas pixel art brought to life with 12 FPS multi-layered environmental animation, water reflections, dynamic lighting, and export controls.
+* **Composition Produced:** [`LivingPixelArtStudioShowcase`](src/compositions/LivingPixelArtShowcase.tsx) (1080×1920, 12 FPS, 360 frames).
+* **The Exact Prompt Used:**
+  ```xml
+  <role>
+    You are a master 16-bit pixel artist, shader engineer, and retro game director.
+  </role>
+  <context>
+    Grid: 512px crisp grid | Palette: ~100 sampled colors | Frame Rate: 12 FPS seamless loop
+  </context>
+  <pixel_execution>
+    - Crisp hard-edged pixels: image-rendering: pixelated, zero anti-aliasing blur.
+    - Layered environmental animation: oscillating rain streaks, puddles with cosine ripple reflections, glowing neon sign flickers, and swaying utility wires.
+    - Secondary motion: rhythmic breath and tail sways on characters.
+  </pixel_execution>
+  ```
+* **Visual Result:** Living cyberpunk street scene with glowing neon reflections and 12 FPS retro pacing.
+
+---
+
+#### 💎 Blueprint E: Precision CAD Blueprint to Liquid Chrome 3D Emblem
+* **Target Video Style:** Technical CAD schematic transforming smoothly into a high-gloss, liquid chrome 3D metallic emblem with camera drift and specular light sweeps.
+* **Composition Produced:** [`AmaniStudioCadChrome`](src/compositions/AmaniStudioCadChrome.tsx) (1080×1920 9:16, 720 frames @ 60 FPS).
+* **The Exact Prompt Used:**
+  ```xml
+  <role>
+    You are an industrial automotive CAD designer, 3D shader artist, and luxury commercial director.
+  </role>
+  <context>
+    Resolution: 1080×1920 | FPS: 60 | Duration: 720 frames (12s)
+  </context>
+  <transformation_arc>
+    - Act 1 (Frames 0-240): Precision CAD wireframe blueprint with technical dimension lines, measurement ticks, and cyan grid lines.
+    - Act 2 (Frames 240-480): Fluid materialization sweep transitioning wireframes into liquid metal.
+    - Act 3 (Frames 480-720): Ray-traced liquid chrome 3D emblem with HDR specular gleams and ambient camera drift.
+  </transformation_arc>
+  ```
+* **Visual Result:** High-end luxury automotive emblem reveal with wireframe transitions.
+
+---
+
+### 4. Step-by-Step: How to Craft Your Own REA Prompt
+
+1. **Step 1: Set Spatial & Sensory Anchors**
+   Always declare exact resolution, aspect ratio (9:16 or 16:9), target FPS, and frame count upfront. Never say *"make a short video"*—say *"Resolution: 1080x1920, 30 FPS, exactly 900 frames (30.0s)"*.
+
+2. **Step 2: Assign Design Tokens & Containment**
+   Specify spring stiffness and damping from `MOTION.md`. Always explicitly mandate `SafeTextContainer` for all text blocks to guarantee zero viewport overflow across phone screen sizes.
+
+3. **Step 3: Schedule Tactile Foley Density**
+   Direct the model to schedule micro-SFX at **1.20 hits/sec** (one tactile hit every 25 frames @ 30 FPS) using `SfxDensityScheduler`. This single instruction elevates amateur visual sequences into subconscious dopamine retention loops.
+
+4. **Step 4: Verify via Pre-Render Linters**
+   After generation, run REA's pre-flight audit suite to verify zero-overflow and determinism:
+   ```bash
+   node bin/rea-cli.js motion-lint
+   node bin/rea-cli.js audit-polish
+   node bin/rea-cli.js validate
+   ```
+
+<br/>
+
+---
+
 ## 📊 Comprehensive Architectural Comparison
 
 | Feature / Dimension | Adobe Premiere Pro | After Effects | CapCut / Descript | Standard Remotion CLI | REA (Remotion Engine for Antigravity) |
