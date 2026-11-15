@@ -7,6 +7,7 @@ import {
   interpolate,
   staticFile,
   Audio,
+  Img,
 } from 'remotion';
 import { GameHudOverlay } from '../components/GameHudOverlay';
 import { HeistVectorMap } from '../components/HeistVectorMap';
@@ -96,14 +97,16 @@ export const HeistDilemmaStory: React.FC = () => {
       {/* Scene 6: Dilemma sub-bass drone and decision riser */}
       <KeyframeLockedSFX triggerFrame={520} sfxFile="sfx/dilemma-drone.wav" volume={0.95} />
 
-      {/* 2. Global Game HUD Overlay (Persistent across narrative acts) */}
-      <GameHudOverlay
-        haul={8400000}
-        startHaul={1112024}
-        crew={2}
-        heat={heatLevel}
-        countDurationFrames={60}
-      />
+      {/* 2. Global Game HUD Overlay (Active from Scene 2 onwards) */}
+      {!isScene1 && (
+        <GameHudOverlay
+          haul={8400000}
+          startHaul={1112024}
+          crew={2}
+          heat={heatLevel}
+          countDurationFrames={60}
+        />
+      )}
 
       {/* 3. Narrative Act Scenes */}
       <div
@@ -118,209 +121,22 @@ export const HeistDilemmaStory: React.FC = () => {
         {/* ======================================================== */}
         {isScene1 && (
           <AbsoluteFill style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            {/* Interior Car Silhouette & Rear Window */}
-            <div
+            {/* Photorealistic Graphic Novel Car Backseat with Cash Duffels */}
+            <AbsoluteFill
               style={{
-                width: '100%',
-                height: '100%',
-                position: 'relative',
-                background: 'linear-gradient(180deg, #09131F 0%, #172635 45%, #0A1118 100%)',
+                transform: `scale(${1.0 + frame * 0.0003}) translateY(${driftY}px)`,
+                transformOrigin: 'center center',
               }}
             >
-              {/* Rain Streaks on Glass */}
-              <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-                {rainDrops.map((drop, idx) => (
-                  <line
-                    key={idx}
-                    x1={drop.x}
-                    y1={drop.y}
-                    x2={drop.x - 3}
-                    y2={drop.y + drop.length}
-                    stroke="#38BDF8"
-                    strokeWidth="1.8"
-                    strokeOpacity={drop.opacity}
-                    strokeLinecap="round"
-                  />
-                ))}
-              </svg>
-
-              {/* Rear Window Frame & Car Headrest Silhouettes */}
-              <div
+              <Img
+                src={staticFile('assets/papercutout/car_backseat_rain.png')}
                 style={{
-                  position: 'absolute',
-                  top: '180px',
-                  left: '80px',
-                  right: '80px',
-                  height: '420px',
-                  borderRadius: '120px 120px 40px 40px',
-                  border: '18px solid #060B12',
-                  boxShadow: 'inset 0 0 80px rgba(0,0,0,0.8), 0 20px 60px rgba(0,0,0,0.9)',
-                  overflow: 'hidden',
-                  background: 'linear-gradient(180deg, #112338 0%, #0F3147 60%, #1A475C 100%)',
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
                 }}
-              >
-                {/* Wet Highway streetlights in distance */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '140px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '60px',
-                    height: '60px',
-                    borderRadius: '50%',
-                    background: 'radial-gradient(circle, #FDE047 0%, rgba(253, 224, 71, 0) 70%)',
-                    opacity: 0.8,
-                  }}
-                />
-              </div>
-
-              {/* Backseat Duffel Bags with Cash Cutouts */}
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: '260px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  width: '740px',
-                  height: '480px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  gap: '40px',
-                }}
-              >
-                {/* Left Duffel Bag */}
-                <div
-                  style={{
-                    width: '320px',
-                    height: '240px',
-                    borderRadius: '32px',
-                    background: '#1E293B',
-                    border: '5px solid #0F172A',
-                    position: 'relative',
-                    boxShadow: '0 24px 50px rgba(0,0,0,0.7)',
-                    transform: 'rotate(-4deg)',
-                  }}
-                >
-                  {/* Unzipped Pocket with Overflowing Cash */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '20px',
-                      left: '20px',
-                      right: '20px',
-                      height: '90px',
-                      borderRadius: '16px',
-                      background: '#0F172A',
-                      border: '3px solid #334155',
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      gap: '8px',
-                      padding: '10px',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    {/* Banded Cash Stacks Cutout */}
-                    {[1, 2, 3, 4, 5].map((_, i) => (
-                      <div
-                        key={i}
-                        style={{
-                          width: '75px',
-                          height: '34px',
-                          background: '#86EFAC',
-                          border: '2px solid #0F172A',
-                          borderRadius: '4px',
-                          position: 'relative',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          boxShadow: '0 4px 10px rgba(0,0,0,0.4)',
-                        }}
-                      >
-                        {/* Money Band */}
-                        <div
-                          style={{
-                            width: '20px',
-                            height: '100%',
-                            background: '#FAF7F2',
-                            border: '1px solid #0F172A',
-                          }}
-                        />
-                        <span style={{ position: 'absolute', fontSize: '9px', fontWeight: 900, color: '#0F172A' }}>
-                          $100
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Right Duffel Bag */}
-                <div
-                  style={{
-                    width: '340px',
-                    height: '260px',
-                    borderRadius: '32px',
-                    background: '#0F172A',
-                    border: '5px solid #334155',
-                    position: 'relative',
-                    boxShadow: '0 24px 50px rgba(0,0,0,0.7)',
-                    transform: 'rotate(5deg)',
-                  }}
-                >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      bottom: '24px',
-                      left: '30px',
-                      right: '30px',
-                      height: '110px',
-                      borderRadius: '16px',
-                      background: '#1E293B',
-                      border: '3px solid #0F172A',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontFamily: 'monospace',
-                        fontSize: '32px',
-                        fontWeight: 900,
-                        color: '#4ADE80',
-                        letterSpacing: '0.05em',
-                      }}
-                    >
-                      $8,400,000
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Subtitle Card */}
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: '120px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  textAlign: 'center',
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: '44px',
-                    fontWeight: 900,
-                    letterSpacing: '-0.02em',
-                    color: '#F8FAFC',
-                    textShadow: '0 4px 20px rgba(0,0,0,0.9)',
-                  }}
-                >
-                  8.4 million dollars on your back seat.
-                </span>
-              </div>
-            </div>
+              />
+            </AbsoluteFill>
           </AbsoluteFill>
         )}
 

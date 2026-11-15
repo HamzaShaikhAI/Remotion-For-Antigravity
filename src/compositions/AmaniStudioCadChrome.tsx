@@ -5,6 +5,9 @@ import {
   spring,
   useCurrentFrame,
   useVideoConfig,
+  Img,
+  Audio,
+  staticFile,
 } from 'remotion';
 import {
   CadTechnicalBlueprint,
@@ -105,6 +108,9 @@ export const AmaniStudioCadChrome: React.FC = () => {
         perspective: 1600,
       }}
     >
+      {/* Authentic Bass-Heavy Liquid Chrome Sound Design */}
+      <Audio src={staticFile('audio/cad_chrome_audio.mp3')} volume={0.94} />
+
       {/* Background Technical Grid (lingering throughout for industrial precision) */}
       <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.85 }}>
         <defs>
@@ -134,17 +140,30 @@ export const AmaniStudioCadChrome: React.FC = () => {
           />
         )}
 
-        {/* Layer 2: Liquid Chrome 3D Emblem */}
+        {/* Layer 2: Photorealistic Liquid Chrome 3D Emblem with 3D Orbit */}
         {chromeOpacity > 0.01 && (
-          <LiquidChromeEmblem
-            frame={frame}
-            opacity={chromeOpacity}
-            extrusionDepth={extrusionDepth}
-            rotateX={camRotateX}
-            rotateY={camRotateY}
-            scale={camScale}
-            reflectionAngle={reflectionAngle}
-          />
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: 580,
+              height: 580,
+              transform: `translate(-50%, -50%) perspective(1200px) rotateX(${camRotateX}deg) rotateY(${camRotateY}deg) scale(${camScale})`,
+              transformOrigin: 'center center',
+              opacity: chromeOpacity,
+              filter: `drop-shadow(0 20px 40px rgba(0,0,0,0.85)) drop-shadow(0 0 30px rgba(255,255,255,0.18))`,
+            }}
+          >
+            <Img
+              src={staticFile('assets/cadchrome/liquid_chrome_emblem.png')}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+              }}
+            />
+          </div>
         )}
       </div>
 

@@ -7,6 +7,7 @@ import {
   interpolate,
   staticFile,
   Audio,
+  Img,
 } from 'remotion';
 import {
   AnimeHalftoneBackground,
@@ -47,25 +48,36 @@ export const AnimeOpeningMVShowcase: React.FC = () => {
       {/* ======================================================== */}
       {frame < 72 && (
         <AbsoluteFill>
-          <AnimeHalftoneBackground
-            theme="scarlet"
-            showTvSize={true}
-            showTape={false}
-            speedLines={true}
-          />
-          {/* Centered Idol in Ready Stance */}
+          {/* Authentic Studio Intro Plate with dynamic camera zoom */}
+          <AbsoluteFill
+            style={{
+              transform: `scale(${1.05 - frame * 0.0006})`,
+              transformOrigin: 'center center',
+            }}
+          >
+            <Img
+              src={staticFile('assets/anime/anime_scene1_intro.png')}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            />
+          </AbsoluteFill>
+
+          {/* Centered Idol in Ready Stance with beat bounce */}
           <div
             style={{
               position: 'absolute',
-              bottom: 180,
-              left: width / 2 - 120,
-              zIndex: 10,
+              bottom: 140,
+              left: width / 2 - 80,
+              zIndex: 15,
+              transform: `translateY(${-beatBounce * 12}px)`,
+              filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.7))',
             }}
           >
             <AnimePixelSprite action="ready" pixelScale={8} direction="right" sparkles={true} />
           </div>
-          {/* Arcade READY? Box */}
-          <AnimeKineticLyrics currentLyric={currentLyric} />
         </AbsoluteFill>
       )}
 
@@ -74,40 +86,22 @@ export const AnimeOpeningMVShowcase: React.FC = () => {
       {/* ======================================================== */}
       {frame >= 72 && frame < 212 && (
         <AbsoluteFill>
-          <AnimeHalftoneBackground
-            theme="cream"
-            showTvSize={true}
-            showTape={true}
-            tapeText="TV ANIMATION OPENING • 175 BPM"
-            speedLines={true}
-          />
-
-          {/* Left Dancer (Wave) */}
-          <div
+          {/* Authentic Studio Artwork Plate with dynamic camera zoom & drift */}
+          <AbsoluteFill
             style={{
-              position: 'absolute',
-              bottom: 140,
-              left: 200,
-              zIndex: 12,
+              transform: `scale(${1.0 + (frame - 72) * 0.0008}) translateY(${Math.sin((frame - 72) * 0.1) * 4}px)`,
+              transformOrigin: 'center center',
             }}
           >
-            <AnimePixelSprite action="wave" pixelScale={8} direction="right" sparkles={true} />
-          </div>
-
-          {/* Right Dancer (Dance) */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 140,
-              right: 200,
-              zIndex: 12,
-            }}
-          >
-            <AnimePixelSprite action="dance" pixelScale={8} direction="left" sparkles={true} />
-          </div>
-
-          {/* Kinetic Title Text */}
-          <AnimeKineticLyrics currentLyric={currentLyric} />
+            <Img
+              src={staticFile('assets/anime/anime_idol_hero.png')}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            />
+          </AbsoluteFill>
         </AbsoluteFill>
       )}
 
@@ -116,15 +110,30 @@ export const AnimeOpeningMVShowcase: React.FC = () => {
       {/* ======================================================== */}
       {frame >= 212 && frame < 470 && (
         <AbsoluteFill>
+          {/* Studio High-Res Shibuya Twilight Runner Plate */}
+          <AbsoluteFill
+            style={{
+              transform: `scale(1.02)`,
+            }}
+          >
+            <Img
+              src={staticFile('assets/anime/anime_runner_bg.png')}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            />
+          </AbsoluteFill>
+
+          {/* Pixel Runner Stage Overlays */}
           <AnimePixelRunnerStage
-            speed={1.2}
+            speed={1.4}
             characterAction="run"
-            score={48200 + Math.floor((frame - 212) * 45)}
-            combo={32 + Math.floor((frame - 212) / 16)}
+            score={48200 + Math.floor((frame - 212) * 55)}
+            combo={32 + Math.floor((frame - 212) / 14)}
             stageName="SHIBUYA TWILIGHT RUN"
           />
-          {/* Subtitle Line during verse */}
-          <AnimeKineticLyrics currentLyric={currentLyric} />
         </AbsoluteFill>
       )}
 
@@ -133,16 +142,20 @@ export const AnimeOpeningMVShowcase: React.FC = () => {
       {/* ======================================================== */}
       {frame >= 470 && frame < 660 && (
         <AbsoluteFill>
-          {/* Deep dark / midnight theme for high contrast impact */}
-          <AnimeHalftoneBackground
-            theme="night"
-            showTvSize={true}
-            showTape={false}
-            speedLines={true}
-          />
-
-          {/* Kanji Slam Impact Component */}
-          <AnimeKineticLyrics currentLyric={currentLyric} />
+          <AbsoluteFill
+            style={{
+              transform: `scale(${1.0 + (frame - 470) * 0.0006})`,
+            }}
+          >
+            <Img
+              src={staticFile('assets/anime/anime_climax_duel.png')}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            />
+          </AbsoluteFill>
         </AbsoluteFill>
       )}
 

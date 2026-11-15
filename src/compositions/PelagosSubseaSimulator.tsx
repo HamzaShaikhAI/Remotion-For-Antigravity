@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, useVideoConfig, spring, interpolate } from 'remotion';
+import { AbsoluteFill, useCurrentFrame, useVideoConfig, spring, interpolate, Img, staticFile, Audio } from 'remotion';
 import { PelagosCephalopod3D, SubseaTelemetryHUD, DroneTelemetry, DroneOperatingMode } from '../engines/robotics';
 import { motionTokens } from '../tokens/motion';
 
@@ -172,19 +172,45 @@ export const PelagosSubseaSimulator: React.FC = () => {
     operatorAction,
   };
 
+  // Determine active photorealistic 3D simulator plate based on frame
+  let activePlate = 'assets/robotics/pelagos_hero_render.png';
+  let plateScale = 1.0;
+  let plateY = Math.sin(frame * 0.05) * 6;
+
+  if (frame >= 300 && frame < 960) {
+    activePlate = 'assets/robotics/pelagos_mantle_isolate.png';
+    plateScale = 1.0 + (frame - 300) * 0.0001;
+    plateY = Math.sin(frame * 0.03) * 3;
+  } else if (frame >= 960 && frame < 1320) {
+    activePlate = 'assets/robotics/pelagos_exploded_view.png';
+    plateScale = 1.02;
+    plateY = Math.sin(frame * 0.04) * 4;
+  } else if (frame >= 1320) {
+    activePlate = 'assets/robotics/pelagos_hero_render.png';
+    plateScale = 1.0 + (frame - 1320) * 0.0004;
+  }
+
   return (
     <AbsoluteFill style={{ backgroundColor: '#f8fafc', overflow: 'hidden' }}>
-      {/* 3D Robotic Cephalopod Model Layer */}
-      <PelagosCephalopod3D
-        mode={mode}
-        showLabels={showLabels}
-        explodedProgress={explodedProgress}
-        turntable={turntable}
-        jetWake={jetWake}
-      />
+      {/* Authentic Subsea Hydro-Audio Track */}
+      <Audio src={staticFile('audio/pelagos_subsea_25s.mp3')} volume={0.92} />
 
-      {/* Industrial Subsea Telemetry HUD Layer */}
-      <SubseaTelemetryHUD telemetry={telemetry} />
+      {/* Photorealistic 3D Robot Simulator Plate with hydrodynamic breathing */}
+      <AbsoluteFill
+        style={{
+          transform: `scale(${plateScale}) translateY(${plateY}px)`,
+          transformOrigin: 'center center',
+        }}
+      >
+        <Img
+          src={staticFile(activePlate)}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        />
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };
