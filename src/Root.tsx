@@ -30,10 +30,21 @@ import { RomanEconomyPaperShort } from './compositions/batch/RomanEconomyPaperSh
 import { ClaudeMotionSkillsShowcase } from './compositions/ClaudeMotionSkillsShowcase';
 import { HeistDilemmaStory } from './compositions/HeistDilemmaStory';
 import { KurzgesagtExplainer } from './compositions/KurzgesagtExplainer';
+import { MotionLabShowcase } from './compositions/MotionLabShowcase';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* Motion Lab Studio 3D Glassmorphic Bento Showcase (1440x1800, 30s @ 60fps) */}
+      <Composition
+        id="MotionLabShowcase"
+        component={MotionLabShowcase}
+        durationInFrames={1800}
+        fps={60}
+        width={1440}
+        height={1800}
+      />
+
       {/* Kurzgesagt-Style Vector Scientific Explainer (1920x1080, 30s @ 30fps) */}
       <Composition
         id="KurzgesagtExplainer"

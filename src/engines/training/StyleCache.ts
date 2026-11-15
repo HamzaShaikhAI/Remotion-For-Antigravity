@@ -3,7 +3,7 @@ import path from 'path';
 
 export interface StyleBlueprint {
   name: string;
-  archetype: 'tech' | 'paper-2.5d' | 'saas' | 'cinematic' | 'abstract' | 'kurzgesagt';
+  archetype: 'tech' | 'paper-2.5d' | 'saas' | 'cinematic' | 'abstract' | 'kurzgesagt' | 'motion-lab';
   springPhysics: {
     damping: number;
     stiffness: number;
@@ -109,6 +109,27 @@ const BUILTIN_STYLES: Record<string, StyleBlueprint> = {
       border: '1.5px solid rgba(255, 255, 255, 0.14)',
       shadow: '0 12px 36px rgba(0, 0, 0, 0.55)',
       accentColor: '#22d3ee',
+    },
+    certifiedGrade: 'A+',
+    cachedAt: new Date().toISOString(),
+  },
+  'motion-lab': {
+    name: 'motion-lab',
+    archetype: 'motion-lab',
+    springPhysics: { damping: 14, stiffness: 140, mass: 0.9 },
+    typography: {
+      fontPrimary: "'Plus Jakarta Sans', -apple-system, sans-serif",
+      fontAccent: "'SF Mono', Menlo, Consolas, monospace",
+      headlineWeight: 900,
+      letterSpacing: -1,
+    },
+    safeZones: { bottomClearancePx: 220, rightMarginPx: 70 },
+    palette: {
+      background: '#b8b2e8',
+      surface: 'rgba(255, 255, 255, 0.42)',
+      border: '1.5px solid rgba(255, 255, 255, 0.75)',
+      shadow: '0 36px 80px rgba(80, 50, 110, 0.25)',
+      accentColor: '#f97316',
     },
     certifiedGrade: 'A+',
     cachedAt: new Date().toISOString(),

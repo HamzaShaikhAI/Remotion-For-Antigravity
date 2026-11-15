@@ -42,6 +42,12 @@ export class MultiStepTrainer {
           promptLower.includes('space') ||
           promptLower.includes('what if')
         ? 'kurzgesagt'
+        : promptLower.includes('motion') ||
+          promptLower.includes('glass') ||
+          promptLower.includes('bento') ||
+          promptLower.includes('carousel') ||
+          promptLower.includes('studio')
+        ? 'motion-lab'
         : undefined);
     let cachedBlueprint: StyleBlueprint | null = null;
     let StyleCacheClass: any = null;

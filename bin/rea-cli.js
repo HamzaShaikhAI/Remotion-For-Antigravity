@@ -4264,6 +4264,60 @@ async function handleKurzgesagt(args) {
   }
 }
 
+async function handleMotionLab(args) {
+  const topic = args[1] && !args[1].startsWith('-') ? args[1] : '16 skills. One studio.';
+  const isRender = args.includes('--render');
+  const isPreview = args.includes('--preview');
+  const stillArg = args.find((a) => a.startsWith('--still='));
+  const lengthArg = args.find((a) => a.startsWith('--length='))?.split('=')[1] || '30';
+  const outArg = args.find((a) => a.startsWith('--out='))?.split('=')[1] || 'out.mp4';
+  const forceArg = args.includes('--force');
+
+  console.log(`\n${colors.bold}${colors.magenta}✨ [REA Motion Lab Studio & 3D Glassmorphic Bento Engine XXIV]${colors.reset}`);
+  console.log(`📌 Title: "${colors.yellow}${topic}${colors.reset}"`);
+  console.log(`⏱  Duration: ${lengthArg}s @ 60 FPS (1800 frames, 1440x1800 Vertical 4:5)`);
+  console.log(`🎨 Architecture:`);
+  console.log(`   ├─ Atmospheric Canvas: 4-Act Morphing Pastel Sky (Lavender -> Green -> Sage -> Twilight)`);
+  console.log(`   ├─ Iridescent Particles: 12 Floating Specular Bubbles + Organic Drifting Clouds`);
+  console.log(`   ├─ 3D Glassmorphic Browser Card: Chrome Traffic Lights, Address Bar, Dark Viewport`);
+  console.log(`   ├─ Procedural Stages: Code Editor, Film Strip, Bezier Coordinate Grid, Turntable, 3D PBR, ComfyUI`);
+  console.log(`   ├─ Cute 3D Mascot Rig: "Clawd" Terracotta Box Body, Star Eyes, Cheek Blushes, Idle Bob`);
+  console.log(`   ├─ Climax Bento Resolution: 4x4 Grid of 16 Skills with Animated Verified Checkmark Pops`);
+  console.log(`   └─ Frosted Glass UI: Top Studio Pill, Circular Progress Ring, Glide Tab Dock, Bookmark CTA`);
+
+  const issues = handleValidate('MotionLabShowcase', true);
+  if (issues.length > 0) {
+    logError(`Validation found issues in MotionLabShowcase:`);
+    issues.forEach((iss) => console.log(`  - ${iss}`));
+    process.exit(1);
+  }
+  logSuccess(`MotionLabShowcase validated! 0 staticFile or rendering collisions.`);
+
+  if (stillArg) {
+    const frameNum = stillArg.split('=')[1] || '120';
+    const stillOut = outArg.endsWith('.mp4') ? `motionlab-still-f${frameNum}.jpeg` : outArg;
+    console.log(`\n📸 Exporting verification still at frame ${frameNum}...`);
+    handleStill(['still', 'MotionLabShowcase', stillOut, `--frame=${frameNum}`]);
+    return;
+  }
+
+  if (isPreview) {
+    console.log(`\n🎬 Launching Remotion Studio for Motion Lab interactive preview...`);
+    handlePreview(['preview', 'src/compositions/MotionLabShowcase.tsx']);
+    return;
+  }
+
+  if (isRender) {
+    console.log(`\n🚀 Compiling broadcast master video: ${outArg}...`);
+    const extraArgs = forceArg ? ['--force'] : [];
+    handleRender('MotionLabShowcase', outArg, extraArgs);
+  } else {
+    console.log(`\n💡 ${colors.dim}To render the full master video: ${colors.reset}${colors.green}rea motionlab --render --out=motionlab-studio.mp4${colors.reset}`);
+    console.log(`💡 ${colors.dim}To export a still frame:          ${colors.reset}${colors.green}rea motionlab --still=1650 --out=bento.jpeg${colors.reset}`);
+    console.log(`💡 ${colors.dim}To preview in Remotion Studio:     ${colors.reset}${colors.green}rea motionlab --preview${colors.reset}`);
+  }
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -4284,6 +4338,7 @@ ${colors.bold}EDITORIAL INTUITION & TASTE COMMANDS (V2.2):${colors.reset}
   ${colors.green}intuition-fork${colors.reset}                        Platform Forks: Tailor for TikTok (15s), Shorts (30s) & Reels (20s)
 
 ${colors.bold}NEXT-GEN GENERATIVE & INTERACTIVE COMMANDS (V2.3):${colors.reset}
+  ${colors.green}motionlab [title] [--render|--still]${colors.reset}        Motion Lab Studio 3D Glassmorphic Bento Engine (16 Skills, Carousel)
   ${colors.green}kurzgesagt [topic] [--render|--still]${colors.reset}       Kurzgesagt 2D/WebGL Canvas Scientific Explainer Engine (Sun, Earth, Mascot)
   ${colors.green}train-multistep "<prompt>" [--archetype=...]${colors.reset} 4-Phase Iterative Refinement Loop (Blueprint->Draft->Audit->AST Patch)
   ${colors.green}generate "<prompt>" [--archetype=...]${colors.reset}       Freeform: Prompt-to-Remotion component synthesizer (saas|data|tech|abstract)
@@ -4569,6 +4624,9 @@ async function main() {
       break;
     case 'kurzgesagt':
       await handleKurzgesagt(args);
+      break;
+    case 'motionlab':
+      await handleMotionLab(args);
       break;
     default:
       logError(`Unknown command: "${command}"`);
