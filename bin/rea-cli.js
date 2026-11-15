@@ -4711,6 +4711,7 @@ ${colors.bold}NEXT-GEN GENERATIVE & INTERACTIVE COMMANDS (V2.3):${colors.reset}
   ${colors.green}ricksclips [topic] [--render|--still]${colors.reset}       RicksClips Hybrid 2.5D Western Storytelling Engine (150M-View Formula)
   ${colors.green}robotics [model] [--render|--still]${colors.reset}         Industrial Robotics & Subsea HUD Simulator Engine (Pelagos OC-8)
   ${colors.green}motion-lint${colors.reset}                                 Audit codebase against MOTION.md design tokens & spring physics
+  ${colors.green}audit-polish${colors.reset}                                Audit typography box containment, motion continuity & micro-SFX
   ${colors.green}anime-op [title] [--render|--still]${colors.reset}        J-Pop Idol Anime Opening & Music Video (MV) Engine (175 BPM, Halftone, Pixel Sprites)
   ${colors.green}cad-chrome [brand] [--render|--still]${colors.reset}       Precision CAD Blueprint to Liquid Chrome 3D Emblem Engine
   ${colors.green}motionlab [title] [--render|--still]${colors.reset}        Motion Lab Studio 3D Glassmorphic Bento Engine (16 Skills, Carousel)
@@ -5033,6 +5034,14 @@ async function main() {
       const { runMotionLint } = require('../scripts/motion-lint.js');
       const lintPassed = runMotionLint();
       process.exit(lintPassed ? 0 : 1);
+      break;
+    }
+    case 'audit-polish':
+    case 'auditpolish':
+    case 'overflow-lint': {
+      const { runPolishAndOverflowLint } = require('../scripts/polish-and-overflow-lint.js');
+      const passed = runPolishAndOverflowLint();
+      process.exit(passed ? 0 : 1);
       break;
     }
     default:

@@ -116,6 +116,9 @@ export * from './motiondesignlab';
 // Engine XXX: Living Animated Pixel Art Studio Engine
 export * from './pixelart';
 
+// Zero-Overflow Typography & Box Clamping Architecture
+export * from './typography';
+
 
 
 

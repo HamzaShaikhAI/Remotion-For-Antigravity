@@ -21,6 +21,12 @@ export class ProceduralFoleyGenerator {
     const totalSamples = Math.floor(sampleRate * durationSec);
     const samples = new Float32Array(totalSamples);
 
+    // Deterministic pseudo-random noise generator to ensure rendering determinism
+    const pseudoNoise = (seed: number) => {
+      const x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+      return (x - Math.floor(x)) * 2 - 1;
+    };
+
     switch (preset) {
       case 'sword_clash': {
         // High harmonic metallic chime (2400Hz + 3600Hz + 5200Hz) with sharp decay
@@ -31,7 +37,7 @@ export class ProceduralFoleyGenerator {
             Math.sin(2 * Math.PI * 2400 * t) * 0.4 +
             Math.sin(2 * Math.PI * 3650 * t) * 0.35 +
             Math.sin(2 * Math.PI * 5200 * t) * 0.25;
-          const click = t < 0.01 ? (Math.random() * 2 - 1) * 0.8 : 0;
+          const click = t < 0.01 ? pseudoNoise(i) * 0.8 : 0;
           samples[i] = (chime * env + click) * 0.85;
         }
         break;
@@ -56,7 +62,7 @@ export class ProceduralFoleyGenerator {
           const env = Math.exp(-t * 3.5);
           const freq = 120 * Math.exp(-t * 12) + 38;
           const sub = Math.sin(2 * Math.PI * freq * t);
-          const air = (Math.random() * 2 - 1) * Math.exp(-t * 8) * 0.3;
+          const air = pseudoNoise(i) * Math.exp(-t * 8) * 0.3;
           samples[i] = (sub + air) * env * 0.95;
         }
         break;
@@ -65,7 +71,7 @@ export class ProceduralFoleyGenerator {
         // Initial crack (high-pass noise) followed by heavy rumble (45Hz)
         for (let i = 0; i < totalSamples; i++) {
           const t = i / sampleRate;
-          const crack = t < 0.05 ? (Math.random() * 2 - 1) * Math.exp(-t * 35) : 0;
+          const crack = t < 0.05 ? pseudoNoise(i) * Math.exp(-t * 35) : 0;
           const rumbleEnv = Math.exp(-t * 2.2) * Math.min(1, t * 15);
           const rumble = Math.sin(2 * Math.PI * 48 * t) * 0.7 + Math.sin(2 * Math.PI * 92 * t) * 0.3;
           samples[i] = (crack * 0.9 + rumble * rumbleEnv) * 0.9;
