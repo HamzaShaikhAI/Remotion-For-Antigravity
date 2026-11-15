@@ -4596,17 +4596,52 @@ async function handlePixelArt(rawArgs) {
   const isPreview = flags.includes('--preview');
   const isRender = flags.includes('--render');
   const isHtml = flags.includes('--html');
+  const isAudit = flags.includes('--audit');
+  const isSound = flags.includes('--sound');
   const forceArg = flags.includes('--force');
 
   console.log(`\n${colors.bold}${colors.cyan}🎮 [REA Claude Fable 5.2 Living Animated Pixel Art Engine XXX]${colors.reset}`);
   console.log(`📌 Topic Title: "${colors.yellow}${artTitle}${colors.reset}"`);
   console.log(`⏱  Duration: 10.00s @ 12.00 FPS (120 frames, 772x1024 2x Crisp Pixel Canvas)`);
-  console.log(`🎨 Architecture & Pipeline:`);
+  console.log(`🎨 Architecture & Repeatability Pipeline:`);
   console.log(`   ├── Grid: Max 512px (386x512) scaled 2x nearest-neighbor to 772x1024`);
   console.log(`   ├── Palette: ~100 sampled scene colors (indigo twilight, amber shoji, lantern gold)`);
+  console.log(`   ├── Audio: 44.1 kHz Procedural Soundscape (Rain Foley, Water Lapping, Crickets, Thunder)`);
   console.log(`   ├── Animation: 12 FPS discrete phase-stepping (directional rain, wave shimmer, splash rings)`);
   console.log(`   ├── Controls: Motion Intensity (1.0x), Environmental Motion (1.0x), Ambient Effects (1.0x)`);
   console.log(`   └── Interactive App: public/pixel-art-animator.html (Canvas 2D + MediaRecorder)`);
+
+  // Ensure audio soundscape exists
+  const audioPath = path.resolve(process.cwd(), 'public/audio/pixel_art_rain_ambient.wav');
+  if (!fs.existsSync(audioPath) || isSound) {
+    try {
+      const { PixelSoundscapeSynthesizer } = require('../src/engines/pixelart/PixelSoundscapeSynthesizer.ts');
+      PixelSoundscapeSynthesizer.synthesizeToPath(audioPath, 10);
+      logSuccess(`Synthesized 10.0s procedural ambient rain soundscape -> ${audioPath}`);
+    } catch (err) {
+      console.warn(`⚠️ Notice during audio synthesis: ${err.message}`);
+    }
+  }
+
+  // Handle audit flag
+  if (isAudit) {
+    try {
+      const { PixelArtAuditor } = require('../src/engines/pixelart/PixelArtAuditor.ts');
+      const report = PixelArtAuditor.auditComposition(386, 512, 772, 1024, 12, 120, audioPath);
+      console.log(`\n${colors.bold}${colors.green}✔ [Pixel Art Auditor Gatekeeper] Grade: ${report.certifiedGrade} (Score: ${report.score}/100)${colors.reset}`);
+      console.log(`  - Integer 2x Scale Check:       ${report.metrics.integerScalingPass ? 'PASSED (772x1024 from 386x512)' : 'FAILED'}`);
+      console.log(`  - Palette Budget Check:         ${report.metrics.paletteBudgetPass ? `PASSED (${report.metrics.colorCount} colors <= 128)` : 'FAILED'}`);
+      console.log(`  - Seamless Loop Continuity:     ${report.metrics.loopSeamlessnessScore}% (Seam delta: ${report.metrics.seamPhaseDelta})`);
+      console.log(`  - Audio Soundscape Sync:        ${report.metrics.audioSynced ? `PASSED (${report.metrics.audioDurationSec}s synced)` : 'FAILED'}`);
+      console.log(`  - Contrast & Ambiance Ratio:    ${report.metrics.contrastRatio}:1`);
+      if (report.recommendations.length > 0) {
+        console.log(`  - Recommendations: ${report.recommendations.join(', ')}`);
+      }
+    } catch (err) {
+      console.warn(`⚠️ Notice during audit: ${err.message}`);
+    }
+    return;
+  }
 
   const compId = isStudio ? 'LivingPixelArtStudioShowcase' : 'LivingPixelArtLoop';
   const issues = handleValidate(compId, true);
@@ -4643,6 +4678,8 @@ async function handlePixelArt(rawArgs) {
   } else {
     console.log(`\n💡 ${colors.dim}To render pure 12 FPS loop MP4:     ${colors.reset}${colors.green}rea pixel-art --render --out=pixel-loop.mp4${colors.reset}`);
     console.log(`💡 ${colors.dim}To render full studio showcase:     ${colors.reset}${colors.green}rea pixel-art --render --studio --out=pixel-studio.mp4${colors.reset}`);
+    console.log(`💡 ${colors.dim}To run gatekeeper quality audit:    ${colors.reset}${colors.green}rea pixel-art --audit${colors.reset}`);
+    console.log(`💡 ${colors.dim}To re-synthesize ambient audio:     ${colors.reset}${colors.green}rea pixel-art --sound${colors.reset}`);
     console.log(`💡 ${colors.dim}To export a still frame:            ${colors.reset}${colors.green}rea pixel-art --still=12 --out=rain.jpeg${colors.reset}`);
     console.log(`💡 ${colors.dim}To open interactive HTML app:       ${colors.reset}${colors.green}rea pixel-art --html${colors.reset}`);
     console.log(`💡 ${colors.dim}To preview in Remotion Studio:      ${colors.reset}${colors.green}rea pixel-art --preview${colors.reset}`);

@@ -460,6 +460,10 @@
             <span id="iconPlay">⏸</span> <span id="labelPlay">Pause</span>
           </button>
 
+          <button class="btn btn-secondary" id="btnSound">
+            <span id="iconSound">🔈</span> <span id="labelSound">Sound</span>
+          </button>
+
           <label class="uploader-label" title="Upload custom image to animate in pixel art">
             <span>📁 Upload Image</span>
             <input type="file" id="fileUpload" accept="image/*">
@@ -516,6 +520,35 @@
     const canvasWrapper = document.getElementById('canvasWrapper');
     const fileUpload = document.getElementById('fileUpload');
     const chips = document.querySelectorAll('.chip');
+
+    // Audio Player for Synthesized Procedural Soundscape
+    const ambientAudio = new Audio('audio/pixel_art_rain_ambient.wav');
+    ambientAudio.loop = true;
+    let isSoundOn = false;
+
+    const btnSound = document.getElementById('btnSound');
+    const iconSound = document.getElementById('iconSound');
+    const labelSound = document.getElementById('labelSound');
+
+    btnSound.addEventListener('click', () => {
+      isSoundOn = !isSoundOn;
+      if (isSoundOn) {
+        ambientAudio.play().catch(() => {});
+        iconSound.textContent = '🔊';
+        labelSound.textContent = 'Sound: ON';
+      } else {
+        ambientAudio.pause();
+        iconSound.textContent = '🔈';
+        labelSound.textContent = 'Sound';
+      }
+    });
+
+    // Roof eaves drip points
+    const eavesDrips = [
+      { startX: 68, startY: 295, targetY: 395, phase: 0 },
+      { startX: 142, startY: 305, targetY: 405, phase: 8 },
+      { startX: 185, startY: 320, targetY: 412, phase: 16 },
+    ];
 
     // State Variables
     let isPlaying = true;
@@ -723,6 +756,39 @@
             ctx.ellipse(ring.x, ring.y, radiusX, radiusY, 0, 0, Math.PI * 2);
             ctx.stroke();
           }
+        });
+
+        // 4b. ROOF EAVES DRIPS
+        eavesDrips.forEach((drip) => {
+          const cycle = 24;
+          const age = (t + drip.phase) % cycle;
+          const progress = age / cycle;
+          const curY = Math.floor(drip.startY + Math.pow(progress, 2) * (drip.targetY - drip.startY));
+
+          if (progress > 0.85) {
+            const splashProg = (progress - 0.85) / 0.15;
+            ctx.strokeStyle = `rgba(186, 230, 253, ${(1 - splashProg) * 0.7})`;
+            ctx.beginPath();
+            ctx.ellipse(drip.startX, drip.targetY, Math.floor(1 + splashProg * 4), Math.floor(1 + splashProg * 1.5), 0, 0, Math.PI * 2);
+            ctx.stroke();
+          } else {
+            ctx.fillStyle = 'rgba(226, 232, 240, 0.8)';
+            ctx.fillRect(drip.startX, curY, 1, 3);
+          }
+        });
+      }
+
+      // 4c. VOLUMETRIC LAKE MIST SCANLINES
+      if (envFactor > 0.1) {
+        const mistOffsets = [
+          { y: 412, speed: 0.35, w: 220, alpha: 0.12 * envFactor },
+          { y: 438, speed: 0.55, w: 260, alpha: 0.16 * envFactor },
+          { y: 468, speed: 0.25, w: 190, alpha: 0.10 * envFactor },
+        ];
+        mistOffsets.forEach((m) => {
+          const ox = Math.floor((t * m.speed * 2) % (w + m.w) - m.w);
+          ctx.fillStyle = `rgba(203, 213, 225, ${m.alpha})`;
+          ctx.fillRect(ox, m.y, m.w, 3);
         });
       }
 

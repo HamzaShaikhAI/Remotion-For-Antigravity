@@ -8,6 +8,7 @@ interface PixelArtCanvasProps {
   height?: number;
   baseImageSrc?: string;
   showOverlayHud?: boolean;
+  enableCrtScanlines?: boolean;
 }
 
 export const PixelArtCanvas: React.FC<PixelArtCanvasProps> = ({
@@ -16,6 +17,7 @@ export const PixelArtCanvas: React.FC<PixelArtCanvasProps> = ({
   height = 1024,
   baseImageSrc,
   showOverlayHud = true,
+  enableCrtScanlines = true,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -113,6 +115,48 @@ export const PixelArtCanvas: React.FC<PixelArtCanvasProps> = ({
     return bands;
   }, [effectiveFrame, envFactor]);
 
+  // 4. Multi-Plane Volumetric Lake Mist (Near and far rolling fog scanlines)
+  const mistLayers = useMemo(() => {
+    const layers = [
+      { y: 412, speed: 0.35, width: 220, alpha: 0.12 * envFactor },
+      { y: 438, speed: 0.55, width: 260, alpha: 0.16 * envFactor },
+      { y: 468, speed: 0.25, width: 190, alpha: 0.10 * envFactor },
+      { y: 492, speed: 0.40, width: 240, alpha: 0.14 * envFactor },
+    ];
+    return layers.map((layer, idx) => {
+      const offsetX = Math.floor((effectiveFrame * layer.speed * 2) % (gridW + layer.width) - layer.width);
+      const breathing = Math.sin(effectiveFrame * 0.15 + idx) * 0.04;
+      return {
+        ...layer,
+        x: offsetX,
+        effectiveAlpha: Math.max(0, layer.alpha + breathing),
+      };
+    });
+  }, [effectiveFrame, envFactor]);
+
+  // 5. Roof Eaves Water Drips (3 rhythmic dripping points)
+  const eavesDrips = useMemo(() => {
+    const dripSources = [
+      { startX: 68, startY: 295, targetY: 395, phase: 0 },
+      { startX: 142, startY: 305, targetY: 405, phase: 8 },
+      { startX: 185, startY: 320, targetY: 412, phase: 16 },
+    ];
+
+    return dripSources.map((drip) => {
+      const cycle = 24; // Drip cycle every 24 frames
+      const age = (effectiveFrame + drip.phase) % cycle;
+      const progress = age / cycle;
+      const currentY = Math.floor(drip.startY + Math.pow(progress, 2) * (drip.targetY - drip.startY));
+      const splashProgress = progress > 0.85 ? (progress - 0.85) / 0.15 : 0;
+      return {
+        ...drip,
+        currentY,
+        progress,
+        splashProgress,
+      };
+    });
+  }, [effectiveFrame]);
+
   const imageSrc = baseImageSrc || staticFile('images/ryokan_pixel_art_base.jpg');
 
   return (
@@ -164,6 +208,14 @@ export const PixelArtCanvas: React.FC<PixelArtCanvasProps> = ({
             <stop offset="0%" stopColor="#fef3c7" stopOpacity={0.35 * ambientFactor} />
             <stop offset="100%" stopColor="#fef3c7" stopOpacity="0" />
           </radialGradient>
+
+          {/* Lake Volumetric Mist Linear Gradient */}
+          <linearGradient id="mistGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#94a3b8" stopOpacity="0" />
+            <stop offset="40%" stopColor="#cbd5e1" stopOpacity="1" />
+            <stop offset="60%" stopColor="#cbd5e1" stopOpacity="1" />
+            <stop offset="100%" stopColor="#94a3b8" stopOpacity="0" />
+          </linearGradient>
         </defs>
 
         {/* Ambient Moon Breathing Halo (x: 216, y: 196) */}
@@ -210,6 +262,20 @@ export const PixelArtCanvas: React.FC<PixelArtCanvasProps> = ({
           />
         )}
 
+        {/* Volumetric Lake Mist Scanlines */}
+        {envFactor > 0.1 &&
+          mistLayers.map((mist, idx) => (
+            <rect
+              key={`mist-${idx}`}
+              x={mist.x}
+              y={mist.y}
+              width={mist.width}
+              height="3"
+              fill="url(#mistGrad)"
+              fillOpacity={mist.effectiveAlpha}
+            />
+          ))}
+
         {/* Lake Surface Shimmer Reflection Bands */}
         {envFactor > 0.05 &&
           shimmerBands.map((band, idx) => (
@@ -223,6 +289,43 @@ export const PixelArtCanvas: React.FC<PixelArtCanvasProps> = ({
               fillOpacity={band.alpha}
             />
           ))}
+
+        {/* Roof Eaves Drips & Ground Splashes */}
+        {envFactor > 0.15 &&
+          eavesDrips.map((drip, idx) => {
+            if (drip.splashProgress > 0) {
+              // Splash ring on lake rock
+              const rx = Math.floor(1 + drip.splashProgress * 4);
+              const ry = Math.floor(1 + drip.splashProgress * 1.5);
+              const alpha = (1 - drip.splashProgress) * 0.7;
+              return (
+                <ellipse
+                  key={`eaves-splash-${idx}`}
+                  cx={drip.startX}
+                  cy={drip.targetY}
+                  rx={rx}
+                  ry={ry}
+                  fill="none"
+                  stroke="#bae6fd"
+                  strokeWidth="1"
+                  strokeOpacity={alpha}
+                />
+              );
+            }
+
+            // Falling pixel droplet
+            return (
+              <rect
+                key={`eaves-drip-${idx}`}
+                x={drip.startX}
+                y={drip.currentY}
+                width="1"
+                height="3"
+                fill="#e2e8f0"
+                fillOpacity={0.8}
+              />
+            );
+          })}
 
         {/* Splash Rings on Water Surface Contact */}
         {envFactor > 0.1 &&
@@ -290,7 +393,23 @@ export const PixelArtCanvas: React.FC<PixelArtCanvasProps> = ({
           })}
       </svg>
 
-      {/* 3. Optional Overlay HUD (Native 12 FPS Timecode & Resolution) */}
+      {/* 3. Retro CRT Scanline Shader Filter */}
+      {enableCrtScanlines && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+            background: 'repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.06) 0px, rgba(0, 0, 0, 0.06) 2px, transparent 2px, transparent 4px)',
+            mixBlendMode: 'multiply',
+          }}
+        />
+      )}
+
+      {/* 4. Optional Overlay HUD (Native 12 FPS Timecode & Resolution) */}
       {showOverlayHud && (
         <div
           style={{

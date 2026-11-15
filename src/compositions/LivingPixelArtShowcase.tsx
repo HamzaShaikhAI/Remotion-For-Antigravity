@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate } from 'remotion';
+import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, Audio, staticFile } from 'remotion';
 import { PixelArtCanvas, PixelArtInteractiveControls, PixelArtHeader } from '../engines/pixelart/index.ts';
 
 /**
@@ -8,6 +8,7 @@ import { PixelArtCanvas, PixelArtInteractiveControls, PixelArtHeader } from '../
  * - 2x resolution of 386x512 grid (772x1024)
  * - 12 FPS strict seamless loop
  * - Pure animation without interface overlays
+ * - Procedural binaural rain & lake ambient soundscape
  */
 export const LivingPixelArtLoop: React.FC = () => {
   return (
@@ -16,12 +17,14 @@ export const LivingPixelArtLoop: React.FC = () => {
         width={772}
         height={1024}
         showOverlayHud={false}
+        enableCrtScanlines={true}
         sliders={{
           motionIntensity: 1.0,
           environmentalMotion: 1.0,
           ambientEffects: 1.0,
         }}
       />
+      <Audio src={staticFile('audio/pixel_art_rain_ambient.wav')} volume={0.8} />
     </AbsoluteFill>
   );
 };
@@ -207,6 +210,9 @@ export const LivingPixelArtStudioShowcase: React.FC = () => {
           isPlaying={true}
         />
       </div>
+
+      {/* Atmospheric Audio Soundscape */}
+      <Audio src={staticFile('audio/pixel_art_rain_ambient.wav')} volume={0.85} />
     </AbsoluteFill>
   );
 };
