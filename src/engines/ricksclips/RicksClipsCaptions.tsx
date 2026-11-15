@@ -1,11 +1,18 @@
 import React from 'react';
-import { useCurrentFrame, useVideoConfig } from 'remotion';
-import { RicksClipsCaption, RICKSCLIPS_CAPTIONS } from './types';
+import { useCurrentFrame } from 'remotion';
+import { RicksClipsCaption, RICKSCLIPS_CAPTIONS } from './types.ts';
+import { SafeTextContainer } from '../typography/SafeTextContainer.tsx';
 
 interface RicksClipsCaptionsProps {
   captions?: RicksClipsCaption[];
 }
 
+/**
+ * RicksClipsCaptions
+ * Zero-Overflow word-synced captions engineered for mobile 9:16 (1080x1920) screens.
+ * Uses SafeTextContainer with autoScale={true} so long phrases dynamically scale down
+ * from 72px to fit inside the horizontal viewport without truncation or line clipping.
+ */
 export const RicksClipsCaptions: React.FC<RicksClipsCaptionsProps> = ({
   captions = RICKSCLIPS_CAPTIONS,
 }) => {
@@ -30,24 +37,29 @@ export const RicksClipsCaptions: React.FC<RicksClipsCaptionsProps> = ({
         alignItems: 'center',
         pointerEvents: 'none',
         zIndex: 50,
+        padding: '0 40px',
+        boxSizing: 'border-box',
       }}
     >
-      <span
-        style={{
-          fontFamily: "'Montserrat', 'Impact', 'Arial Black', sans-serif",
-          fontSize: 72,
-          fontWeight: 900,
-          color: '#ffffff',
+      <SafeTextContainer
+        text={activeCaption.text}
+        containerWidth={980}
+        maxLines={2}
+        autoScale={true}
+        baseFontSize={72}
+        minFontSize={42}
+        fontFamily="'Montserrat', 'Impact', 'Arial Black', sans-serif"
+        fontWeight={900}
+        color="#ffffff"
+        textAlign="center"
+        letterSpacing={1.5}
+        lineHeight={1.1}
+        textStyle={{
           WebkitTextStroke: '8px #000000',
           textShadow: '0 6px 20px rgba(0, 0, 0, 0.9)',
-          textAlign: 'center',
-          letterSpacing: 1.5,
-          lineHeight: 1.1,
-          padding: '0 40px',
+          textTransform: 'uppercase',
         }}
-      >
-        {activeCaption.text}
-      </span>
+      />
     </div>
   );
 };

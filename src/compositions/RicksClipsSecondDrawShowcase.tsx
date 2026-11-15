@@ -33,6 +33,9 @@ export const RicksClipsSecondDrawShowcase: React.FC = () => {
       {/* Authentic Narration & Sound Design Audio */}
       <Audio src={staticFile('audio/ricksclips_second_draw_56s.mp3')} volume={0.96} />
 
+      {/* Tactile Western Foley Layer (68 micro-SFX cues @ 1.20 hits/sec) */}
+      <Audio src={staticFile('audio/western_foley_1684f.wav')} volume={0.42} />
+
       {/* ======================================================== */}
       {/* SCENE 1: THE GOLDEN RULE & BULLET FLYBY (Frames 0 - 240) */}
       {/* ======================================================== */}

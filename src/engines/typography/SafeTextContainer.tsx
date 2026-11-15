@@ -2,8 +2,12 @@ import React, { useMemo } from 'react';
 import { computeSafeFontSize, safeTextStyle, safeBoxContainerStyle } from './safeText.ts';
 
 export interface SafeTextContainerProps {
-  text: string;
+  text?: string;
+  children?: React.ReactNode;
+  width?: number | string;
   containerWidth?: number;
+  maxHeight?: number | string;
+  autoScale?: boolean;
   baseFontSize?: number;
   minFontSize?: number;
   maxLines?: number;
@@ -17,6 +21,7 @@ export interface SafeTextContainerProps {
   backgroundColor?: string;
   border?: string;
   borderRadius?: number;
+  boxShadow?: string;
   style?: React.CSSProperties;
   textStyle?: React.CSSProperties;
   tag?: 'h1' | 'h2' | 'h3' | 'p' | 'span' | 'div';
@@ -29,7 +34,11 @@ export interface SafeTextContainerProps {
  */
 export const SafeTextContainer: React.FC<SafeTextContainerProps> = ({
   text,
+  children,
+  width,
   containerWidth,
+  maxHeight,
+  autoScale = true,
   baseFontSize = 24,
   minFontSize,
   maxLines,
@@ -43,26 +52,34 @@ export const SafeTextContainer: React.FC<SafeTextContainerProps> = ({
   backgroundColor = 'transparent',
   border = 'none',
   borderRadius = 0,
+  boxShadow,
   style = {},
   textStyle = {},
   tag = 'div',
 }) => {
-  // Compute safe scaled font size if containerWidth is specified
+  // Resolve target width
+  const resolvedWidth = containerWidth ?? (typeof width === 'number' ? width : undefined);
+
+  // Compute safe scaled font size if autoScale is enabled and width is known
   const effectiveFontSize = useMemo(() => {
-    if (!containerWidth) return baseFontSize;
-    const availableWidth = containerWidth - padding * 2;
+    if (!autoScale || !resolvedWidth || !text) return baseFontSize;
+    const availableWidth = resolvedWidth - padding * 2;
     return computeSafeFontSize(text, availableWidth, baseFontSize, minFontSize);
-  }, [text, containerWidth, padding, baseFontSize, minFontSize]);
+  }, [text, resolvedWidth, padding, baseFontSize, minFontSize, autoScale]);
 
   const containerStyles: React.CSSProperties = {
     ...safeBoxContainerStyle(padding, borderRadius),
     backgroundColor,
     border,
-    width: containerWidth || '100%',
+    boxShadow,
+    width: width ?? (containerWidth ? `${containerWidth}px` : '100%'),
+    maxHeight,
+    overflow: 'hidden',
+    boxSizing: 'border-box',
     ...style,
   };
 
-  const textStyles: React.CSSProperties = {
+  const computedTextStyles: React.CSSProperties = {
     ...safeTextStyle(effectiveFontSize, maxLines, true),
     color,
     fontWeight,
@@ -77,7 +94,10 @@ export const SafeTextContainer: React.FC<SafeTextContainerProps> = ({
 
   return (
     <div style={containerStyles}>
-      <Tag style={textStyles}>{text}</Tag>
+      {text !== undefined ? (
+        <Tag style={computedTextStyles}>{text}</Tag>
+      ) : null}
+      {children}
     </div>
   );
 };
