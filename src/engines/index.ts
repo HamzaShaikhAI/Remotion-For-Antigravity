@@ -110,6 +110,10 @@ export * from './robotics';
 // Engine XXVIII: RicksClips Hybrid 2.5D Western Storytelling Engine
 export * from './ricksclips';
 
+// Engine XXIX: Claude GSAP Motion Design Lab Studio Engine
+export * from './motiondesignlab';
+
+
 
 
 

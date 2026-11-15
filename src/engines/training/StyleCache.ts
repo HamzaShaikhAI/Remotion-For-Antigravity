@@ -3,7 +3,7 @@ import path from 'path';
 
 export interface StyleBlueprint {
   name: string;
-  archetype: 'tech' | 'paper-2.5d' | 'saas' | 'cinematic' | 'abstract' | 'kurzgesagt' | 'motion-lab' | 'cad-chrome';
+  archetype: 'tech' | 'paper-2.5d' | 'saas' | 'cinematic' | 'abstract' | 'kurzgesagt' | 'motion-lab' | 'cad-chrome' | 'anime-op' | 'robotics' | 'ricksclips' | 'gsap-lab';
   springPhysics: {
     damping: number;
     stiffness: number;
@@ -214,6 +214,27 @@ const BUILTIN_STYLES: Record<string, StyleBlueprint> = {
       border: '5px solid #09090b',
       shadow: '0 8px 24px rgba(0,0,0,0.4)',
       accentColor: '#dc2626',
+    },
+    certifiedGrade: 'A+',
+    cachedAt: new Date().toISOString(),
+  },
+  'gsap-lab': {
+    name: 'gsap-lab',
+    archetype: 'gsap-lab',
+    springPhysics: { damping: 14, stiffness: 160, mass: 0.9 },
+    typography: {
+      fontPrimary: "'Plus Jakarta Sans', -apple-system, sans-serif",
+      fontAccent: "'JetBrains Mono', 'Fira Code', monospace",
+      headlineWeight: 900,
+      letterSpacing: -1,
+    },
+    safeZones: { bottomClearancePx: 120, rightMarginPx: 60 },
+    palette: {
+      background: '#fdfbf7',
+      surface: '#ffffff',
+      border: '1.5px solid #e7e0d3',
+      shadow: '0 20px 40px rgba(0, 0, 0, 0.08)',
+      accentColor: '#ea580c',
     },
     certifiedGrade: 'A+',
     cachedAt: new Date().toISOString(),

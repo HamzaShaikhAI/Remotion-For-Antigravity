@@ -46,6 +46,8 @@ funk music/
 Thumbs.db
 
 # Binaries & scratch renders
+scratch/
+**/scratch/
 bin/ffmpeg/
 hyperframes-reel/
 test-frame.jpeg

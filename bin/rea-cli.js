@@ -4531,6 +4531,61 @@ async function handleRicksClips(rawArgs) {
   }
 }
 
+async function handleGsapLab(rawArgs) {
+  const flags = rawArgs.filter((a) => a.startsWith('-'));
+  const positional = rawArgs.filter((a) => !a.startsWith('-'));
+  const labTitle = positional[1] || 'Claude GSAP Motion Design Lab';
+  const outArg = flags.find((a) => a.startsWith('--out='))?.split('=')[1] || 'claude-gsap-motion-lab.mp4';
+  const stillArg = flags.find((a) => a.startsWith('--still'));
+  const isPreview = flags.includes('--preview');
+  const isRender = flags.includes('--render');
+  const forceArg = flags.includes('--force');
+
+  console.log(`\n${colors.bold}${colors.cyan}🎬 [REA Claude GSAP Motion Design Lab Studio Engine XXIX]${colors.reset}`);
+  console.log(`📌 Topic Title: "${colors.yellow}${labTitle}${colors.reset}"`);
+  console.log(`⏱  Duration: 15.20s @ 30.00 FPS (456 frames, 1584x2016 11:14 Studio Canvas)`);
+  console.log(`🎨 6 Editable Motion Controls:`);
+  console.log(`   ├── 01 Spacing: Distance between poses, slow-in/slow-out, squash/stretch arc`);
+  console.log(`   ├── 02 Typography: Kinetic type scale, tracking, line breaks, 3D rotateY(450deg) spin`);
+  console.log(`   ├── 03 Motion Blur: Exposure shutter simulation on high-velocity linear movement`);
+  console.log(`   ├── 04 Easing: Acceleration / deceleration with live interactive cubic Bezier curves`);
+  console.log(`   ├── 05 Follow-Through: Secondary parts settle later with undulating particle comet trail`);
+  console.log(`   └── 06 Anticipation: Pullback & compression tension before primary explosive motion`);
+  console.log(`🔄 Studio Loop: BUILD > RENDER > SCRUB > TUNE > REPEAT (Frame-Clock Sync)`);
+
+  const issues = handleValidate('ClaudeGsapMotionLabShowcase', true);
+  if (issues.length > 0) {
+    logError(`Validation found issues in ClaudeGsapMotionLabShowcase:`);
+    issues.forEach((iss) => console.log(`  - ${iss}`));
+    process.exit(1);
+  }
+  logSuccess(`ClaudeGsapMotionLabShowcase validated! 0 staticFile or rendering collisions.`);
+
+  if (stillArg) {
+    const frameNum = stillArg.split('=')[1] || '30';
+    const stillOut = outArg.endsWith('.mp4') ? `gsaplab-still-f${frameNum}.jpeg` : outArg;
+    console.log(`\n📸 Exporting verification still at frame ${frameNum}...`);
+    handleStill(['still', 'ClaudeGsapMotionLabShowcase', stillOut, `--frame=${frameNum}`]);
+    return;
+  }
+
+  if (isPreview) {
+    console.log(`\n📺 Launching Remotion Studio for Claude GSAP Motion Design Lab interactive preview...`);
+    handlePreview(['preview', 'src/compositions/ClaudeGsapMotionLabShowcase.tsx']);
+    return;
+  }
+
+  if (isRender) {
+    console.log(`\n🚀 Compiling broadcast master motion lab short: ${outArg}...`);
+    const extraArgs = forceArg ? ['--force'] : [];
+    handleRender('ClaudeGsapMotionLabShowcase', outArg, extraArgs);
+  } else {
+    console.log(`\n💡 ${colors.dim}To render the full master video: ${colors.reset}${colors.green}rea gsap-lab --render --out=motion-lab.mp4${colors.reset}`);
+    console.log(`💡 ${colors.dim}To export a still frame:          ${colors.reset}${colors.green}rea gsap-lab --still=30 --out=spacing.jpeg${colors.reset}`);
+    console.log(`💡 ${colors.dim}To preview in Remotion Studio:     ${colors.reset}${colors.green}rea gsap-lab --preview${colors.reset}`);
+  }
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -4551,6 +4606,7 @@ ${colors.bold}EDITORIAL INTUITION & TASTE COMMANDS (V2.2):${colors.reset}
   ${colors.green}intuition-fork${colors.reset}                        Platform Forks: Tailor for TikTok (15s), Shorts (30s) & Reels (20s)
 
 ${colors.bold}NEXT-GEN GENERATIVE & INTERACTIVE COMMANDS (V2.3):${colors.reset}
+  ${colors.green}gsap-lab [topic] [--render|--still]${colors.reset}         Claude GSAP Motion Design Lab Studio Engine (6 Editable Controls)
   ${colors.green}ricksclips [topic] [--render|--still]${colors.reset}       RicksClips Hybrid 2.5D Western Storytelling Engine (150M-View Formula)
   ${colors.green}robotics [model] [--render|--still]${colors.reset}         Industrial Robotics & Subsea HUD Simulator Engine (Pelagos OC-8)
   ${colors.green}motion-lint${colors.reset}                                 Audit codebase against MOTION.md design tokens & spring physics
@@ -4860,6 +4916,11 @@ async function main() {
     case 'ricksclips':
     case 'hybrid25d':
       await handleRicksClips(args);
+      break;
+    case 'gsap-lab':
+    case 'gsaplab':
+    case 'motiondesignlab':
+      await handleGsapLab(args);
       break;
     case 'motion-lint':
     case 'motionlint': {

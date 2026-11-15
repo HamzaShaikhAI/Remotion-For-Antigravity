@@ -73,6 +73,13 @@ export class MultiStepTrainer {
           promptLower.includes('dieter') ||
           promptLower.includes('amani')
         ? 'cad-chrome'
+        : promptLower.includes('gsap') ||
+          promptLower.includes('six controls') ||
+          promptLower.includes('editable controls') ||
+          promptLower.includes('anticipation') ||
+          promptLower.includes('motion design lab') ||
+          promptLower.includes('design engineer')
+        ? 'gsap-lab'
         : promptLower.includes('motion') ||
           promptLower.includes('glass') ||
           promptLower.includes('bento') ||
