@@ -107,6 +107,10 @@ export * from './animeop';
 // Engine XXVII: Industrial Robotics & Subsea HUD Simulator Engine
 export * from './robotics';
 
+// Engine XXVIII: RicksClips Hybrid 2.5D Western Storytelling Engine
+export * from './ricksclips';
+
+
 
 
 

@@ -51,6 +51,14 @@ export class MultiStepTrainer {
           promptLower.includes('opening') ||
           promptLower.includes('fable')
         ? 'anime-op'
+        : promptLower.includes('ricksclips') ||
+          promptLower.includes('stickman') ||
+          promptLower.includes('stick figure') ||
+          promptLower.includes('western') ||
+          promptLower.includes('cowboy') ||
+          promptLower.includes('duel') ||
+          promptLower.includes('second draw')
+        ? 'ricksclips'
         : promptLower.includes('robot') ||
           promptLower.includes('subsea') ||
           promptLower.includes('pelagos') ||

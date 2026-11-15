@@ -4479,6 +4479,58 @@ async function handleRobotics(rawArgs) {
   }
 }
 
+async function handleRicksClips(rawArgs) {
+  const flags = rawArgs.filter((a) => a.startsWith('-'));
+  const positional = rawArgs.filter((a) => !a.startsWith('-'));
+  const storyTitle = positional[1] || 'Why the Second Draw Always Wins';
+  const outArg = flags.find((a) => a.startsWith('--out='))?.split('=')[1] || 'ricksclips-second-draw.mp4';
+  const stillArg = flags.find((a) => a.startsWith('--still'));
+  const isPreview = flags.includes('--preview');
+  const isRender = flags.includes('--render');
+  const forceArg = flags.includes('--force');
+
+  console.log(`\n${colors.bold}${colors.cyan}🤠 [REA RicksClips Hybrid 2.5D Western Storytelling Engine XXVIII]${colors.reset}`);
+  console.log(`📌 Story Title: "${colors.yellow}${storyTitle}${colors.reset}"`);
+  console.log(`⏱  Duration: 56.13s @ 30.00 FPS (1684 frames, 1080x1920 9:16 Vertical Short)`);
+  console.log(`🎨 Architecture:`);
+  console.log(`   ├─ Act 1: The Golden Rule & Bullet Flyby (Dutch Angle, High-Velocity Copper Bullet, Standoff)`);
+  console.log(`   ├─ Act 2: Reaction Time Paradox (Medium Close-Up Smug Cowboy, Thinking Puddle Reflection)`);
+  console.log(`   ├─ Act 3: Double Knockout (Sunset Golden Hour, Falling Stick Figures, Flying Cowboy Hats)`);
+  console.log(`   └─ Act 4: Saloon Table & Telegraph Room (Overhead Amber Lamp, Smartphone Twist, Moonlight)`);
+
+  const issues = handleValidate('RicksClipsSecondDrawShowcase', true);
+  if (issues.length > 0) {
+    logError(`Validation found issues in RicksClipsSecondDrawShowcase:`);
+    issues.forEach((iss) => console.log(`  - ${iss}`));
+    process.exit(1);
+  }
+  logSuccess(`RicksClipsSecondDrawShowcase validated! 0 staticFile or rendering collisions.`);
+
+  if (stillArg) {
+    const frameNum = stillArg.split('=')[1] || '60';
+    const stillOut = outArg.endsWith('.mp4') ? `ricksclips-still-f${frameNum}.jpeg` : outArg;
+    console.log(`\n📸 Exporting verification still at frame ${frameNum}...`);
+    handleStill(['still', 'RicksClipsSecondDrawShowcase', stillOut, `--frame=${frameNum}`]);
+    return;
+  }
+
+  if (isPreview) {
+    console.log(`\n🎬 Launching Remotion Studio for RicksClips Hybrid 2.5D interactive preview...`);
+    handlePreview(['preview', 'src/compositions/RicksClipsSecondDrawShowcase.tsx']);
+    return;
+  }
+
+  if (isRender) {
+    console.log(`\n🚀 Compiling broadcast master storytelling short: ${outArg}...`);
+    const extraArgs = forceArg ? ['--force'] : [];
+    handleRender('RicksClipsSecondDrawShowcase', outArg, extraArgs);
+  } else {
+    console.log(`\n💡 ${colors.dim}To render the full master video: ${colors.reset}${colors.green}rea ricksclips --render --out=second-draw.mp4${colors.reset}`);
+    console.log(`💡 ${colors.dim}To export a still frame:          ${colors.reset}${colors.green}rea ricksclips --still=60 --out=bullet.jpeg${colors.reset}`);
+    console.log(`💡 ${colors.dim}To preview in Remotion Studio:     ${colors.reset}${colors.green}rea ricksclips --preview${colors.reset}`);
+  }
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -4499,6 +4551,7 @@ ${colors.bold}EDITORIAL INTUITION & TASTE COMMANDS (V2.2):${colors.reset}
   ${colors.green}intuition-fork${colors.reset}                        Platform Forks: Tailor for TikTok (15s), Shorts (30s) & Reels (20s)
 
 ${colors.bold}NEXT-GEN GENERATIVE & INTERACTIVE COMMANDS (V2.3):${colors.reset}
+  ${colors.green}ricksclips [topic] [--render|--still]${colors.reset}       RicksClips Hybrid 2.5D Western Storytelling Engine (150M-View Formula)
   ${colors.green}robotics [model] [--render|--still]${colors.reset}         Industrial Robotics & Subsea HUD Simulator Engine (Pelagos OC-8)
   ${colors.green}motion-lint${colors.reset}                                 Audit codebase against MOTION.md design tokens & spring physics
   ${colors.green}anime-op [title] [--render|--still]${colors.reset}        J-Pop Idol Anime Opening & Music Video (MV) Engine (175 BPM, Halftone, Pixel Sprites)
@@ -4803,6 +4856,10 @@ async function main() {
     case 'robotics':
     case 'subsea':
       await handleRobotics(args);
+      break;
+    case 'ricksclips':
+    case 'hybrid25d':
+      await handleRicksClips(args);
       break;
     case 'motion-lint':
     case 'motionlint': {

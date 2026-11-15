@@ -197,6 +197,27 @@ const BUILTIN_STYLES: Record<string, StyleBlueprint> = {
     certifiedGrade: 'A+',
     cachedAt: new Date().toISOString(),
   },
+  'ricksclips': {
+    name: 'ricksclips',
+    archetype: 'ricksclips',
+    springPhysics: { damping: 14, stiffness: 220, mass: 0.85 },
+    typography: {
+      fontPrimary: "'Montserrat', 'Impact', sans-serif",
+      fontAccent: "'Arial Black', sans-serif",
+      headlineWeight: 900,
+      letterSpacing: 1.5,
+    },
+    safeZones: { bottomClearancePx: 260, rightMarginPx: 60 },
+    palette: {
+      background: '#ca8a04',
+      surface: '#fef3c7',
+      border: '5px solid #09090b',
+      shadow: '0 8px 24px rgba(0,0,0,0.4)',
+      accentColor: '#dc2626',
+    },
+    certifiedGrade: 'A+',
+    cachedAt: new Date().toISOString(),
+  },
 };
 
 export class StyleCache {

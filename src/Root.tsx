@@ -34,10 +34,21 @@ import { MotionLabShowcase } from './compositions/MotionLabShowcase';
 import { AmaniStudioCadChrome } from './compositions/AmaniStudioCadChrome';
 import { AnimeOpeningMVShowcase } from './compositions/AnimeOpeningMVShowcase';
 import { PelagosSubseaSimulator } from './compositions/PelagosSubseaSimulator';
+import { RicksClipsSecondDrawShowcase } from './compositions/RicksClipsSecondDrawShowcase';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* RicksClips Hybrid 2.5D Western Storytelling Engine (1080x1920, 56.13s @ 30fps) */}
+      <Composition
+        id="RicksClipsSecondDrawShowcase"
+        component={RicksClipsSecondDrawShowcase}
+        durationInFrames={1684}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+
       {/* Pelagos OC-8 Robotic Cephalopod Subsea Field Simulator (1280x720, 25s @ 60fps) */}
       <Composition
         id="PelagosSubseaSimulator"
