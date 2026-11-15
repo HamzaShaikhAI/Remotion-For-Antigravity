@@ -27,10 +27,21 @@ import { BudgetingPaperShort } from './compositions/batch/BudgetingPaperShort';
 import { QuantumPaperShort } from './compositions/batch/QuantumPaperShort';
 import { CompoundInterestPaperShort } from './compositions/batch/CompoundInterestPaperShort';
 import { RomanEconomyPaperShort } from './compositions/batch/RomanEconomyPaperShort';
+import { ClaudeMotionSkillsShowcase } from './compositions/ClaudeMotionSkillsShowcase';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* Claude x Movez Motion Design Skills Showcase (4:5 Social Aspect, 20s @ 60fps) */}
+      <Composition
+        id="ClaudeMotionSkillsShowcase"
+        component={ClaudeMotionSkillsShowcase}
+        durationInFrames={1200}
+        fps={60}
+        width={1080}
+        height={1350}
+      />
+
       {/* 2.5D Paper Batch Compositions (450 frames @ 30 FPS, 1080x1920) */}
       <Composition
         id="BudgetingPaperShort"
