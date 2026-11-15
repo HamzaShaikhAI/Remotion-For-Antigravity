@@ -1,0 +1,3131 @@
+{
+  "total": 515,
+  "categories": {
+    "social_media": [
+      "youtube",
+      "tiktok",
+      "instagram",
+      "twitter",
+      "x",
+      "discord",
+      "twitch",
+      "reddit",
+      "linkedin",
+      "facebook",
+      "threads",
+      "snapchat",
+      "pinterest",
+      "whatsapp",
+      "telegram",
+      "signal",
+      "wechat",
+      "medium",
+      "substack",
+      "patreon",
+      "vimeo",
+      "dribbble",
+      "behance",
+      "mastodon",
+      "bluesky",
+      "tumblr",
+      "club_house",
+      "soundcloud",
+      "spotify",
+      "apple_podcasts"
+    ],
+    "ai_models": [
+      "openai",
+      "chatgpt",
+      "anthropic",
+      "claude",
+      "google_gemini",
+      "deepmind",
+      "midjourney",
+      "stable_diffusion",
+      "runaway",
+      "elevenlabs",
+      "huggingface",
+      "perplexity",
+      "cursor",
+      "copilot",
+      "grok",
+      "mistral",
+      "ollama",
+      "suno",
+      "udio",
+      "flux",
+      "pika",
+      "sora",
+      "llama",
+      "cohere",
+      "reka",
+      "replicate",
+      "lang_chain",
+      "crewai",
+      "auto_gpt",
+      "v0"
+    ],
+    "tech_titans": [
+      "apple",
+      "google",
+      "microsoft",
+      "nvidia",
+      "amd",
+      "intel",
+      "linux",
+      "ubuntu",
+      "debian",
+      "fedora",
+      "arch_linux",
+      "raspberry_pi",
+      "android",
+      "ios",
+      "windows",
+      "macos",
+      "meta",
+      "amazon",
+      "tesla",
+      "qualcomm",
+      "arm",
+      "ibm",
+      "oracle",
+      "cisco",
+      "sony",
+      "samsung",
+      "lg",
+      "dell",
+      "hp",
+      "lenovo",
+      "openai_star",
+      "meta_infinity",
+      "google_g",
+      "apple_byte",
+      "linux_tux"
+    ],
+    "frontend_web": [
+      "react",
+      "nextjs",
+      "vue",
+      "nuxt",
+      "svelte",
+      "sveltekit",
+      "angular",
+      "remotion",
+      "tailwindcss",
+      "vite",
+      "webpack",
+      "turbopack",
+      "astro",
+      "gatsby",
+      "html5",
+      "css3",
+      "javascript",
+      "typescript",
+      "babel",
+      "eslint",
+      "prettier",
+      "sass",
+      "less",
+      "styled_components",
+      "chakra_ui",
+      "shadcn",
+      "mui",
+      "radix",
+      "framer_motion",
+      "gsap"
+    ],
+    "backend_languages": [
+      "nodejs",
+      "python",
+      "rust",
+      "golang",
+      "cplusplus",
+      "csharp",
+      "c",
+      "swift",
+      "kotlin",
+      "java",
+      "php",
+      "ruby",
+      "rails",
+      "bun",
+      "deno",
+      "elixir",
+      "erlang",
+      "scala",
+      "haskell",
+      "lua",
+      "dart",
+      "flutter",
+      "r_lang",
+      "julia",
+      "perl",
+      "bash",
+      "powershell",
+      "zig",
+      "assembly",
+      "webassembly"
+    ],
+    "cloud_databases": [
+      "aws",
+      "google_cloud",
+      "azure",
+      "supabase",
+      "firebase",
+      "postgresql",
+      "mongodb",
+      "redis",
+      "mysql",
+      "sqlite",
+      "mariadb",
+      "cassandra",
+      "dynamodb",
+      "couchdb",
+      "neo4j",
+      "elasticsearch",
+      "clickhouse",
+      "snowflake",
+      "bigquery",
+      "databricks",
+      "planetscale",
+      "neon",
+      "cloudflare",
+      "vercel",
+      "netlify",
+      "heroku",
+      "render_com",
+      "railway",
+      "digitalocean",
+      "fly_io"
+    ],
+    "dev_workflow": [
+      "github",
+      "gitlab",
+      "bitbucket",
+      "vscode",
+      "git",
+      "npm",
+      "yarn",
+      "pnpm",
+      "docker",
+      "kubernetes",
+      "postman",
+      "insomnia",
+      "swagger",
+      "jira",
+      "confluence",
+      "linear",
+      "notion",
+      "slack",
+      "trello",
+      "asana",
+      "raycast",
+      "alfred",
+      "warp",
+      "iterm2",
+      "neovim",
+      "vim",
+      "emacs",
+      "homebrew",
+      "terraform",
+      "ansible"
+    ],
+    "creative_video_3d": [
+      "figma",
+      "sketch",
+      "invision",
+      "adobe",
+      "premiere_pro",
+      "after_effects",
+      "photoshop",
+      "illustrator",
+      "indesign",
+      "audition",
+      "lightroom",
+      "blender",
+      "unreal_engine",
+      "unity",
+      "cinema4d",
+      "davinci_resolve",
+      "final_cut_pro",
+      "canva",
+      "spline",
+      "rive",
+      "lottie",
+      "maya",
+      "threejs",
+      "houdini",
+      "substance",
+      "zbrush",
+      "procreate",
+      "clip_studio",
+      "capcut",
+      "avid",
+      "ffmpeg",
+      "svg_vector",
+      "png_image",
+      "gif_anim",
+      "mp4_video",
+      "webm_format",
+      "wav_audio",
+      "mp3_audio",
+      "codec_render",
+      "render_farm"
+    ],
+    "gaming_esports": [
+      "steam",
+      "playstation",
+      "xbox",
+      "nintendo",
+      "epic_games",
+      "riot_games",
+      "valorant",
+      "league_of_legends",
+      "overwatch",
+      "csgo",
+      "minecraft",
+      "roblox",
+      "gta",
+      "cyberpunk2077",
+      "ea_sports",
+      "ubisoft",
+      "blizzard",
+      "bethesda",
+      "unity_games",
+      "twitch_stream",
+      "obs_studio",
+      "elgato",
+      "razer",
+      "steelseries",
+      "logitech_g",
+      "alienware",
+      "rog",
+      "corsair",
+      "discord_nitro",
+      "speedrun"
+    ],
+    "fintech_crypto": [
+      "bitcoin",
+      "ethereum",
+      "solana",
+      "cardano",
+      "binance",
+      "ripple_xrp",
+      "dogecoin",
+      "polygon",
+      "avalanche",
+      "chainlink",
+      "uniswap",
+      "metamask",
+      "ledger",
+      "coinbase",
+      "stripe",
+      "paypal",
+      "visa",
+      "mastercard",
+      "amex",
+      "apple_pay",
+      "google_pay",
+      "square",
+      "venmo",
+      "revolut",
+      "klarna",
+      "plaid",
+      "robinhood",
+      "webull",
+      "wise",
+      "shopify"
+    ],
+    "music_audio": [
+      "suno_ai",
+      "udio_ai",
+      "fl_studio",
+      "ableton",
+      "logic_pro",
+      "pro_tools",
+      "garageband",
+      "reaper",
+      "bitwig",
+      "cubase",
+      "studio_one",
+      "serum",
+      "massive",
+      "kontakt",
+      "splice",
+      "beatport",
+      "soundcloud_pro",
+      "tidal",
+      "deezer",
+      "bandcamp",
+      "shazam",
+      "audiopack",
+      "soundiron",
+      "spitfire",
+      "fabfilter",
+      "waves",
+      "izotope",
+      "ozone",
+      "vocaloid",
+      "auto_tune"
+    ],
+    "editing_hud_tools": [
+      "play",
+      "pause",
+      "stop",
+      "record",
+      "fast_forward",
+      "rewind",
+      "loop",
+      "cut_scissors",
+      "razor",
+      "timeline",
+      "keyframe",
+      "bezier_curve",
+      "layer_stack",
+      "audio_waveform",
+      "equalizer",
+      "volume_high",
+      "volume_mute",
+      "microphone",
+      "headphones",
+      "speaker",
+      "crop",
+      "transform",
+      "rotate",
+      "zoom_in",
+      "zoom_out",
+      "pan",
+      "aspect_ratio",
+      "resolution_4k",
+      "fps_60",
+      "color_grade",
+      "split_clip",
+      "magnetic_track",
+      "marker_flag",
+      "snapping_magnet",
+      "playhead_needle",
+      "in_point",
+      "out_point",
+      "speed_ramp",
+      "freeze_frame",
+      "render_queue"
+    ],
+    "visual_fx_symbols": [
+      "sparkle",
+      "fire",
+      "lightning",
+      "star_badge",
+      "heart_reaction",
+      "skull",
+      "bomb",
+      "crown",
+      "diamond",
+      "trophy",
+      "medal",
+      "shield_verified",
+      "alert_triangle",
+      "check_circle",
+      "cross_circle",
+      "info_circle",
+      "question_circle",
+      "eye_track",
+      "magic_wand",
+      "flash",
+      "rocket",
+      "comet",
+      "atom",
+      "biohazard",
+      "radiation",
+      "crosshair",
+      "compass",
+      "magnet",
+      "flame_burn",
+      "infinity"
+    ],
+    "motion_shapes": [
+      "circle_fill",
+      "square_fill",
+      "triangle_fill",
+      "hexagon",
+      "pentagon",
+      "octagon",
+      "star_4point",
+      "star_5point",
+      "star_8point",
+      "star_burst",
+      "pill_rounded",
+      "diamond_shape",
+      "crescent_moon",
+      "sun_halo",
+      "droplet",
+      "ring_halo",
+      "double_ring",
+      "concentric_rings",
+      "cross_plus",
+      "chevron_right",
+      "chevron_left",
+      "arrow_up",
+      "arrow_right",
+      "arrow_diagonal",
+      "curved_arrow",
+      "zigzag_line",
+      "wavy_line",
+      "spiral",
+      "labyrinth",
+      "cube_3d"
+    ],
+    "tech_hardware": [
+      "gpu_die",
+      "cpu_chip",
+      "ram_dimm",
+      "motherboard_pcb",
+      "pcie_slot",
+      "heatsink_fan",
+      "power_supply",
+      "m2_nvme",
+      "ssd_drive",
+      "hdd_platter",
+      "hdmi_port",
+      "dvi_port",
+      "displayport",
+      "vga_port",
+      "usb_c",
+      "usb_a",
+      "thunderbolt",
+      "ethernet_rj45",
+      "wifi_antenna",
+      "bluetooth",
+      "optical_cable",
+      "capacitor",
+      "resistor",
+      "inductor",
+      "solder_pad",
+      "microchip",
+      "cooling_water",
+      "server_rack",
+      "robot_arm",
+      "sensor"
+    ],
+    "ecommerce_retail": [
+      "shopping_cart",
+      "shopping_bag",
+      "credit_card",
+      "barcode",
+      "qr_code",
+      "discount_tag",
+      "coupon",
+      "gift_box",
+      "truck_delivery",
+      "package_box",
+      "store_front",
+      "cash_bill",
+      "wallet",
+      "coin_stack",
+      "receipt",
+      "return_box",
+      "star_review",
+      "customer_service",
+      "thumbs_up",
+      "trending_up"
+    ],
+    "communication_chat": [
+      "chat_bubble",
+      "speech_bubble",
+      "quote_marks",
+      "mail_envelope",
+      "inbox",
+      "send_paper_plane",
+      "megaphone",
+      "bell_alert",
+      "notification_badge",
+      "user_avatar",
+      "users_group",
+      "bot_avatar",
+      "phone_call",
+      "video_camera",
+      "screen_share",
+      "comment_add",
+      "share_nodes",
+      "bookmark",
+      "pin",
+      "link_chain"
+    ]
+  },
+  "icons": [
+    {
+      "name": "youtube",
+      "category": "social_media",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "tiktok",
+      "category": "social_media",
+      "color": "#10B981"
+    },
+    {
+      "name": "instagram",
+      "category": "social_media",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "twitter",
+      "category": "social_media",
+      "color": "#EF4444"
+    },
+    {
+      "name": "x",
+      "category": "social_media",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "discord",
+      "category": "social_media",
+      "color": "#EC4899"
+    },
+    {
+      "name": "twitch",
+      "category": "social_media",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "reddit",
+      "category": "social_media",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "linkedin",
+      "category": "social_media",
+      "color": "#F97316"
+    },
+    {
+      "name": "facebook",
+      "category": "social_media",
+      "color": "#6366F1"
+    },
+    {
+      "name": "threads",
+      "category": "social_media",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "snapchat",
+      "category": "social_media",
+      "color": "#22C55E"
+    },
+    {
+      "name": "pinterest",
+      "category": "social_media",
+      "color": "#E11D48"
+    },
+    {
+      "name": "whatsapp",
+      "category": "social_media",
+      "color": "#84CC16"
+    },
+    {
+      "name": "telegram",
+      "category": "social_media",
+      "color": "#A855F7"
+    },
+    {
+      "name": "signal",
+      "category": "social_media",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "wechat",
+      "category": "social_media",
+      "color": "#10B981"
+    },
+    {
+      "name": "medium",
+      "category": "social_media",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "substack",
+      "category": "social_media",
+      "color": "#EF4444"
+    },
+    {
+      "name": "patreon",
+      "category": "social_media",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "vimeo",
+      "category": "social_media",
+      "color": "#EC4899"
+    },
+    {
+      "name": "dribbble",
+      "category": "social_media",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "behance",
+      "category": "social_media",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "mastodon",
+      "category": "social_media",
+      "color": "#F97316"
+    },
+    {
+      "name": "bluesky",
+      "category": "social_media",
+      "color": "#6366F1"
+    },
+    {
+      "name": "tumblr",
+      "category": "social_media",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "club_house",
+      "category": "social_media",
+      "color": "#22C55E"
+    },
+    {
+      "name": "soundcloud",
+      "category": "social_media",
+      "color": "#E11D48"
+    },
+    {
+      "name": "spotify",
+      "category": "social_media",
+      "color": "#84CC16"
+    },
+    {
+      "name": "apple_podcasts",
+      "category": "social_media",
+      "color": "#A855F7"
+    },
+    {
+      "name": "openai",
+      "category": "ai_models",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "chatgpt",
+      "category": "ai_models",
+      "color": "#10B981"
+    },
+    {
+      "name": "anthropic",
+      "category": "ai_models",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "claude",
+      "category": "ai_models",
+      "color": "#EF4444"
+    },
+    {
+      "name": "google_gemini",
+      "category": "ai_models",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "deepmind",
+      "category": "ai_models",
+      "color": "#EC4899"
+    },
+    {
+      "name": "midjourney",
+      "category": "ai_models",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "stable_diffusion",
+      "category": "ai_models",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "runaway",
+      "category": "ai_models",
+      "color": "#F97316"
+    },
+    {
+      "name": "elevenlabs",
+      "category": "ai_models",
+      "color": "#6366F1"
+    },
+    {
+      "name": "huggingface",
+      "category": "ai_models",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "perplexity",
+      "category": "ai_models",
+      "color": "#22C55E"
+    },
+    {
+      "name": "cursor",
+      "category": "ai_models",
+      "color": "#E11D48"
+    },
+    {
+      "name": "copilot",
+      "category": "ai_models",
+      "color": "#84CC16"
+    },
+    {
+      "name": "grok",
+      "category": "ai_models",
+      "color": "#A855F7"
+    },
+    {
+      "name": "mistral",
+      "category": "ai_models",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "ollama",
+      "category": "ai_models",
+      "color": "#10B981"
+    },
+    {
+      "name": "suno",
+      "category": "ai_models",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "udio",
+      "category": "ai_models",
+      "color": "#EF4444"
+    },
+    {
+      "name": "flux",
+      "category": "ai_models",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "pika",
+      "category": "ai_models",
+      "color": "#EC4899"
+    },
+    {
+      "name": "sora",
+      "category": "ai_models",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "llama",
+      "category": "ai_models",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "cohere",
+      "category": "ai_models",
+      "color": "#F97316"
+    },
+    {
+      "name": "reka",
+      "category": "ai_models",
+      "color": "#6366F1"
+    },
+    {
+      "name": "replicate",
+      "category": "ai_models",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "lang_chain",
+      "category": "ai_models",
+      "color": "#22C55E"
+    },
+    {
+      "name": "crewai",
+      "category": "ai_models",
+      "color": "#E11D48"
+    },
+    {
+      "name": "auto_gpt",
+      "category": "ai_models",
+      "color": "#84CC16"
+    },
+    {
+      "name": "v0",
+      "category": "ai_models",
+      "color": "#A855F7"
+    },
+    {
+      "name": "apple",
+      "category": "tech_titans",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "google",
+      "category": "tech_titans",
+      "color": "#10B981"
+    },
+    {
+      "name": "microsoft",
+      "category": "tech_titans",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "nvidia",
+      "category": "tech_titans",
+      "color": "#EF4444"
+    },
+    {
+      "name": "amd",
+      "category": "tech_titans",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "intel",
+      "category": "tech_titans",
+      "color": "#EC4899"
+    },
+    {
+      "name": "linux",
+      "category": "tech_titans",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "ubuntu",
+      "category": "tech_titans",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "debian",
+      "category": "tech_titans",
+      "color": "#F97316"
+    },
+    {
+      "name": "fedora",
+      "category": "tech_titans",
+      "color": "#6366F1"
+    },
+    {
+      "name": "arch_linux",
+      "category": "tech_titans",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "raspberry_pi",
+      "category": "tech_titans",
+      "color": "#22C55E"
+    },
+    {
+      "name": "android",
+      "category": "tech_titans",
+      "color": "#E11D48"
+    },
+    {
+      "name": "ios",
+      "category": "tech_titans",
+      "color": "#84CC16"
+    },
+    {
+      "name": "windows",
+      "category": "tech_titans",
+      "color": "#A855F7"
+    },
+    {
+      "name": "macos",
+      "category": "tech_titans",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "meta",
+      "category": "tech_titans",
+      "color": "#10B981"
+    },
+    {
+      "name": "amazon",
+      "category": "tech_titans",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "tesla",
+      "category": "tech_titans",
+      "color": "#EF4444"
+    },
+    {
+      "name": "qualcomm",
+      "category": "tech_titans",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "arm",
+      "category": "tech_titans",
+      "color": "#EC4899"
+    },
+    {
+      "name": "ibm",
+      "category": "tech_titans",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "oracle",
+      "category": "tech_titans",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "cisco",
+      "category": "tech_titans",
+      "color": "#F97316"
+    },
+    {
+      "name": "sony",
+      "category": "tech_titans",
+      "color": "#6366F1"
+    },
+    {
+      "name": "samsung",
+      "category": "tech_titans",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "lg",
+      "category": "tech_titans",
+      "color": "#22C55E"
+    },
+    {
+      "name": "dell",
+      "category": "tech_titans",
+      "color": "#E11D48"
+    },
+    {
+      "name": "hp",
+      "category": "tech_titans",
+      "color": "#84CC16"
+    },
+    {
+      "name": "lenovo",
+      "category": "tech_titans",
+      "color": "#A855F7"
+    },
+    {
+      "name": "openai_star",
+      "category": "tech_titans",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "meta_infinity",
+      "category": "tech_titans",
+      "color": "#10B981"
+    },
+    {
+      "name": "google_g",
+      "category": "tech_titans",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "apple_byte",
+      "category": "tech_titans",
+      "color": "#EF4444"
+    },
+    {
+      "name": "linux_tux",
+      "category": "tech_titans",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "react",
+      "category": "frontend_web",
+      "color": "#EC4899"
+    },
+    {
+      "name": "nextjs",
+      "category": "frontend_web",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "vue",
+      "category": "frontend_web",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "nuxt",
+      "category": "frontend_web",
+      "color": "#F97316"
+    },
+    {
+      "name": "svelte",
+      "category": "frontend_web",
+      "color": "#6366F1"
+    },
+    {
+      "name": "sveltekit",
+      "category": "frontend_web",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "angular",
+      "category": "frontend_web",
+      "color": "#22C55E"
+    },
+    {
+      "name": "remotion",
+      "category": "frontend_web",
+      "color": "#E11D48"
+    },
+    {
+      "name": "tailwindcss",
+      "category": "frontend_web",
+      "color": "#84CC16"
+    },
+    {
+      "name": "vite",
+      "category": "frontend_web",
+      "color": "#A855F7"
+    },
+    {
+      "name": "webpack",
+      "category": "frontend_web",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "turbopack",
+      "category": "frontend_web",
+      "color": "#10B981"
+    },
+    {
+      "name": "astro",
+      "category": "frontend_web",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "gatsby",
+      "category": "frontend_web",
+      "color": "#EF4444"
+    },
+    {
+      "name": "html5",
+      "category": "frontend_web",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "css3",
+      "category": "frontend_web",
+      "color": "#EC4899"
+    },
+    {
+      "name": "javascript",
+      "category": "frontend_web",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "typescript",
+      "category": "frontend_web",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "babel",
+      "category": "frontend_web",
+      "color": "#F97316"
+    },
+    {
+      "name": "eslint",
+      "category": "frontend_web",
+      "color": "#6366F1"
+    },
+    {
+      "name": "prettier",
+      "category": "frontend_web",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "sass",
+      "category": "frontend_web",
+      "color": "#22C55E"
+    },
+    {
+      "name": "less",
+      "category": "frontend_web",
+      "color": "#E11D48"
+    },
+    {
+      "name": "styled_components",
+      "category": "frontend_web",
+      "color": "#84CC16"
+    },
+    {
+      "name": "chakra_ui",
+      "category": "frontend_web",
+      "color": "#A855F7"
+    },
+    {
+      "name": "shadcn",
+      "category": "frontend_web",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "mui",
+      "category": "frontend_web",
+      "color": "#10B981"
+    },
+    {
+      "name": "radix",
+      "category": "frontend_web",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "framer_motion",
+      "category": "frontend_web",
+      "color": "#EF4444"
+    },
+    {
+      "name": "gsap",
+      "category": "frontend_web",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "nodejs",
+      "category": "backend_languages",
+      "color": "#EC4899"
+    },
+    {
+      "name": "python",
+      "category": "backend_languages",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "rust",
+      "category": "backend_languages",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "golang",
+      "category": "backend_languages",
+      "color": "#F97316"
+    },
+    {
+      "name": "cplusplus",
+      "category": "backend_languages",
+      "color": "#6366F1"
+    },
+    {
+      "name": "csharp",
+      "category": "backend_languages",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "c",
+      "category": "backend_languages",
+      "color": "#22C55E"
+    },
+    {
+      "name": "swift",
+      "category": "backend_languages",
+      "color": "#E11D48"
+    },
+    {
+      "name": "kotlin",
+      "category": "backend_languages",
+      "color": "#84CC16"
+    },
+    {
+      "name": "java",
+      "category": "backend_languages",
+      "color": "#A855F7"
+    },
+    {
+      "name": "php",
+      "category": "backend_languages",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "ruby",
+      "category": "backend_languages",
+      "color": "#10B981"
+    },
+    {
+      "name": "rails",
+      "category": "backend_languages",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "bun",
+      "category": "backend_languages",
+      "color": "#EF4444"
+    },
+    {
+      "name": "deno",
+      "category": "backend_languages",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "elixir",
+      "category": "backend_languages",
+      "color": "#EC4899"
+    },
+    {
+      "name": "erlang",
+      "category": "backend_languages",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "scala",
+      "category": "backend_languages",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "haskell",
+      "category": "backend_languages",
+      "color": "#F97316"
+    },
+    {
+      "name": "lua",
+      "category": "backend_languages",
+      "color": "#6366F1"
+    },
+    {
+      "name": "dart",
+      "category": "backend_languages",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "flutter",
+      "category": "backend_languages",
+      "color": "#22C55E"
+    },
+    {
+      "name": "r_lang",
+      "category": "backend_languages",
+      "color": "#E11D48"
+    },
+    {
+      "name": "julia",
+      "category": "backend_languages",
+      "color": "#84CC16"
+    },
+    {
+      "name": "perl",
+      "category": "backend_languages",
+      "color": "#A855F7"
+    },
+    {
+      "name": "bash",
+      "category": "backend_languages",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "powershell",
+      "category": "backend_languages",
+      "color": "#10B981"
+    },
+    {
+      "name": "zig",
+      "category": "backend_languages",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "assembly",
+      "category": "backend_languages",
+      "color": "#EF4444"
+    },
+    {
+      "name": "webassembly",
+      "category": "backend_languages",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "aws",
+      "category": "cloud_databases",
+      "color": "#EC4899"
+    },
+    {
+      "name": "google_cloud",
+      "category": "cloud_databases",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "azure",
+      "category": "cloud_databases",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "supabase",
+      "category": "cloud_databases",
+      "color": "#F97316"
+    },
+    {
+      "name": "firebase",
+      "category": "cloud_databases",
+      "color": "#6366F1"
+    },
+    {
+      "name": "postgresql",
+      "category": "cloud_databases",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "mongodb",
+      "category": "cloud_databases",
+      "color": "#22C55E"
+    },
+    {
+      "name": "redis",
+      "category": "cloud_databases",
+      "color": "#E11D48"
+    },
+    {
+      "name": "mysql",
+      "category": "cloud_databases",
+      "color": "#84CC16"
+    },
+    {
+      "name": "sqlite",
+      "category": "cloud_databases",
+      "color": "#A855F7"
+    },
+    {
+      "name": "mariadb",
+      "category": "cloud_databases",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "cassandra",
+      "category": "cloud_databases",
+      "color": "#10B981"
+    },
+    {
+      "name": "dynamodb",
+      "category": "cloud_databases",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "couchdb",
+      "category": "cloud_databases",
+      "color": "#EF4444"
+    },
+    {
+      "name": "neo4j",
+      "category": "cloud_databases",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "elasticsearch",
+      "category": "cloud_databases",
+      "color": "#EC4899"
+    },
+    {
+      "name": "clickhouse",
+      "category": "cloud_databases",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "snowflake",
+      "category": "cloud_databases",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "bigquery",
+      "category": "cloud_databases",
+      "color": "#F97316"
+    },
+    {
+      "name": "databricks",
+      "category": "cloud_databases",
+      "color": "#6366F1"
+    },
+    {
+      "name": "planetscale",
+      "category": "cloud_databases",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "neon",
+      "category": "cloud_databases",
+      "color": "#22C55E"
+    },
+    {
+      "name": "cloudflare",
+      "category": "cloud_databases",
+      "color": "#E11D48"
+    },
+    {
+      "name": "vercel",
+      "category": "cloud_databases",
+      "color": "#84CC16"
+    },
+    {
+      "name": "netlify",
+      "category": "cloud_databases",
+      "color": "#A855F7"
+    },
+    {
+      "name": "heroku",
+      "category": "cloud_databases",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "render_com",
+      "category": "cloud_databases",
+      "color": "#10B981"
+    },
+    {
+      "name": "railway",
+      "category": "cloud_databases",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "digitalocean",
+      "category": "cloud_databases",
+      "color": "#EF4444"
+    },
+    {
+      "name": "fly_io",
+      "category": "cloud_databases",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "github",
+      "category": "dev_workflow",
+      "color": "#EC4899"
+    },
+    {
+      "name": "gitlab",
+      "category": "dev_workflow",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "bitbucket",
+      "category": "dev_workflow",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "vscode",
+      "category": "dev_workflow",
+      "color": "#F97316"
+    },
+    {
+      "name": "git",
+      "category": "dev_workflow",
+      "color": "#6366F1"
+    },
+    {
+      "name": "npm",
+      "category": "dev_workflow",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "yarn",
+      "category": "dev_workflow",
+      "color": "#22C55E"
+    },
+    {
+      "name": "pnpm",
+      "category": "dev_workflow",
+      "color": "#E11D48"
+    },
+    {
+      "name": "docker",
+      "category": "dev_workflow",
+      "color": "#84CC16"
+    },
+    {
+      "name": "kubernetes",
+      "category": "dev_workflow",
+      "color": "#A855F7"
+    },
+    {
+      "name": "postman",
+      "category": "dev_workflow",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "insomnia",
+      "category": "dev_workflow",
+      "color": "#10B981"
+    },
+    {
+      "name": "swagger",
+      "category": "dev_workflow",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "jira",
+      "category": "dev_workflow",
+      "color": "#EF4444"
+    },
+    {
+      "name": "confluence",
+      "category": "dev_workflow",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "linear",
+      "category": "dev_workflow",
+      "color": "#EC4899"
+    },
+    {
+      "name": "notion",
+      "category": "dev_workflow",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "slack",
+      "category": "dev_workflow",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "trello",
+      "category": "dev_workflow",
+      "color": "#F97316"
+    },
+    {
+      "name": "asana",
+      "category": "dev_workflow",
+      "color": "#6366F1"
+    },
+    {
+      "name": "raycast",
+      "category": "dev_workflow",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "alfred",
+      "category": "dev_workflow",
+      "color": "#22C55E"
+    },
+    {
+      "name": "warp",
+      "category": "dev_workflow",
+      "color": "#E11D48"
+    },
+    {
+      "name": "iterm2",
+      "category": "dev_workflow",
+      "color": "#84CC16"
+    },
+    {
+      "name": "neovim",
+      "category": "dev_workflow",
+      "color": "#A855F7"
+    },
+    {
+      "name": "vim",
+      "category": "dev_workflow",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "emacs",
+      "category": "dev_workflow",
+      "color": "#10B981"
+    },
+    {
+      "name": "homebrew",
+      "category": "dev_workflow",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "terraform",
+      "category": "dev_workflow",
+      "color": "#EF4444"
+    },
+    {
+      "name": "ansible",
+      "category": "dev_workflow",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "figma",
+      "category": "creative_video_3d",
+      "color": "#EC4899"
+    },
+    {
+      "name": "sketch",
+      "category": "creative_video_3d",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "invision",
+      "category": "creative_video_3d",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "adobe",
+      "category": "creative_video_3d",
+      "color": "#F97316"
+    },
+    {
+      "name": "premiere_pro",
+      "category": "creative_video_3d",
+      "color": "#6366F1"
+    },
+    {
+      "name": "after_effects",
+      "category": "creative_video_3d",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "photoshop",
+      "category": "creative_video_3d",
+      "color": "#22C55E"
+    },
+    {
+      "name": "illustrator",
+      "category": "creative_video_3d",
+      "color": "#E11D48"
+    },
+    {
+      "name": "indesign",
+      "category": "creative_video_3d",
+      "color": "#84CC16"
+    },
+    {
+      "name": "audition",
+      "category": "creative_video_3d",
+      "color": "#A855F7"
+    },
+    {
+      "name": "lightroom",
+      "category": "creative_video_3d",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "blender",
+      "category": "creative_video_3d",
+      "color": "#10B981"
+    },
+    {
+      "name": "unreal_engine",
+      "category": "creative_video_3d",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "unity",
+      "category": "creative_video_3d",
+      "color": "#EF4444"
+    },
+    {
+      "name": "cinema4d",
+      "category": "creative_video_3d",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "davinci_resolve",
+      "category": "creative_video_3d",
+      "color": "#EC4899"
+    },
+    {
+      "name": "final_cut_pro",
+      "category": "creative_video_3d",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "canva",
+      "category": "creative_video_3d",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "spline",
+      "category": "creative_video_3d",
+      "color": "#F97316"
+    },
+    {
+      "name": "rive",
+      "category": "creative_video_3d",
+      "color": "#6366F1"
+    },
+    {
+      "name": "lottie",
+      "category": "creative_video_3d",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "maya",
+      "category": "creative_video_3d",
+      "color": "#22C55E"
+    },
+    {
+      "name": "threejs",
+      "category": "creative_video_3d",
+      "color": "#E11D48"
+    },
+    {
+      "name": "houdini",
+      "category": "creative_video_3d",
+      "color": "#84CC16"
+    },
+    {
+      "name": "substance",
+      "category": "creative_video_3d",
+      "color": "#A855F7"
+    },
+    {
+      "name": "zbrush",
+      "category": "creative_video_3d",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "procreate",
+      "category": "creative_video_3d",
+      "color": "#10B981"
+    },
+    {
+      "name": "clip_studio",
+      "category": "creative_video_3d",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "capcut",
+      "category": "creative_video_3d",
+      "color": "#EF4444"
+    },
+    {
+      "name": "avid",
+      "category": "creative_video_3d",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "ffmpeg",
+      "category": "creative_video_3d",
+      "color": "#EC4899"
+    },
+    {
+      "name": "svg_vector",
+      "category": "creative_video_3d",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "png_image",
+      "category": "creative_video_3d",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "gif_anim",
+      "category": "creative_video_3d",
+      "color": "#F97316"
+    },
+    {
+      "name": "mp4_video",
+      "category": "creative_video_3d",
+      "color": "#6366F1"
+    },
+    {
+      "name": "webm_format",
+      "category": "creative_video_3d",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "wav_audio",
+      "category": "creative_video_3d",
+      "color": "#22C55E"
+    },
+    {
+      "name": "mp3_audio",
+      "category": "creative_video_3d",
+      "color": "#E11D48"
+    },
+    {
+      "name": "codec_render",
+      "category": "creative_video_3d",
+      "color": "#84CC16"
+    },
+    {
+      "name": "render_farm",
+      "category": "creative_video_3d",
+      "color": "#A855F7"
+    },
+    {
+      "name": "steam",
+      "category": "gaming_esports",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "playstation",
+      "category": "gaming_esports",
+      "color": "#10B981"
+    },
+    {
+      "name": "xbox",
+      "category": "gaming_esports",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "nintendo",
+      "category": "gaming_esports",
+      "color": "#EF4444"
+    },
+    {
+      "name": "epic_games",
+      "category": "gaming_esports",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "riot_games",
+      "category": "gaming_esports",
+      "color": "#EC4899"
+    },
+    {
+      "name": "valorant",
+      "category": "gaming_esports",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "league_of_legends",
+      "category": "gaming_esports",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "overwatch",
+      "category": "gaming_esports",
+      "color": "#F97316"
+    },
+    {
+      "name": "csgo",
+      "category": "gaming_esports",
+      "color": "#6366F1"
+    },
+    {
+      "name": "minecraft",
+      "category": "gaming_esports",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "roblox",
+      "category": "gaming_esports",
+      "color": "#22C55E"
+    },
+    {
+      "name": "gta",
+      "category": "gaming_esports",
+      "color": "#E11D48"
+    },
+    {
+      "name": "cyberpunk2077",
+      "category": "gaming_esports",
+      "color": "#84CC16"
+    },
+    {
+      "name": "ea_sports",
+      "category": "gaming_esports",
+      "color": "#A855F7"
+    },
+    {
+      "name": "ubisoft",
+      "category": "gaming_esports",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "blizzard",
+      "category": "gaming_esports",
+      "color": "#10B981"
+    },
+    {
+      "name": "bethesda",
+      "category": "gaming_esports",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "unity_games",
+      "category": "gaming_esports",
+      "color": "#EF4444"
+    },
+    {
+      "name": "twitch_stream",
+      "category": "gaming_esports",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "obs_studio",
+      "category": "gaming_esports",
+      "color": "#EC4899"
+    },
+    {
+      "name": "elgato",
+      "category": "gaming_esports",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "razer",
+      "category": "gaming_esports",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "steelseries",
+      "category": "gaming_esports",
+      "color": "#F97316"
+    },
+    {
+      "name": "logitech_g",
+      "category": "gaming_esports",
+      "color": "#6366F1"
+    },
+    {
+      "name": "alienware",
+      "category": "gaming_esports",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "rog",
+      "category": "gaming_esports",
+      "color": "#22C55E"
+    },
+    {
+      "name": "corsair",
+      "category": "gaming_esports",
+      "color": "#E11D48"
+    },
+    {
+      "name": "discord_nitro",
+      "category": "gaming_esports",
+      "color": "#84CC16"
+    },
+    {
+      "name": "speedrun",
+      "category": "gaming_esports",
+      "color": "#A855F7"
+    },
+    {
+      "name": "bitcoin",
+      "category": "fintech_crypto",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "ethereum",
+      "category": "fintech_crypto",
+      "color": "#10B981"
+    },
+    {
+      "name": "solana",
+      "category": "fintech_crypto",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "cardano",
+      "category": "fintech_crypto",
+      "color": "#EF4444"
+    },
+    {
+      "name": "binance",
+      "category": "fintech_crypto",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "ripple_xrp",
+      "category": "fintech_crypto",
+      "color": "#EC4899"
+    },
+    {
+      "name": "dogecoin",
+      "category": "fintech_crypto",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "polygon",
+      "category": "fintech_crypto",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "avalanche",
+      "category": "fintech_crypto",
+      "color": "#F97316"
+    },
+    {
+      "name": "chainlink",
+      "category": "fintech_crypto",
+      "color": "#6366F1"
+    },
+    {
+      "name": "uniswap",
+      "category": "fintech_crypto",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "metamask",
+      "category": "fintech_crypto",
+      "color": "#22C55E"
+    },
+    {
+      "name": "ledger",
+      "category": "fintech_crypto",
+      "color": "#E11D48"
+    },
+    {
+      "name": "coinbase",
+      "category": "fintech_crypto",
+      "color": "#84CC16"
+    },
+    {
+      "name": "stripe",
+      "category": "fintech_crypto",
+      "color": "#A855F7"
+    },
+    {
+      "name": "paypal",
+      "category": "fintech_crypto",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "visa",
+      "category": "fintech_crypto",
+      "color": "#10B981"
+    },
+    {
+      "name": "mastercard",
+      "category": "fintech_crypto",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "amex",
+      "category": "fintech_crypto",
+      "color": "#EF4444"
+    },
+    {
+      "name": "apple_pay",
+      "category": "fintech_crypto",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "google_pay",
+      "category": "fintech_crypto",
+      "color": "#EC4899"
+    },
+    {
+      "name": "square",
+      "category": "fintech_crypto",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "venmo",
+      "category": "fintech_crypto",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "revolut",
+      "category": "fintech_crypto",
+      "color": "#F97316"
+    },
+    {
+      "name": "klarna",
+      "category": "fintech_crypto",
+      "color": "#6366F1"
+    },
+    {
+      "name": "plaid",
+      "category": "fintech_crypto",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "robinhood",
+      "category": "fintech_crypto",
+      "color": "#22C55E"
+    },
+    {
+      "name": "webull",
+      "category": "fintech_crypto",
+      "color": "#E11D48"
+    },
+    {
+      "name": "wise",
+      "category": "fintech_crypto",
+      "color": "#84CC16"
+    },
+    {
+      "name": "shopify",
+      "category": "fintech_crypto",
+      "color": "#A855F7"
+    },
+    {
+      "name": "suno_ai",
+      "category": "music_audio",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "udio_ai",
+      "category": "music_audio",
+      "color": "#10B981"
+    },
+    {
+      "name": "fl_studio",
+      "category": "music_audio",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "ableton",
+      "category": "music_audio",
+      "color": "#EF4444"
+    },
+    {
+      "name": "logic_pro",
+      "category": "music_audio",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "pro_tools",
+      "category": "music_audio",
+      "color": "#EC4899"
+    },
+    {
+      "name": "garageband",
+      "category": "music_audio",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "reaper",
+      "category": "music_audio",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "bitwig",
+      "category": "music_audio",
+      "color": "#F97316"
+    },
+    {
+      "name": "cubase",
+      "category": "music_audio",
+      "color": "#6366F1"
+    },
+    {
+      "name": "studio_one",
+      "category": "music_audio",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "serum",
+      "category": "music_audio",
+      "color": "#22C55E"
+    },
+    {
+      "name": "massive",
+      "category": "music_audio",
+      "color": "#E11D48"
+    },
+    {
+      "name": "kontakt",
+      "category": "music_audio",
+      "color": "#84CC16"
+    },
+    {
+      "name": "splice",
+      "category": "music_audio",
+      "color": "#A855F7"
+    },
+    {
+      "name": "beatport",
+      "category": "music_audio",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "soundcloud_pro",
+      "category": "music_audio",
+      "color": "#10B981"
+    },
+    {
+      "name": "tidal",
+      "category": "music_audio",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "deezer",
+      "category": "music_audio",
+      "color": "#EF4444"
+    },
+    {
+      "name": "bandcamp",
+      "category": "music_audio",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "shazam",
+      "category": "music_audio",
+      "color": "#EC4899"
+    },
+    {
+      "name": "audiopack",
+      "category": "music_audio",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "soundiron",
+      "category": "music_audio",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "spitfire",
+      "category": "music_audio",
+      "color": "#F97316"
+    },
+    {
+      "name": "fabfilter",
+      "category": "music_audio",
+      "color": "#6366F1"
+    },
+    {
+      "name": "waves",
+      "category": "music_audio",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "izotope",
+      "category": "music_audio",
+      "color": "#22C55E"
+    },
+    {
+      "name": "ozone",
+      "category": "music_audio",
+      "color": "#E11D48"
+    },
+    {
+      "name": "vocaloid",
+      "category": "music_audio",
+      "color": "#84CC16"
+    },
+    {
+      "name": "auto_tune",
+      "category": "music_audio",
+      "color": "#A855F7"
+    },
+    {
+      "name": "play",
+      "category": "editing_hud_tools",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "pause",
+      "category": "editing_hud_tools",
+      "color": "#10B981"
+    },
+    {
+      "name": "stop",
+      "category": "editing_hud_tools",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "record",
+      "category": "editing_hud_tools",
+      "color": "#EF4444"
+    },
+    {
+      "name": "fast_forward",
+      "category": "editing_hud_tools",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "rewind",
+      "category": "editing_hud_tools",
+      "color": "#EC4899"
+    },
+    {
+      "name": "loop",
+      "category": "editing_hud_tools",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "cut_scissors",
+      "category": "editing_hud_tools",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "razor",
+      "category": "editing_hud_tools",
+      "color": "#F97316"
+    },
+    {
+      "name": "timeline",
+      "category": "editing_hud_tools",
+      "color": "#6366F1"
+    },
+    {
+      "name": "keyframe",
+      "category": "editing_hud_tools",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "bezier_curve",
+      "category": "editing_hud_tools",
+      "color": "#22C55E"
+    },
+    {
+      "name": "layer_stack",
+      "category": "editing_hud_tools",
+      "color": "#E11D48"
+    },
+    {
+      "name": "audio_waveform",
+      "category": "editing_hud_tools",
+      "color": "#84CC16"
+    },
+    {
+      "name": "equalizer",
+      "category": "editing_hud_tools",
+      "color": "#A855F7"
+    },
+    {
+      "name": "volume_high",
+      "category": "editing_hud_tools",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "volume_mute",
+      "category": "editing_hud_tools",
+      "color": "#10B981"
+    },
+    {
+      "name": "microphone",
+      "category": "editing_hud_tools",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "headphones",
+      "category": "editing_hud_tools",
+      "color": "#EF4444"
+    },
+    {
+      "name": "speaker",
+      "category": "editing_hud_tools",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "crop",
+      "category": "editing_hud_tools",
+      "color": "#EC4899"
+    },
+    {
+      "name": "transform",
+      "category": "editing_hud_tools",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "rotate",
+      "category": "editing_hud_tools",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "zoom_in",
+      "category": "editing_hud_tools",
+      "color": "#F97316"
+    },
+    {
+      "name": "zoom_out",
+      "category": "editing_hud_tools",
+      "color": "#6366F1"
+    },
+    {
+      "name": "pan",
+      "category": "editing_hud_tools",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "aspect_ratio",
+      "category": "editing_hud_tools",
+      "color": "#22C55E"
+    },
+    {
+      "name": "resolution_4k",
+      "category": "editing_hud_tools",
+      "color": "#E11D48"
+    },
+    {
+      "name": "fps_60",
+      "category": "editing_hud_tools",
+      "color": "#84CC16"
+    },
+    {
+      "name": "color_grade",
+      "category": "editing_hud_tools",
+      "color": "#A855F7"
+    },
+    {
+      "name": "split_clip",
+      "category": "editing_hud_tools",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "magnetic_track",
+      "category": "editing_hud_tools",
+      "color": "#10B981"
+    },
+    {
+      "name": "marker_flag",
+      "category": "editing_hud_tools",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "snapping_magnet",
+      "category": "editing_hud_tools",
+      "color": "#EF4444"
+    },
+    {
+      "name": "playhead_needle",
+      "category": "editing_hud_tools",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "in_point",
+      "category": "editing_hud_tools",
+      "color": "#EC4899"
+    },
+    {
+      "name": "out_point",
+      "category": "editing_hud_tools",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "speed_ramp",
+      "category": "editing_hud_tools",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "freeze_frame",
+      "category": "editing_hud_tools",
+      "color": "#F97316"
+    },
+    {
+      "name": "render_queue",
+      "category": "editing_hud_tools",
+      "color": "#6366F1"
+    },
+    {
+      "name": "sparkle",
+      "category": "visual_fx_symbols",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "fire",
+      "category": "visual_fx_symbols",
+      "color": "#22C55E"
+    },
+    {
+      "name": "lightning",
+      "category": "visual_fx_symbols",
+      "color": "#E11D48"
+    },
+    {
+      "name": "star_badge",
+      "category": "visual_fx_symbols",
+      "color": "#84CC16"
+    },
+    {
+      "name": "heart_reaction",
+      "category": "visual_fx_symbols",
+      "color": "#A855F7"
+    },
+    {
+      "name": "skull",
+      "category": "visual_fx_symbols",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "bomb",
+      "category": "visual_fx_symbols",
+      "color": "#10B981"
+    },
+    {
+      "name": "crown",
+      "category": "visual_fx_symbols",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "diamond",
+      "category": "visual_fx_symbols",
+      "color": "#EF4444"
+    },
+    {
+      "name": "trophy",
+      "category": "visual_fx_symbols",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "medal",
+      "category": "visual_fx_symbols",
+      "color": "#EC4899"
+    },
+    {
+      "name": "shield_verified",
+      "category": "visual_fx_symbols",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "alert_triangle",
+      "category": "visual_fx_symbols",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "check_circle",
+      "category": "visual_fx_symbols",
+      "color": "#F97316"
+    },
+    {
+      "name": "cross_circle",
+      "category": "visual_fx_symbols",
+      "color": "#6366F1"
+    },
+    {
+      "name": "info_circle",
+      "category": "visual_fx_symbols",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "question_circle",
+      "category": "visual_fx_symbols",
+      "color": "#22C55E"
+    },
+    {
+      "name": "eye_track",
+      "category": "visual_fx_symbols",
+      "color": "#E11D48"
+    },
+    {
+      "name": "magic_wand",
+      "category": "visual_fx_symbols",
+      "color": "#84CC16"
+    },
+    {
+      "name": "flash",
+      "category": "visual_fx_symbols",
+      "color": "#A855F7"
+    },
+    {
+      "name": "rocket",
+      "category": "visual_fx_symbols",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "comet",
+      "category": "visual_fx_symbols",
+      "color": "#10B981"
+    },
+    {
+      "name": "atom",
+      "category": "visual_fx_symbols",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "biohazard",
+      "category": "visual_fx_symbols",
+      "color": "#EF4444"
+    },
+    {
+      "name": "radiation",
+      "category": "visual_fx_symbols",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "crosshair",
+      "category": "visual_fx_symbols",
+      "color": "#EC4899"
+    },
+    {
+      "name": "compass",
+      "category": "visual_fx_symbols",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "magnet",
+      "category": "visual_fx_symbols",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "flame_burn",
+      "category": "visual_fx_symbols",
+      "color": "#F97316"
+    },
+    {
+      "name": "infinity",
+      "category": "visual_fx_symbols",
+      "color": "#6366F1"
+    },
+    {
+      "name": "circle_fill",
+      "category": "motion_shapes",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "square_fill",
+      "category": "motion_shapes",
+      "color": "#22C55E"
+    },
+    {
+      "name": "triangle_fill",
+      "category": "motion_shapes",
+      "color": "#E11D48"
+    },
+    {
+      "name": "hexagon",
+      "category": "motion_shapes",
+      "color": "#84CC16"
+    },
+    {
+      "name": "pentagon",
+      "category": "motion_shapes",
+      "color": "#A855F7"
+    },
+    {
+      "name": "octagon",
+      "category": "motion_shapes",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "star_4point",
+      "category": "motion_shapes",
+      "color": "#10B981"
+    },
+    {
+      "name": "star_5point",
+      "category": "motion_shapes",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "star_8point",
+      "category": "motion_shapes",
+      "color": "#EF4444"
+    },
+    {
+      "name": "star_burst",
+      "category": "motion_shapes",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "pill_rounded",
+      "category": "motion_shapes",
+      "color": "#EC4899"
+    },
+    {
+      "name": "diamond_shape",
+      "category": "motion_shapes",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "crescent_moon",
+      "category": "motion_shapes",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "sun_halo",
+      "category": "motion_shapes",
+      "color": "#F97316"
+    },
+    {
+      "name": "droplet",
+      "category": "motion_shapes",
+      "color": "#6366F1"
+    },
+    {
+      "name": "ring_halo",
+      "category": "motion_shapes",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "double_ring",
+      "category": "motion_shapes",
+      "color": "#22C55E"
+    },
+    {
+      "name": "concentric_rings",
+      "category": "motion_shapes",
+      "color": "#E11D48"
+    },
+    {
+      "name": "cross_plus",
+      "category": "motion_shapes",
+      "color": "#84CC16"
+    },
+    {
+      "name": "chevron_right",
+      "category": "motion_shapes",
+      "color": "#A855F7"
+    },
+    {
+      "name": "chevron_left",
+      "category": "motion_shapes",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "arrow_up",
+      "category": "motion_shapes",
+      "color": "#10B981"
+    },
+    {
+      "name": "arrow_right",
+      "category": "motion_shapes",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "arrow_diagonal",
+      "category": "motion_shapes",
+      "color": "#EF4444"
+    },
+    {
+      "name": "curved_arrow",
+      "category": "motion_shapes",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "zigzag_line",
+      "category": "motion_shapes",
+      "color": "#EC4899"
+    },
+    {
+      "name": "wavy_line",
+      "category": "motion_shapes",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "spiral",
+      "category": "motion_shapes",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "labyrinth",
+      "category": "motion_shapes",
+      "color": "#F97316"
+    },
+    {
+      "name": "cube_3d",
+      "category": "motion_shapes",
+      "color": "#6366F1"
+    },
+    {
+      "name": "gpu_die",
+      "category": "tech_hardware",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "cpu_chip",
+      "category": "tech_hardware",
+      "color": "#22C55E"
+    },
+    {
+      "name": "ram_dimm",
+      "category": "tech_hardware",
+      "color": "#E11D48"
+    },
+    {
+      "name": "motherboard_pcb",
+      "category": "tech_hardware",
+      "color": "#84CC16"
+    },
+    {
+      "name": "pcie_slot",
+      "category": "tech_hardware",
+      "color": "#A855F7"
+    },
+    {
+      "name": "heatsink_fan",
+      "category": "tech_hardware",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "power_supply",
+      "category": "tech_hardware",
+      "color": "#10B981"
+    },
+    {
+      "name": "m2_nvme",
+      "category": "tech_hardware",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "ssd_drive",
+      "category": "tech_hardware",
+      "color": "#EF4444"
+    },
+    {
+      "name": "hdd_platter",
+      "category": "tech_hardware",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "hdmi_port",
+      "category": "tech_hardware",
+      "color": "#EC4899"
+    },
+    {
+      "name": "dvi_port",
+      "category": "tech_hardware",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "displayport",
+      "category": "tech_hardware",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "vga_port",
+      "category": "tech_hardware",
+      "color": "#F97316"
+    },
+    {
+      "name": "usb_c",
+      "category": "tech_hardware",
+      "color": "#6366F1"
+    },
+    {
+      "name": "usb_a",
+      "category": "tech_hardware",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "thunderbolt",
+      "category": "tech_hardware",
+      "color": "#22C55E"
+    },
+    {
+      "name": "ethernet_rj45",
+      "category": "tech_hardware",
+      "color": "#E11D48"
+    },
+    {
+      "name": "wifi_antenna",
+      "category": "tech_hardware",
+      "color": "#84CC16"
+    },
+    {
+      "name": "bluetooth",
+      "category": "tech_hardware",
+      "color": "#A855F7"
+    },
+    {
+      "name": "optical_cable",
+      "category": "tech_hardware",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "capacitor",
+      "category": "tech_hardware",
+      "color": "#10B981"
+    },
+    {
+      "name": "resistor",
+      "category": "tech_hardware",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "inductor",
+      "category": "tech_hardware",
+      "color": "#EF4444"
+    },
+    {
+      "name": "solder_pad",
+      "category": "tech_hardware",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "microchip",
+      "category": "tech_hardware",
+      "color": "#EC4899"
+    },
+    {
+      "name": "cooling_water",
+      "category": "tech_hardware",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "server_rack",
+      "category": "tech_hardware",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "robot_arm",
+      "category": "tech_hardware",
+      "color": "#F97316"
+    },
+    {
+      "name": "sensor",
+      "category": "tech_hardware",
+      "color": "#6366F1"
+    },
+    {
+      "name": "shopping_cart",
+      "category": "ecommerce_retail",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "shopping_bag",
+      "category": "ecommerce_retail",
+      "color": "#22C55E"
+    },
+    {
+      "name": "credit_card",
+      "category": "ecommerce_retail",
+      "color": "#E11D48"
+    },
+    {
+      "name": "barcode",
+      "category": "ecommerce_retail",
+      "color": "#84CC16"
+    },
+    {
+      "name": "qr_code",
+      "category": "ecommerce_retail",
+      "color": "#A855F7"
+    },
+    {
+      "name": "discount_tag",
+      "category": "ecommerce_retail",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "coupon",
+      "category": "ecommerce_retail",
+      "color": "#10B981"
+    },
+    {
+      "name": "gift_box",
+      "category": "ecommerce_retail",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "truck_delivery",
+      "category": "ecommerce_retail",
+      "color": "#EF4444"
+    },
+    {
+      "name": "package_box",
+      "category": "ecommerce_retail",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "store_front",
+      "category": "ecommerce_retail",
+      "color": "#EC4899"
+    },
+    {
+      "name": "cash_bill",
+      "category": "ecommerce_retail",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "wallet",
+      "category": "ecommerce_retail",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "coin_stack",
+      "category": "ecommerce_retail",
+      "color": "#F97316"
+    },
+    {
+      "name": "receipt",
+      "category": "ecommerce_retail",
+      "color": "#6366F1"
+    },
+    {
+      "name": "return_box",
+      "category": "ecommerce_retail",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "star_review",
+      "category": "ecommerce_retail",
+      "color": "#22C55E"
+    },
+    {
+      "name": "customer_service",
+      "category": "ecommerce_retail",
+      "color": "#E11D48"
+    },
+    {
+      "name": "thumbs_up",
+      "category": "ecommerce_retail",
+      "color": "#84CC16"
+    },
+    {
+      "name": "trending_up",
+      "category": "ecommerce_retail",
+      "color": "#A855F7"
+    },
+    {
+      "name": "chat_bubble",
+      "category": "communication_chat",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "speech_bubble",
+      "category": "communication_chat",
+      "color": "#10B981"
+    },
+    {
+      "name": "quote_marks",
+      "category": "communication_chat",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "mail_envelope",
+      "category": "communication_chat",
+      "color": "#EF4444"
+    },
+    {
+      "name": "inbox",
+      "category": "communication_chat",
+      "color": "#8B5CF6"
+    },
+    {
+      "name": "send_paper_plane",
+      "category": "communication_chat",
+      "color": "#EC4899"
+    },
+    {
+      "name": "megaphone",
+      "category": "communication_chat",
+      "color": "#06B6D4"
+    },
+    {
+      "name": "bell_alert",
+      "category": "communication_chat",
+      "color": "#14B8A6"
+    },
+    {
+      "name": "notification_badge",
+      "category": "communication_chat",
+      "color": "#F97316"
+    },
+    {
+      "name": "user_avatar",
+      "category": "communication_chat",
+      "color": "#6366F1"
+    },
+    {
+      "name": "users_group",
+      "category": "communication_chat",
+      "color": "#00F5FF"
+    },
+    {
+      "name": "bot_avatar",
+      "category": "communication_chat",
+      "color": "#22C55E"
+    },
+    {
+      "name": "phone_call",
+      "category": "communication_chat",
+      "color": "#E11D48"
+    },
+    {
+      "name": "video_camera",
+      "category": "communication_chat",
+      "color": "#84CC16"
+    },
+    {
+      "name": "screen_share",
+      "category": "communication_chat",
+      "color": "#A855F7"
+    },
+    {
+      "name": "comment_add",
+      "category": "communication_chat",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "share_nodes",
+      "category": "communication_chat",
+      "color": "#10B981"
+    },
+    {
+      "name": "bookmark",
+      "category": "communication_chat",
+      "color": "#F59E0B"
+    },
+    {
+      "name": "pin",
+      "category": "communication_chat",
+      "color": "#EF4444"
+    },
+    {
+      "name": "link_chain",
+      "category": "communication_chat",
+      "color": "#8B5CF6"
+    }
+  ]
+}

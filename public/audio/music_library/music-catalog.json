@@ -1,0 +1,102 @@
+[
+  {
+    "id": "phonk_drift_160bpm",
+    "title": "Neon Drift 160 (Phonk Master)",
+    "genre": "Drift Phonk / Hyper-Action",
+    "bpm": 160,
+    "durationSec": 12,
+    "description": "High-octane Memphis phonk with distorted 808 glides, tuned cowbells, and aggressive syncopated claps.",
+    "staticPath": "audio/music_library/phonk_drift_160bpm.wav",
+    "relPath": "public/audio/music_library/phonk_drift_160bpm.wav"
+  },
+  {
+    "id": "cyberpunk_synthwave_120bpm",
+    "title": "Outrun Horizon 120 (Cyberpunk Synthwave)",
+    "genre": "Synthwave / Cyberpunk",
+    "bpm": 120,
+    "durationSec": 16,
+    "description": "Pumping four-on-the-floor kick, rolling 16th-note sawtooth bass, and shimmering analog retro pads.",
+    "staticPath": "audio/music_library/cyberpunk_synthwave_120bpm.wav",
+    "relPath": "public/audio/music_library/cyberpunk_synthwave_120bpm.wav"
+  },
+  {
+    "id": "lofi_chillhop_85bpm",
+    "title": "Rainy Rhodes 85 (Lo-Fi Study Beat)",
+    "genre": "Lo-Fi Chillhop",
+    "bpm": 85,
+    "durationSec": 16.94,
+    "description": "Warm nostalgic electric piano 7th chords, vinyl crackle, lazy boom-bap rhythm, and gentle bass.",
+    "staticPath": "audio/music_library/lofi_chillhop_85bpm.wav",
+    "relPath": "public/audio/music_library/lofi_chillhop_85bpm.wav"
+  },
+  {
+    "id": "cinematic_ambient_drone_45s",
+    "title": "Interstellar Deep Field (Cinematic Drone)",
+    "genre": "Cinematic Ambient",
+    "bpm": 60,
+    "durationSec": 20,
+    "description": "Sub-bass cosmic drone with evolving filtered harmonics, shimmering high glass overtone, and breathing space.",
+    "staticPath": "audio/music_library/cinematic_ambient_drone_45s.wav",
+    "relPath": "public/audio/music_library/cinematic_ambient_drone_45s.wav"
+  },
+  {
+    "id": "minimal_tech_pulse_125bpm",
+    "title": "Silicon Flow 125 (Clean Tech Pulse)",
+    "genre": "Minimal Tech / Corporate Modern",
+    "bpm": 125,
+    "durationSec": 15.36,
+    "description": "Precise micro-percussion, muted modern plucks, and a steady driving bassline for technical showcases.",
+    "staticPath": "audio/music_library/minimal_tech_pulse_125bpm.wav",
+    "relPath": "public/audio/music_library/minimal_tech_pulse_125bpm.wav"
+  },
+  {
+    "id": "western_standoff_tension_45s",
+    "title": "High Noon Reckoning (Western Standoff)",
+    "genre": "Cinematic Western Standoff",
+    "bpm": 72,
+    "durationSec": 16.66,
+    "description": "Eerie whistling lead, heavy heartbeat kick, tremolo strings, and acoustic dust foley.",
+    "staticPath": "audio/music_library/western_standoff_tension_45s.wav",
+    "relPath": "public/audio/music_library/western_standoff_tension_45s.wav"
+  },
+  {
+    "id": "corporate_upbeat_future_120bpm",
+    "title": "Venture Velocity 120 (Future Corporate)",
+    "genre": "Commercial Tech / Uplifting",
+    "bpm": 120,
+    "durationSec": 16,
+    "description": "Bright harmonic marimba motifs, crisp clapping snaps, and upbeat motivational drive.",
+    "staticPath": "audio/music_library/corporate_upbeat_future_120bpm.wav",
+    "relPath": "public/audio/music_library/corporate_upbeat_future_120bpm.wav"
+  },
+  {
+    "id": "arcade_chiptune_adventure_140bpm",
+    "title": "Pixel Quest 140 (8-Bit Arcade)",
+    "genre": "Chiptune / Retro Arcade",
+    "bpm": 140,
+    "durationSec": 13.71,
+    "description": "Authentic NES-era square-wave melodic hooks, fast 16th-note arpeggiators, and retro game drums.",
+    "staticPath": "audio/music_library/arcade_chiptune_adventure_140bpm.wav",
+    "relPath": "public/audio/music_library/arcade_chiptune_adventure_140bpm.wav"
+  },
+  {
+    "id": "subsea_deep_abyss_45s",
+    "title": "Bathyal Trench (Subsea Ambient)",
+    "genre": "Deep Oceanic / Tension Drone",
+    "bpm": 50,
+    "durationSec": 20,
+    "description": "Subterranean aquatic sonar pings, immense hydrostatic pressure sub-bass, and cavernous resonance.",
+    "staticPath": "audio/music_library/subsea_deep_abyss_45s.wav",
+    "relPath": "public/audio/music_library/subsea_deep_abyss_45s.wav"
+  },
+  {
+    "id": "liquid_chrome_luxury_110bpm",
+    "title": "Verve Platinum 110 (Liquid Chrome Trap)",
+    "genre": "Future Trap / High Fashion Luxury",
+    "bpm": 110,
+    "durationSec": 17.45,
+    "description": "Ultra-crisp trap rolling hi-hats, velvet gliding sub 808, glass bell accents, and luxury swagger.",
+    "staticPath": "audio/music_library/liquid_chrome_luxury_110bpm.wav",
+    "relPath": "public/audio/music_library/liquid_chrome_luxury_110bpm.wav"
+  }
+]
