@@ -1,23 +1,34 @@
 import React from 'react';
-import { useVideoConfig } from 'remotion';
+import { useCurrentFrame, useVideoConfig } from 'remotion';
 import { AnimePixelAction, ANIME_OP_175BPM } from './types.ts';
 
 export interface AnimePixelSpriteProps {
-  frame: number;
+  frame?: number;
   action?: AnimePixelAction;
   scale?: number;
+  pixelScale?: number;
+  direction?: 'left' | 'right' | string;
   flipX?: boolean;
+  sparkles?: boolean;
   style?: React.CSSProperties;
 }
 
 export const AnimePixelSprite: React.FC<AnimePixelSpriteProps> = ({
-  frame,
+  frame: frameProp,
   action = 'ready',
   scale = 1.0,
+  pixelScale,
+  direction = 'right',
   flipX = false,
+  sparkles = false,
   style = {},
 }) => {
+  const currentFrame = useCurrentFrame();
+  const frame = frameProp !== undefined ? frameProp : currentFrame;
   const { fps } = useVideoConfig();
+
+  const isFlipped = flipX || direction === 'left';
+  const effectiveScale = pixelScale !== undefined ? pixelScale / 4 : scale;
 
   // 175 BPM Beat synchronization
   const beatProgress = (frame % ANIME_OP_175BPM.framesPerBeat) / ANIME_OP_175BPM.framesPerBeat;
@@ -39,7 +50,7 @@ export const AnimePixelSprite: React.FC<AnimePixelSpriteProps> = ({
         position: 'relative',
         width: 120,
         height: 160,
-        transform: `scale(${scale * (flipX ? -1 : 1)}, ${scale}) translateY(${action === 'dance' || action === 'ready' ? bounceY : 0}px)`,
+        transform: `scale(${effectiveScale * (isFlipped ? -1 : 1)}, ${effectiveScale}) translateY(${action === 'dance' || action === 'ready' ? bounceY : 0}px)`,
         transformOrigin: 'bottom center',
         imageRendering: 'pixelated',
         ...style,
@@ -56,6 +67,14 @@ export const AnimePixelSprite: React.FC<AnimePixelSpriteProps> = ({
           filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.4))',
         }}
       >
+        {/* Sparkles overlay */}
+        {sparkles && (
+          <g opacity={0.7 + 0.3 * Math.sin(frame * 0.25)}>
+            <rect x="2" y="8" width="2" height="2" fill="#facc15" />
+            <rect x="26" y="6" width="2" height="2" fill="#facc15" />
+            <rect x="24" y="24" width="2" height="2" fill="#67e8f9" />
+          </g>
+        )}
         {/* Cat Ears */}
         {/* Left Ear */}
         <polygon points="7,2 11,2 12,8 6,8" fill="#a78bfa" />

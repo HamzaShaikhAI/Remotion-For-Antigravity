@@ -137,7 +137,7 @@ export const KurzgesagtAstronaut: React.FC<MascotProps> = ({
             rx="4.5"
             ry="6"
             fill="#22d3ee"
-            boxShadow="0 0 10px #22d3ee"
+            style={{ filter: 'drop-shadow(0 0 6px #22d3ee)' }}
           />
           {/* Right Eye */}
           <ellipse
@@ -146,7 +146,7 @@ export const KurzgesagtAstronaut: React.FC<MascotProps> = ({
             rx="4.5"
             ry="6"
             fill="#22d3ee"
-            boxShadow="0 0 10px #22d3ee"
+            style={{ filter: 'drop-shadow(0 0 6px #22d3ee)' }}
           />
         </g>
 
