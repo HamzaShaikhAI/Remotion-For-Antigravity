@@ -8,6 +8,11 @@ export const SFXLibrary = {
   click: 'sfx/ui-click.wav',
   riser: 'sfx/cinematic-riser.wav',
   glitch: 'sfx/digital-glitch.wav',
+  cashFlutter: 'sfx/cash-flutter.wav',
+  policeSiren: 'sfx/police-siren.wav',
+  counterTick: 'sfx/counter-tick.wav',
+  dyePackBeep: 'sfx/dye-pack-beep.wav',
+  dilemmaDrone: 'sfx/dilemma-drone.wav',
 } as const;
 
 export type SFXType = keyof typeof SFXLibrary;

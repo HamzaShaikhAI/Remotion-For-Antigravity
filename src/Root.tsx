@@ -28,10 +28,21 @@ import { QuantumPaperShort } from './compositions/batch/QuantumPaperShort';
 import { CompoundInterestPaperShort } from './compositions/batch/CompoundInterestPaperShort';
 import { RomanEconomyPaperShort } from './compositions/batch/RomanEconomyPaperShort';
 import { ClaudeMotionSkillsShowcase } from './compositions/ClaudeMotionSkillsShowcase';
+import { HeistDilemmaStory } from './compositions/HeistDilemmaStory';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* 2.5D Paper Cutout Heist Dilemma Story (What Would You Do, 9:16 Vertical, 20s @ 30fps) */}
+      <Composition
+        id="HeistDilemmaStory"
+        component={HeistDilemmaStory}
+        durationInFrames={600}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+
       {/* Claude x Movez Motion Design Skills Showcase (4:5 Social Aspect, 20s @ 60fps) */}
       <Composition
         id="ClaudeMotionSkillsShowcase"
