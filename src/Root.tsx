@@ -41,10 +41,21 @@ import {
   LivingPixelArtStudioShowcase,
 } from './compositions/LivingPixelArtShowcase';
 import { ReaSystemArchitectureShowcase } from './compositions/ReaSystemArchitectureShowcase';
+import { KeplerBridgeHardwareShowcase } from './compositions/KeplerBridgeHardwareShowcase';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* KeplerBridge Hardware Showcase — 45s Hardware Master (1080x1920, 45.0s @ 60fps) */}
+      <Composition
+        id="KeplerBridgeHardwareShowcase"
+        component={KeplerBridgeHardwareShowcase}
+        durationInFrames={2700}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+
       {/* REA System Architecture Showcase — 45s Master Showcase (1080x1920, 45.0s @ 60fps) */}
       <Composition
         id="ReaSystemArchitectureShowcase"
