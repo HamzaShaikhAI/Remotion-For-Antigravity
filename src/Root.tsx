@@ -33,10 +33,21 @@ import { KurzgesagtExplainer } from './compositions/KurzgesagtExplainer';
 import { MotionLabShowcase } from './compositions/MotionLabShowcase';
 import { AmaniStudioCadChrome } from './compositions/AmaniStudioCadChrome';
 import { AnimeOpeningMVShowcase } from './compositions/AnimeOpeningMVShowcase';
+import { PelagosSubseaSimulator } from './compositions/PelagosSubseaSimulator';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* Pelagos OC-8 Robotic Cephalopod Subsea Field Simulator (1280x720, 25s @ 60fps) */}
+      <Composition
+        id="PelagosSubseaSimulator"
+        component={PelagosSubseaSimulator}
+        durationInFrames={1500}
+        fps={60}
+        width={1280}
+        height={720}
+      />
+
       {/* J-Pop Idol Anime Opening & Music Video (MV) Engine (1920x1080, 40s @ 24fps) */}
       <Composition
         id="AnimeOpeningMVShowcase"

@@ -104,6 +104,10 @@ export * from './cadchrome';
 // Engine XXVI: J-Pop Idol Anime Opening & Music Video (MV) Engine
 export * from './animeop';
 
+// Engine XXVII: Industrial Robotics & Subsea HUD Simulator Engine
+export * from './robotics';
+
+
 
 
 

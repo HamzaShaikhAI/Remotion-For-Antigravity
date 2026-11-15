@@ -4426,6 +4426,59 @@ async function handleAnimeOp(rawArgs) {
   }
 }
 
+async function handleRobotics(rawArgs) {
+  const flags = rawArgs.filter((a) => a.startsWith('-'));
+  const positional = rawArgs.filter((a) => !a.startsWith('-'));
+  const modelName = positional[1] || 'Pelagos OC-8';
+  const outArg = flags.find((a) => a.startsWith('--out='))?.split('=')[1] || 'pelagos-subsea.mp4';
+  const stillArg = flags.find((a) => a.startsWith('--still'));
+  const isPreview = flags.includes('--preview');
+  const isRender = flags.includes('--render');
+  const forceArg = flags.includes('--force');
+
+  console.log(`\n${colors.bold}${colors.cyan}🐙 [REA Industrial Robotics & Subsea HUD Simulator Engine XXVII]${colors.reset}`);
+  console.log(`📌 Drone Model: "${colors.yellow}${modelName}${colors.reset}"`);
+  console.log(`⏱  Duration: 25.0s @ 60.00 FPS (1500 frames, 1280x720 16:9 HD Simulator)`);
+  console.log(`🎨 Architecture:`);
+  console.log(`   ├─ Act 1: JETTING Inbound Assist (Hydrodynamic Trailing Arms, Mantle Pressure Wave)`);
+  console.log(`   ├─ Act 2: HOLDING Crawler Stance (8-Arm Radial Starfish Stance, Curled Tip Spirals)`);
+  console.log(`   ├─ Act 3: SIPHON OPEN Manipulator (3-Sleeve Telescoping Siphon, Gripper Beak, Labels)`);
+  console.log(`   ├─ Act 4: TEARDOWN Exploded View (Radial Component Disassembly, Pump Core, Turntable 93°)`);
+  console.log(`   └─ Act 5: DEPARTING Release (Magnetic Snap Re-Dock, Pitch Down -74°, Jet Wake Bubbles)`);
+
+  const issues = handleValidate('PelagosSubseaSimulator', true);
+  if (issues.length > 0) {
+    logError(`Validation found issues in PelagosSubseaSimulator:`);
+    issues.forEach((iss) => console.log(`  - ${iss}`));
+    process.exit(1);
+  }
+  logSuccess(`PelagosSubseaSimulator validated! 0 staticFile or rendering collisions.`);
+
+  if (stillArg) {
+    const frameNum = stillArg.split('=')[1] || '100';
+    const stillOut = outArg.endsWith('.mp4') ? `pelagos-still-f${frameNum}.jpeg` : outArg;
+    console.log(`\n📸 Exporting verification still at frame ${frameNum}...`);
+    handleStill(['still', 'PelagosSubseaSimulator', stillOut, `--frame=${frameNum}`]);
+    return;
+  }
+
+  if (isPreview) {
+    console.log(`\n🎬 Launching Remotion Studio for Robotics Field Simulator interactive preview...`);
+    handlePreview(['preview', 'src/compositions/PelagosSubseaSimulator.tsx']);
+    return;
+  }
+
+  if (isRender) {
+    console.log(`\n🚀 Compiling broadcast master simulation video: ${outArg}...`);
+    const extraArgs = forceArg ? ['--force'] : [];
+    handleRender('PelagosSubseaSimulator', outArg, extraArgs);
+  } else {
+    console.log(`\n💡 ${colors.dim}To render the full master video: ${colors.reset}${colors.green}rea robotics --render --out=pelagos-subsea.mp4${colors.reset}`);
+    console.log(`💡 ${colors.dim}To export a still frame:          ${colors.reset}${colors.green}rea robotics --still=1080 --out=teardown.jpeg${colors.reset}`);
+    console.log(`💡 ${colors.dim}To preview in Remotion Studio:     ${colors.reset}${colors.green}rea robotics --preview${colors.reset}`);
+  }
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -4446,6 +4499,8 @@ ${colors.bold}EDITORIAL INTUITION & TASTE COMMANDS (V2.2):${colors.reset}
   ${colors.green}intuition-fork${colors.reset}                        Platform Forks: Tailor for TikTok (15s), Shorts (30s) & Reels (20s)
 
 ${colors.bold}NEXT-GEN GENERATIVE & INTERACTIVE COMMANDS (V2.3):${colors.reset}
+  ${colors.green}robotics [model] [--render|--still]${colors.reset}         Industrial Robotics & Subsea HUD Simulator Engine (Pelagos OC-8)
+  ${colors.green}motion-lint${colors.reset}                                 Audit codebase against MOTION.md design tokens & spring physics
   ${colors.green}anime-op [title] [--render|--still]${colors.reset}        J-Pop Idol Anime Opening & Music Video (MV) Engine (175 BPM, Halftone, Pixel Sprites)
   ${colors.green}cad-chrome [brand] [--render|--still]${colors.reset}       Precision CAD Blueprint to Liquid Chrome 3D Emblem Engine
   ${colors.green}motionlab [title] [--render|--still]${colors.reset}        Motion Lab Studio 3D Glassmorphic Bento Engine (16 Skills, Carousel)
@@ -4745,6 +4800,17 @@ async function main() {
     case 'animeop':
       await handleAnimeOp(args);
       break;
+    case 'robotics':
+    case 'subsea':
+      await handleRobotics(args);
+      break;
+    case 'motion-lint':
+    case 'motionlint': {
+      const { runMotionLint } = require('../scripts/motion-lint.js');
+      const lintPassed = runMotionLint();
+      process.exit(lintPassed ? 0 : 1);
+      break;
+    }
     default:
       logError(`Unknown command: "${command}"`);
       printHelp();

@@ -387,7 +387,7 @@ export const ClaudeMotionSkillsShowcase: React.FC = () => {
                   ? 'translateX(-120px) scale(1.04) rotateY(0deg) translateZ(30px)'
                   : 'translateX(-480px) scale(0.9) rotateY(16deg) translateZ(-40px)',
               opacity: activeAct === 1 ? 1 : 0.6,
-              transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease',
+              transition: 'transform var(--dur-slow, 0.4s) var(--ease-enter, cubic-bezier(0.16, 1, 0.3, 1)), opacity 0.3s ease',
             }}
           >
             {/* Inner Interactive Viewport */}
@@ -461,7 +461,7 @@ export const ClaudeMotionSkillsShowcase: React.FC = () => {
                   ? 'translateX(280px) scale(0.92) rotateY(-14deg) translateZ(-20px)'
                   : 'translateX(-480px) scale(0.9) rotateY(16deg) translateZ(-40px)',
               opacity: activeAct === 2 ? 1 : 0.75,
-              transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease',
+              transition: 'transform var(--dur-slow, 0.4s) var(--ease-enter, cubic-bezier(0.16, 1, 0.3, 1)), opacity 0.3s ease',
             }}
           >
             <div
@@ -515,7 +515,7 @@ export const ClaudeMotionSkillsShowcase: React.FC = () => {
                   ? 'translateX(-120px) scale(1.04) rotateY(0deg) translateZ(30px)'
                   : 'translateX(620px) scale(0.85) rotateY(-22deg) translateZ(-60px)',
               opacity: activeAct === 4 ? 1 : 0.6,
-              transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease',
+              transition: 'transform var(--dur-slow, 0.4s) var(--ease-enter, cubic-bezier(0.16, 1, 0.3, 1)), opacity 0.3s ease',
             }}
           >
             <div

@@ -176,6 +176,27 @@ const BUILTIN_STYLES: Record<string, StyleBlueprint> = {
     certifiedGrade: 'A+',
     cachedAt: new Date().toISOString(),
   },
+  'robotics': {
+    name: 'robotics',
+    archetype: 'robotics',
+    springPhysics: { damping: 22, stiffness: 160, mass: 1.2 },
+    typography: {
+      fontPrimary: "'SF Mono', 'Courier New', monospace",
+      fontAccent: "'Impact', 'Arial Black', sans-serif",
+      headlineWeight: 900,
+      letterSpacing: 1.5,
+    },
+    safeZones: { bottomClearancePx: 90, rightMarginPx: 40 },
+    palette: {
+      background: '#f8fafc',
+      surface: '#ffffff',
+      border: '1.5px solid #e2e8f0',
+      shadow: '0 2px 6px rgba(0,0,0,0.03)',
+      accentColor: '#ea580c',
+    },
+    certifiedGrade: 'A+',
+    cachedAt: new Date().toISOString(),
+  },
 };
 
 export class StyleCache {
