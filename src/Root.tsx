@@ -29,10 +29,21 @@ import { CompoundInterestPaperShort } from './compositions/batch/CompoundInteres
 import { RomanEconomyPaperShort } from './compositions/batch/RomanEconomyPaperShort';
 import { ClaudeMotionSkillsShowcase } from './compositions/ClaudeMotionSkillsShowcase';
 import { HeistDilemmaStory } from './compositions/HeistDilemmaStory';
+import { KurzgesagtExplainer } from './compositions/KurzgesagtExplainer';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* Kurzgesagt-Style Vector Scientific Explainer (1920x1080, 30s @ 30fps) */}
+      <Composition
+        id="KurzgesagtExplainer"
+        component={KurzgesagtExplainer}
+        durationInFrames={900}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+
       {/* 2.5D Paper Cutout Heist Dilemma Story (What Would You Do, 9:16 Vertical, 20s @ 30fps) */}
       <Composition
         id="HeistDilemmaStory"

@@ -92,3 +92,6 @@ export * from './cloud';
 // Engine XXII: Deterministic Web Fonts Preloader
 export * from './fonts';
 
+// Engine XXIII: Kurzgesagt Vector & Scientific Explainer Engine
+export * from './kurzgesagt';
+

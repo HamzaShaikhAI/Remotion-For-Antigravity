@@ -3,7 +3,7 @@ import path from 'path';
 
 export interface StyleBlueprint {
   name: string;
-  archetype: 'tech' | 'paper-2.5d' | 'saas' | 'cinematic' | 'abstract';
+  archetype: 'tech' | 'paper-2.5d' | 'saas' | 'cinematic' | 'abstract' | 'kurzgesagt';
   springPhysics: {
     damping: number;
     stiffness: number;
@@ -88,6 +88,27 @@ const BUILTIN_STYLES: Record<string, StyleBlueprint> = {
       surface: '#181A24',
       border: '1px solid rgba(255, 255, 255, 0.08)',
       accentColor: '#38BDF8',
+    },
+    certifiedGrade: 'A+',
+    cachedAt: new Date().toISOString(),
+  },
+  'kurzgesagt': {
+    name: 'kurzgesagt',
+    archetype: 'kurzgesagt',
+    springPhysics: { damping: 14, stiffness: 180, mass: 0.9 },
+    typography: {
+      fontPrimary: "'Fredoka', 'Fredoka One', 'Comfortaa', -apple-system, sans-serif",
+      fontAccent: "'Fredoka', -apple-system, sans-serif",
+      headlineWeight: 700,
+      letterSpacing: 4,
+    },
+    safeZones: { bottomClearancePx: 180, rightMarginPx: 120 },
+    palette: {
+      background: '#081d2c',
+      surface: 'rgba(6, 20, 40, 0.62)',
+      border: '1.5px solid rgba(255, 255, 255, 0.14)',
+      shadow: '0 12px 36px rgba(0, 0, 0, 0.55)',
+      accentColor: '#22d3ee',
     },
     certifiedGrade: 'A+',
     cachedAt: new Date().toISOString(),

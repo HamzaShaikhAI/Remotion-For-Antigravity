@@ -32,7 +32,17 @@ export class MultiStepTrainer {
     console.log(`📝 Prompt Intent: "${prompt}"`);
 
     // Check for Deterministic Style Cache profile
-    const styleQuery = options.style || (prompt.toLowerCase().includes('paper') ? 'paper-2.5d' : undefined);
+    const promptLower = prompt.toLowerCase();
+    const styleQuery =
+      options.style ||
+      (promptLower.includes('paper')
+        ? 'paper-2.5d'
+        : promptLower.includes('kurzgesagt') ||
+          promptLower.includes('sun') ||
+          promptLower.includes('space') ||
+          promptLower.includes('what if')
+        ? 'kurzgesagt'
+        : undefined);
     let cachedBlueprint: StyleBlueprint | null = null;
     let StyleCacheClass: any = null;
     try {

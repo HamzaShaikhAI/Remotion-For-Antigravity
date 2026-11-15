@@ -4211,6 +4211,59 @@ async function handleBatchGenerate(args) {
   console.log(`🎉 [Batch Complete] All ${items.length} compositions compiled successfully! Manifest saved to dist/batch/manifest.json`);
 }
 
+async function handleKurzgesagt(args) {
+  const topic = args[1] && !args[1].startsWith('-') ? args[1] : 'What if the Sun vanished?';
+  const isRender = args.includes('--render');
+  const isPreview = args.includes('--preview');
+  const stillArg = args.find((a) => a.startsWith('--still='));
+  const lengthArg = args.find((a) => a.startsWith('--length='))?.split('=')[1] || '30';
+  const outArg = args.find((a) => a.startsWith('--out='))?.split('=')[1] || 'out.mp4';
+  const forceArg = args.includes('--force');
+
+  console.log(`\n${colors.bold}${colors.cyan}🪐 [REA Kurzgesagt Scientific Explainer Engine XXIII]${colors.reset}`);
+  console.log(`📌 Topic Question: "${colors.yellow}${topic}${colors.reset}"`);
+  console.log(`⏱  Duration: ${lengthArg}s @ 30 FPS (900 frames, 1920x1080 Landscape)`);
+  console.log(`🎨 Architecture:`);
+  console.log(`   ├─ Deep Space Canvas: Vertical gradient #081d2c -> #102348, 5 Parallax Nebulae, 3 Star Tiers + 4-pt Sparkles`);
+  console.log(`   ├─ Procedural Sun: R=300px, 4 Additive Halos, 18 Rotating Ray Wedges, 28 Granules, Collapse & Shockwave Physics`);
+  console.log(`   ├─ Orthographic Earth: 0.26 rad tilt, Smoothstep Day/Night Terminator, 380+ City Lights, Frost & 30 KM/S Vector`);
+  console.log(`   ├─ Modular Mascot: ~180px Astronaut, Cyan Tracking Eyes (#22d3ee), Blinking Antenna, Squash/Stretch Rig`);
+  console.log(`   ├─ Fredoka Typography: Dark Glass Pills (rgba(6,20,40,0.62)), Ease-Out-Quint Rise, 8:20 Countdown Clock`);
+  console.log(`   └─ Accelerated Darkness Front: 30px Feathered Wavefront, 47px/s -> 700px/s, Dual Ambient/Story Clocks`);
+
+  const issues = handleValidate('KurzgesagtExplainer', true);
+  if (issues.length > 0) {
+    logError(`Validation found issues in KurzgesagtExplainer:`);
+    issues.forEach((iss) => console.log(`  - ${iss}`));
+    process.exit(1);
+  }
+  logSuccess(`KurzgesagtExplainer validated! 0 staticFile or rendering collisions.`);
+
+  if (stillArg) {
+    const frameNum = stillArg.split('=')[1] || '120';
+    const stillOut = outArg.endsWith('.mp4') ? `kurzgesagt-still-f${frameNum}.jpeg` : outArg;
+    console.log(`\n📸 Exporting verification still at frame ${frameNum}...`);
+    handleStill(['still', 'KurzgesagtExplainer', stillOut, `--frame=${frameNum}`]);
+    return;
+  }
+
+  if (isPreview) {
+    console.log(`\n🎬 Launching Remotion Studio for Kurzgesagt interactive preview...`);
+    handlePreview(['preview', 'src/compositions/KurzgesagtExplainer.tsx']);
+    return;
+  }
+
+  if (isRender) {
+    console.log(`\n🚀 Compiling broadcast master video: ${outArg}...`);
+    const extraArgs = forceArg ? ['--force'] : [];
+    handleRender('KurzgesagtExplainer', outArg, extraArgs);
+  } else {
+    console.log(`\n💡 ${colors.dim}To render the full master video: ${colors.reset}${colors.green}rea kurzgesagt "${topic}" --render --out=kurzgesagt-sun.mp4${colors.reset}`);
+    console.log(`💡 ${colors.dim}To export a still frame:          ${colors.reset}${colors.green}rea kurzgesagt "${topic}" --still=120 --out=still.jpeg${colors.reset}`);
+    console.log(`💡 ${colors.dim}To preview in Remotion Studio:     ${colors.reset}${colors.green}rea kurzgesagt --preview${colors.reset}`);
+  }
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -4231,6 +4284,7 @@ ${colors.bold}EDITORIAL INTUITION & TASTE COMMANDS (V2.2):${colors.reset}
   ${colors.green}intuition-fork${colors.reset}                        Platform Forks: Tailor for TikTok (15s), Shorts (30s) & Reels (20s)
 
 ${colors.bold}NEXT-GEN GENERATIVE & INTERACTIVE COMMANDS (V2.3):${colors.reset}
+  ${colors.green}kurzgesagt [topic] [--render|--still]${colors.reset}       Kurzgesagt 2D/WebGL Canvas Scientific Explainer Engine (Sun, Earth, Mascot)
   ${colors.green}train-multistep "<prompt>" [--archetype=...]${colors.reset} 4-Phase Iterative Refinement Loop (Blueprint->Draft->Audit->AST Patch)
   ${colors.green}generate "<prompt>" [--archetype=...]${colors.reset}       Freeform: Prompt-to-Remotion component synthesizer (saas|data|tech|abstract)
   ${colors.green}tweak <component.tsx> "<instruction>"${colors.reset}         Interactive: Conversational fine-tuning loop (timing, typography, colors)
@@ -4512,6 +4566,9 @@ async function main() {
       break;
     case 'batch-generate':
       await handleBatchGenerate(args);
+      break;
+    case 'kurzgesagt':
+      await handleKurzgesagt(args);
       break;
     default:
       logError(`Unknown command: "${command}"`);
