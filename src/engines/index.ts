@@ -101,5 +101,9 @@ export * from './motionlab';
 // Engine XXV: Precision Industrial Blueprint & Liquid Chrome 3D Emblem Engine
 export * from './cadchrome';
 
+// Engine XXVI: J-Pop Idol Anime Opening & Music Video (MV) Engine
+export * from './animeop';
+
+
 
 

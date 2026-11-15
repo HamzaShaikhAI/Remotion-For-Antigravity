@@ -1,8 +1,9 @@
 {
   "compositionName": "ClaudeCodeShowcase",
-  "prompt": "Create a viral video featuring the official Claude starburst mark, keyframe SFX, and zero latency",
+  "prompt": "amani/studio CAD blueprint to liquid chrome brand mark",
   "finalGrade": "A+",
-  "iterations": 2,
-  "certifiedAt": "2026-11-14T18:47:02.993Z",
+  "iterations": 0,
+  "styleProfile": "cad-chrome",
+  "certifiedAt": "2026-11-15T06:50:54.117Z",
   "standards": "Claude Opus 5.5 Smoothness & Deterministic Motion"
 }

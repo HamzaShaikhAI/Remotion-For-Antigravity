@@ -42,6 +42,15 @@ export class MultiStepTrainer {
           promptLower.includes('space') ||
           promptLower.includes('what if')
         ? 'kurzgesagt'
+        : promptLower.includes('anime') ||
+          promptLower.includes('suno') ||
+          promptLower.includes('j-pop') ||
+          promptLower.includes('jpop') ||
+          promptLower.includes('idol') ||
+          promptLower.includes('pixel') ||
+          promptLower.includes('opening') ||
+          promptLower.includes('fable')
+        ? 'anime-op'
         : promptLower.includes('cad') ||
           promptLower.includes('chrome') ||
           promptLower.includes('blueprint') ||

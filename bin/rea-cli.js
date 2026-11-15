@@ -4372,6 +4372,60 @@ async function handleCadChrome(args) {
   }
 }
 
+async function handleAnimeOp(rawArgs) {
+  const flags = rawArgs.filter((a) => a.startsWith('-'));
+  const positional = rawArgs.filter((a) => !a.startsWith('-'));
+  const title = positional[1] || 'SPARKLING IDOL RUN!';
+  const outArg = flags.find((a) => a.startsWith('--out='))?.split('=')[1] || 'anime-opening.mp4';
+  const stillArg = flags.find((a) => a.startsWith('--still'));
+  const isPreview = flags.includes('--preview');
+  const isRender = flags.includes('--render');
+  const forceArg = flags.includes('--force');
+
+  console.log(`\n${colors.bold}${colors.cyan}🎸 [REA J-Pop Idol Anime Opening & Music Video (MV) Engine XXVI]${colors.reset}`);
+  console.log(`📌 Anime Track: "${colors.yellow}${title}${colors.reset}"`);
+  console.log(`⏱  Duration: 40.0s @ 24.00 FPS (960 frames, 1920x1080 16:9 Cinematic Anime)`);
+  console.log(`🎵 Beat Grid: 175 BPM (8.22857 frames/beat, 32.91428 frames/bar, Suno Idol Rock)`);
+  console.log(`🎨 Architecture:`);
+  console.log(`   ├─ Act 1: Retro Arcade "STAGE 01 // IDOL LIVE" & "READY?" Countdown`);
+  console.log(`   ├─ Act 2: Comic Halftone Screen, Slanted 3D Action Typography & Dual Dancers`);
+  console.log(`   ├─ Act 3: 16-Bit Side-Scroller Parallax Runner (Sunset Skyline, Power Lines, HUD)`);
+  console.log(`   ├─ Act 4: High-Tension Drum Breaks & Giant Kanji Slams (届 [Reach] & 疾 [Sprint])`);
+  console.log(`   └─ Act 5: 5-Member Synchronous Pixel Idol Chorus Line, Golden Confetti & Glitch Bar`);
+
+  const issues = handleValidate('AnimeOpeningMVShowcase', true);
+  if (issues.length > 0) {
+    logError(`Validation found issues in AnimeOpeningMVShowcase:`);
+    issues.forEach((iss) => console.log(`  - ${iss}`));
+    process.exit(1);
+  }
+  logSuccess(`AnimeOpeningMVShowcase validated! 0 staticFile or rendering collisions.`);
+
+  if (stillArg) {
+    const frameNum = stillArg.split('=')[1] || '120';
+    const stillOut = outArg.endsWith('.mp4') ? `animeop-still-f${frameNum}.jpeg` : outArg;
+    console.log(`\n📸 Exporting verification still at frame ${frameNum}...`);
+    handleStill(['still', 'AnimeOpeningMVShowcase', stillOut, `--frame=${frameNum}`]);
+    return;
+  }
+
+  if (isPreview) {
+    console.log(`\n🎬 Launching Remotion Studio for Anime Opening interactive preview...`);
+    handlePreview(['preview', 'src/compositions/AnimeOpeningMVShowcase.tsx']);
+    return;
+  }
+
+  if (isRender) {
+    console.log(`\n🚀 Compiling broadcast master anime music video: ${outArg}...`);
+    const extraArgs = forceArg ? ['--force'] : [];
+    handleRender('AnimeOpeningMVShowcase', outArg, extraArgs);
+  } else {
+    console.log(`\n💡 ${colors.dim}To render the full master MV:    ${colors.reset}${colors.green}rea anime-op --render --out=anime-mv.mp4${colors.reset}`);
+    console.log(`💡 ${colors.dim}To export a still frame:          ${colors.reset}${colors.green}rea anime-op --still=120 --out=title.jpeg${colors.reset}`);
+    console.log(`💡 ${colors.dim}To preview in Remotion Studio:     ${colors.reset}${colors.green}rea anime-op --preview${colors.reset}`);
+  }
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -4392,6 +4446,7 @@ ${colors.bold}EDITORIAL INTUITION & TASTE COMMANDS (V2.2):${colors.reset}
   ${colors.green}intuition-fork${colors.reset}                        Platform Forks: Tailor for TikTok (15s), Shorts (30s) & Reels (20s)
 
 ${colors.bold}NEXT-GEN GENERATIVE & INTERACTIVE COMMANDS (V2.3):${colors.reset}
+  ${colors.green}anime-op [title] [--render|--still]${colors.reset}        J-Pop Idol Anime Opening & Music Video (MV) Engine (175 BPM, Halftone, Pixel Sprites)
   ${colors.green}cad-chrome [brand] [--render|--still]${colors.reset}       Precision CAD Blueprint to Liquid Chrome 3D Emblem Engine
   ${colors.green}motionlab [title] [--render|--still]${colors.reset}        Motion Lab Studio 3D Glassmorphic Bento Engine (16 Skills, Carousel)
   ${colors.green}kurzgesagt [topic] [--render|--still]${colors.reset}       Kurzgesagt 2D/WebGL Canvas Scientific Explainer Engine (Sun, Earth, Mascot)
@@ -4685,6 +4740,10 @@ async function main() {
       break;
     case 'cad-chrome':
       await handleCadChrome(args);
+      break;
+    case 'anime-op':
+    case 'animeop':
+      await handleAnimeOp(args);
       break;
     default:
       logError(`Unknown command: "${command}"`);

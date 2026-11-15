@@ -32,10 +32,21 @@ import { HeistDilemmaStory } from './compositions/HeistDilemmaStory';
 import { KurzgesagtExplainer } from './compositions/KurzgesagtExplainer';
 import { MotionLabShowcase } from './compositions/MotionLabShowcase';
 import { AmaniStudioCadChrome } from './compositions/AmaniStudioCadChrome';
+import { AnimeOpeningMVShowcase } from './compositions/AnimeOpeningMVShowcase';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* J-Pop Idol Anime Opening & Music Video (MV) Engine (1920x1080, 40s @ 24fps) */}
+      <Composition
+        id="AnimeOpeningMVShowcase"
+        component={AnimeOpeningMVShowcase}
+        durationInFrames={960}
+        fps={24}
+        width={1920}
+        height={1080}
+      />
+
       {/* Precision CAD Blueprint to Liquid Chrome 3D Brand Lockup (1080x1080, 36s @ 30fps) */}
       <Composition
         id="AmaniStudioCadChrome"

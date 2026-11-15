@@ -155,6 +155,27 @@ const BUILTIN_STYLES: Record<string, StyleBlueprint> = {
     certifiedGrade: 'A+',
     cachedAt: new Date().toISOString(),
   },
+  'anime-op': {
+    name: 'anime-op',
+    archetype: 'anime-op',
+    springPhysics: { damping: 11, stiffness: 180, mass: 0.8 },
+    typography: {
+      fontPrimary: "'Impact', 'Arial Black', sans-serif",
+      fontAccent: "'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif",
+      headlineWeight: 900,
+      letterSpacing: 4,
+    },
+    safeZones: { bottomClearancePx: 140, rightMarginPx: 60 },
+    palette: {
+      background: '#dc2626',
+      surface: '#fef3c7',
+      border: '4px solid #000000',
+      shadow: '8px 8px 0px #000000',
+      accentColor: '#facc15',
+    },
+    certifiedGrade: 'A+',
+    cachedAt: new Date().toISOString(),
+  },
 };
 
 export class StyleCache {
