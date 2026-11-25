@@ -16,3 +16,4 @@ export * from './Typography3DExtrusion';
 export * from './AudioReactiveMesh';
 export * from './GlassRefractionShader';
 export * from './VhsCrtDegradeShader';
+export * from './HybridScreenCompositor';

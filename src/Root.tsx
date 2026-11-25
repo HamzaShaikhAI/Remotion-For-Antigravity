@@ -1,5 +1,12 @@
 import React from 'react';
-import { Composition } from 'remotion';
+import { Composition, Folder } from 'remotion';
+import {
+  AgentForgeMasterDoc,
+  getAgentForgeDuration,
+} from './compositions/agentforge_doc/AgentForgeMasterDoc';
+import { ReaMasterShowcase } from './compositions/ReaMasterShowcase';
+import reaMasterTimeline from './compositions/rea_master_timeline.json';
+import { ReaExplainerLongForm } from './compositions/ReaExplainerLongForm';
 import {
   AnimePhonkShort,
   animePhonkShortSchema,
@@ -42,10 +49,68 @@ import {
 } from './compositions/LivingPixelArtShowcase';
 import { ReaSystemArchitectureShowcase } from './compositions/ReaSystemArchitectureShowcase';
 import { KeplerBridgeHardwareShowcase } from './compositions/KeplerBridgeHardwareShowcase';
+import { KeplerBridgePaperDoc } from './compositions/KeplerBridgePaperDoc';
+import { HybridScreenShowcase } from './compositions/HybridScreenShowcase';
 
 export const RemotionRoot: React.FC = () => {
+  const reaMasterDuration = (reaMasterTimeline as any)[reaMasterTimeline.length - 1]?.endFrame || 11800;
+
   return (
     <>
+      {/* 10.6-Minute Master Engineering Documentary: AgentForge Zero-Trust Runtime (1920x1080 @ 30fps) */}
+      <Composition
+        id="AgentForgeMasterDoc"
+        component={AgentForgeMasterDoc}
+        durationInFrames={getAgentForgeDuration()}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+
+      <Folder name="AgentForge-Segments">
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((ch) => (
+          <Composition
+            key={ch}
+            id={`AFAct${ch}`}
+            component={AgentForgeMasterDoc}
+            durationInFrames={getAgentForgeDuration(ch)}
+            fps={30}
+            width={1920}
+            height={1080}
+            defaultProps={{ chapterNumber: ch }}
+          />
+        ))}
+      </Folder>
+
+      {/* 6.5-Minute Master Technical Documentary: Remotion for Antigravity (REA) (1920x1080 @ 30fps) */}
+      <Composition
+        id="ReaMasterShowcase"
+        component={ReaMasterShowcase}
+        durationInFrames={reaMasterDuration}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+
+      {/* 13.5-Minute Master Paper-Craft Documentary: KeplerBridge Direct3D 12 Engine (1920x1080, 814.7s @ 30fps) */}
+      <Composition
+        id="KeplerBridgePaperDoc"
+        component={KeplerBridgePaperDoc}
+        durationInFrames={24441}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+
+      {/* 5-Minute Technical Documentary: Remotion-For-Antigravity (REA) (1920x1080, 300.0s @ 30fps) */}
+      <Composition
+        id="ReaExplainerLongForm"
+        component={ReaExplainerLongForm}
+        durationInFrames={9000}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
       {/* KeplerBridge Hardware Showcase — 45s Hardware Master (1080x1920, 45.0s @ 60fps) */}
       <Composition
         id="KeplerBridgeHardwareShowcase"
@@ -60,6 +125,16 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="ReaSystemArchitectureShowcase"
         component={ReaSystemArchitectureShowcase}
+        durationInFrames={2700}
+        fps={60}
+        width={1080}
+        height={1920}
+      />
+
+      {/* 45-Second Master Hybrid Screen Showcase: Real OBS Screen Recording + Spring Telemetry (1080x1920 @ 60fps) */}
+      <Composition
+        id="HybridScreenShowcase"
+        component={HybridScreenShowcase}
         durationInFrames={2700}
         fps={60}
         width={1080}

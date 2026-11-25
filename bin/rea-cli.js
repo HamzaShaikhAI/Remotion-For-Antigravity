@@ -1786,6 +1786,13 @@ function handleStill(args) {
 
   if (propsArg) cmdArgs.push(propsArg);
 
+  // Pass timeout and extra flags to prevent timeouts with large public directories
+  if (!args.some((a) => a.startsWith('--timeout='))) {
+    cmdArgs.push('--timeout=120000');
+  }
+  const extraFlags = args.filter((a) => a.startsWith('--') && !a.startsWith('--frame=') && !a.startsWith('--props=') && !a.startsWith('--timeout='));
+  cmdArgs.push(...extraFlags);
+
   const child = spawn(cmd, cmdArgs, { stdio: 'inherit', shell: true });
   child.on('close', (code) => {
     if (code === 0) {
@@ -3344,6 +3351,11 @@ async function handleArtDirector(args) {
 
     console.log(`\n⚖️  Grade: ${evaluation.grade}`);
     console.log(`🗣️  Critique: "${evaluation.critique}"`);
+    if (evaluation.metrics) {
+      console.log(`   ⏱️  Max Static Duration: ${evaluation.metrics.maxStaticDurationSec}s (Rule: <=3.0s)`);
+      console.log(`   📏 Vertical Occupancy:  ${evaluation.metrics.verticalOccupancyPct}% (Rule: >=75%)`);
+      console.log(`   🔍 Min Pixel Delta:     ${evaluation.metrics.pixelDeltaScore}%`);
+    }
 
     if (evaluation.passed) {
       console.log(`✅ Art Director approved the cut. Proceeding to final render.`);
@@ -4877,6 +4889,109 @@ ${colors.bold}ZERO-OVERFLOW SAFE CONTAINER INTEGRATION:${colors.reset}
 `);
 }
 
+function handleCta(args) {
+  const compId = args[1] || 'ReaSystemArchitectureShowcase';
+  const repoSlug = args[2] || 'HamzaShaikhAI/Remotion-For-Antigravity';
+  const campaign = args[3] || 'rea_showcase';
+
+  log(`\n📢 ${colors.bold}${colors.cyan}[REA CTA & Publication Metadata Automation]${colors.reset}`);
+  log(`   Target Composition: ${colors.yellow}${compId}${colors.reset}`);
+  log(`   Repository Slug:    ${colors.green}${repoSlug}${colors.reset}`);
+
+  try {
+    const repoUrl = `https://github.com/${repoSlug}`;
+    const utmUrl = `${repoUrl}?utm_source=youtube&utm_medium=video&utm_campaign=${campaign}`;
+    const line1 = `⚡ Explore the Code & Architecture: ${utmUrl}`;
+
+    const chapters = [
+      { timecode: '00:00', title: 'VisionOS Glassmorphic Pipeline Overview' },
+      { timecode: '00:07', title: 'The 11 Specialized Motion Engines' },
+      { timecode: '00:18', title: 'SafeTextContainer & Kinetic Typography' },
+      { timecode: '00:28', title: 'Zero-Error CI Validation & Terminal Proof' },
+      { timecode: '00:37', title: 'Open Source CLI & Instant Quickstart' },
+    ];
+    const chaptersText = chapters.map(c => `${c.timecode} - ${c.title}`).join('\n');
+
+    const pinnedComment = `🚀 Star the repository & run the pipeline locally:
+${utmUrl}
+
+📌 Quickstart in your terminal:
+\`\`\`bash
+git clone ${repoUrl}.git
+cd ${repoSlug.split('/')[1] || 'repo'}
+npm install
+node bin/rea-cli.js preview
+\`\`\`
+
+⏱️ CHAPTERS:
+${chaptersText}
+
+💬 QUESTION FOR ENGINEERS: Which of the 11 engines would you use first in your production stack—the Mean Art Director QA loop, or the Hybrid Screen Compositor? Let me know below! 👇`;
+
+    const fullDesc = `${line1}
+
+Full Documentation & Interactive Demos:
+👉 Website: https://hamzashaikhai.com
+👉 GitHub Repository: ${utmUrl}
+
+In this video, we break down the Remotion Engine Architecture (REA v2.4.0) inside Google Antigravity—a multi-agent motion design pipeline combining VisionOS glassmorphic bento grids, spring-driven camera motion, hybrid screen capture compositing, and EBU R128 audio mastering.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+⏱️ TIMESTAMPS:
+${chaptersText}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛠️ TECH STACK & ENGINES:
+• Remotion 4.0 & React 18
+• OffthreadVideo Hybrid Screen Compositor
+• Mean Art Director Headless QA (<3s Visual-Change Gate)
+• EBU R128 True Peak Audio Mastering (-14 LUFS)
+• JetBrains Mono & Plus Jakarta Sans Typography System
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+Connect & Follow:
+• GitHub: ${repoUrl}
+• Portfolio: https://hamzashaikhai.com
+
+#Remotion #Antigravity #MotionDesign #React #TypeScript #WebDev #OpenSource`;
+
+    const outDir = path.resolve(process.cwd(), 'public/metadata');
+    ensureDir(outDir);
+    const jsonPath = path.join(outDir, `${compId}_cta_metadata.json`);
+    const mdPath = path.join(outDir, `${compId}_cta_metadata.md`);
+
+    const pkg = {
+      compositionId: compId,
+      repositoryUrl: repoUrl,
+      utmTaggedUrl: utmUrl,
+      line1YouTubeDescription: line1,
+      highCtrTitles: [
+        'How I Built an Autonomous Video Engine with Remotion & Antigravity (REA)',
+        'Stop Using Slide Generators: Inside Remotion\'s 11-Engine Video Architecture',
+        'The Video Pipeline That Generates Broadcast-Grade Motion Code in 60s',
+      ],
+      chapters,
+      pinnedComment,
+      fullDescription: fullDesc,
+      generatedAt: new Date().toISOString(),
+    };
+
+    fs.writeFileSync(jsonPath, JSON.stringify(pkg, null, 2), 'utf-8');
+    fs.writeFileSync(mdPath, `# YouTube & Social Publication Package: ${compId}\n\n## 📌 Line 1 YouTube Description (Before the fold):\n\`\`\`\n${line1}\n\`\`\`\n\n## 💬 Pinned Comment:\n\`\`\`\n${pinnedComment}\n\`\`\`\n\n## 📝 Full Description:\n\`\`\`\n${fullDesc}\n\`\`\`\n`, 'utf-8');
+
+    logSuccess(`CTA package generated and saved to: ${jsonPath}`);
+    logSuccess(`Markdown publication brief saved to: ${mdPath}`);
+
+    console.log(`\n${colors.bold}${colors.green}📌 LINE 1 YOUTUBE DESCRIPTION (Before the fold):${colors.reset}`);
+    console.log(`${colors.cyan}${line1}${colors.reset}\n`);
+
+    console.log(`${colors.bold}${colors.green}💬 PINNED COMMENT PREVIEW:${colors.reset}`);
+    console.log(`${pinnedComment}\n`);
+  } catch (err) {
+    logError(`Failed to generate CTA metadata: ${err.message}`);
+  }
+}
+
 function printHelp() {
   console.log(`
 ${colors.bold}${colors.cyan}REA CLI${colors.reset} - Remotion Engine for Antigravity (v${VERSION})
@@ -5238,6 +5353,13 @@ async function main() {
     }
     case 'assets':
       handleAssets(args);
+      break;
+    case 'cta':
+    case 'cta-metadata':
+      handleCta(args);
+      break;
+    case 'hybrid':
+      handlePreview(['HybridScreenShowcase']);
       break;
     default:
       logError(`Unknown command: "${command}"`);

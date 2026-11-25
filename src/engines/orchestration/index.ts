@@ -16,3 +16,4 @@ export * from './CopyrightRiskAuditor';
 export * from './MultiPlatformReframer';
 export * from './TrendMetaAdapter';
 export * from './ExecutiveProducerDashboard';
+export * from './CtaMetadataAutomation';

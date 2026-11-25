@@ -12,6 +12,7 @@ import {
 import { SafeTextContainer } from '../engines/typography/SafeTextContainer.tsx';
 import { motionTokens } from '../tokens/motion.ts';
 import { BrandLogo } from '../tokens/logos/BrandLogo.tsx';
+import { LowerThirdSlugBadge } from '../engines/annotations/LowerThirdSlugBadge.tsx';
 import {
   ACT_BOUNDARIES,
   ACT1_PROMPT_TEXT,
@@ -905,7 +906,7 @@ const Act3DeterminismWorkbench: React.FC<{ frame: number; fps: number }> = ({ fr
           </div>
         </div>
 
-        {/* Guarantee 2: Deterministic Clock (Zero Math.random()) */}
+        {/* Guarantee 2: Deterministic Clock (Zero Non-Deterministic Random) */}
         <div
           style={{
             width: '100%',
@@ -1619,6 +1620,19 @@ export const ReaSystemArchitectureShowcase: React.FC = () => {
         {/* Act 5: Climax 4×3 System Architecture Bento Matrix (Frames 2,250 – 2,700 | 37.5s – 45.0s) */}
         {frame >= 2245 && <Act5BentoMatrixClimax frame={frame} fps={fps} />}
       </div>
+
+      {/* 5. Peak Retention Broadcast Badge: QR Code & GitHub Slug (Frames 1800 – 2100 | 30.0s – 35.0s) */}
+      <LowerThirdSlugBadge
+        repositorySlug="github.com/HamzaShaikhAI/Remotion-For-Antigravity"
+        fullUrl="https://github.com/HamzaShaikhAI/Remotion-For-Antigravity"
+        headline="OPEN SOURCE ARCHITECTURE"
+        subline="Star on GitHub • Run in 60s"
+        startFrame={1800}
+        durationInFrames={300}
+        positionBottom={340}
+        accentColor="#10B981"
+        theme="dark-glass"
+      />
     </AbsoluteFill>
   );
 };

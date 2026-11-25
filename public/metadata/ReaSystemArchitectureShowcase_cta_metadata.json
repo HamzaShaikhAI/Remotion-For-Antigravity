@@ -1,0 +1,36 @@
+{
+  "compositionId": "ReaSystemArchitectureShowcase",
+  "repositoryUrl": "https://github.com/HamzaShaikhAI/Remotion-For-Antigravity",
+  "utmTaggedUrl": "https://github.com/HamzaShaikhAI/Remotion-For-Antigravity?utm_source=youtube&utm_medium=video&utm_campaign=rea_showcase",
+  "line1YouTubeDescription": "⚡ Explore the Code & Architecture: https://github.com/HamzaShaikhAI/Remotion-For-Antigravity?utm_source=youtube&utm_medium=video&utm_campaign=rea_showcase",
+  "highCtrTitles": [
+    "How I Built an Autonomous Video Engine with Remotion & Antigravity (REA)",
+    "Stop Using Slide Generators: Inside Remotion's 11-Engine Video Architecture",
+    "The Video Pipeline That Generates Broadcast-Grade Motion Code in 60s"
+  ],
+  "chapters": [
+    {
+      "timecode": "00:00",
+      "title": "VisionOS Glassmorphic Pipeline Overview"
+    },
+    {
+      "timecode": "00:07",
+      "title": "The 11 Specialized Motion Engines"
+    },
+    {
+      "timecode": "00:18",
+      "title": "SafeTextContainer & Kinetic Typography"
+    },
+    {
+      "timecode": "00:28",
+      "title": "Zero-Error CI Validation & Terminal Proof"
+    },
+    {
+      "timecode": "00:37",
+      "title": "Open Source CLI & Instant Quickstart"
+    }
+  ],
+  "pinnedComment": "🚀 Star the repository & run the pipeline locally:\nhttps://github.com/HamzaShaikhAI/Remotion-For-Antigravity?utm_source=youtube&utm_medium=video&utm_campaign=rea_showcase\n\n📌 Quickstart in your terminal:\n```bash\ngit clone https://github.com/HamzaShaikhAI/Remotion-For-Antigravity.git\ncd Remotion-For-Antigravity\nnpm install\nnode bin/rea-cli.js preview\n```\n\n⏱️ CHAPTERS:\n00:00 - VisionOS Glassmorphic Pipeline Overview\n00:07 - The 11 Specialized Motion Engines\n00:18 - SafeTextContainer & Kinetic Typography\n00:28 - Zero-Error CI Validation & Terminal Proof\n00:37 - Open Source CLI & Instant Quickstart\n\n💬 QUESTION FOR ENGINEERS: Which of the 11 engines would you use first in your production stack—the Mean Art Director QA loop, or the Hybrid Screen Compositor? Let me know below! 👇",
+  "fullDescription": "⚡ Explore the Code & Architecture: https://github.com/HamzaShaikhAI/Remotion-For-Antigravity?utm_source=youtube&utm_medium=video&utm_campaign=rea_showcase\n\nFull Documentation & Interactive Demos:\n👉 Website: https://hamzashaikhai.com\n👉 GitHub Repository: https://github.com/HamzaShaikhAI/Remotion-For-Antigravity?utm_source=youtube&utm_medium=video&utm_campaign=rea_showcase\n\nIn this video, we break down the Remotion Engine Architecture (REA v2.4.0) inside Google Antigravity—a multi-agent motion design pipeline combining VisionOS glassmorphic bento grids, spring-driven camera motion, hybrid screen capture compositing, and EBU R128 audio mastering.\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n⏱️ TIMESTAMPS:\n00:00 - VisionOS Glassmorphic Pipeline Overview\n00:07 - The 11 Specialized Motion Engines\n00:18 - SafeTextContainer & Kinetic Typography\n00:28 - Zero-Error CI Validation & Terminal Proof\n00:37 - Open Source CLI & Instant Quickstart\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n🛠️ TECH STACK & ENGINES:\n• Remotion 4.0 & React 18\n• OffthreadVideo Hybrid Screen Compositor\n• Mean Art Director Headless QA (<3s Visual-Change Gate)\n• EBU R128 True Peak Audio Mastering (-14 LUFS)\n• JetBrains Mono & Plus Jakarta Sans Typography System\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━\nConnect & Follow:\n• GitHub: https://github.com/HamzaShaikhAI/Remotion-For-Antigravity\n• Portfolio: https://hamzashaikhai.com\n\n#Remotion #Antigravity #MotionDesign #React #TypeScript #WebDev #OpenSource",
+  "generatedAt": "2026-11-25T06:18:55.718Z"
+}
