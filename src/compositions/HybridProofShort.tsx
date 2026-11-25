@@ -86,14 +86,14 @@ export const HYBRID_SHORT_PRESETS: Record<'kepler' | 'agentforge' | 'rea', Hybri
   },
 };
 
-export const HybridProofShort: React.FC<HybridProofShortProps> = ({
-  videoSrc,
-  audioSrc,
-  repoSlug,
-  siteUrl,
-  accentColor,
-  topKicker,
-  beats,
+export const HybridProofShort: React.FC<Partial<HybridProofShortProps> & Record<string, unknown>> = ({
+  videoSrc = HYBRID_SHORT_PRESETS.kepler.videoSrc,
+  audioSrc = HYBRID_SHORT_PRESETS.kepler.audioSrc,
+  repoSlug = HYBRID_SHORT_PRESETS.kepler.repoSlug,
+  siteUrl = HYBRID_SHORT_PRESETS.kepler.siteUrl,
+  accentColor = HYBRID_SHORT_PRESETS.kepler.accentColor,
+  topKicker = HYBRID_SHORT_PRESETS.kepler.topKicker,
+  beats = HYBRID_SHORT_PRESETS.kepler.beats,
 }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
