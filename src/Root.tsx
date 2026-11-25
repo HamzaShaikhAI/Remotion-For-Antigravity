@@ -51,6 +51,10 @@ import { ReaSystemArchitectureShowcase } from './compositions/ReaSystemArchitect
 import { KeplerBridgeHardwareShowcase } from './compositions/KeplerBridgeHardwareShowcase';
 import { KeplerBridgePaperDoc } from './compositions/KeplerBridgePaperDoc';
 import { HybridScreenShowcase } from './compositions/HybridScreenShowcase';
+import {
+  HybridProofShort,
+  HYBRID_SHORT_PRESETS,
+} from './compositions/HybridProofShort';
 
 export const RemotionRoot: React.FC = () => {
   const reaMasterDuration = (reaMasterTimeline as any)[reaMasterTimeline.length - 1]?.endFrame || 11800;
@@ -503,6 +507,33 @@ export const RemotionRoot: React.FC = () => {
           useExternalClips: true,
           gameplayMode: 'none',
         }}
+      />
+      <Composition
+        id="HybridShortKepler"
+        component={HybridProofShort}
+        durationInFrames={480}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={HYBRID_SHORT_PRESETS.kepler}
+      />
+      <Composition
+        id="HybridShortAgentForge"
+        component={HybridProofShort}
+        durationInFrames={540}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={HYBRID_SHORT_PRESETS.agentforge}
+      />
+      <Composition
+        id="HybridShortRea"
+        component={HybridProofShort}
+        durationInFrames={540}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={HYBRID_SHORT_PRESETS.rea}
       />
     </>
   );

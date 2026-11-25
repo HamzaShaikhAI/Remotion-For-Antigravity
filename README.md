@@ -2,33 +2,28 @@
 
 # Remotion For Antigravity (REA) 🚀
 
+[![Star this repo if it saved you time](https://img.shields.io/github/stars/HamzaShaikhAI/Remotion-For-Antigravity?style=for-the-badge&logo=github&label=%E2%AD%90%20Star%20This%20Repo%20If%20It%20Saved%20You%20Time&color=f59e0b)](https://github.com/HamzaShaikhAI/Remotion-For-Antigravity/stargazers)
 [![Antigravity Video Engine](https://img.shields.io/badge/Antigravity-%231%20Video%20Engine-2563EB?style=for-the-badge&logo=rocket&logoColor=white)](https://github.com/HamzaShaikhAI/Remotion-For-Antigravity)
 [![Release v2.4.0 (Stable)](https://img.shields.io/badge/Release-v2.4.0%20(Stable)-10b981?style=for-the-badge&logo=semanticrelease&logoColor=white)](https://github.com/HamzaShaikhAI/Remotion-For-Antigravity/releases/tag/v2.4.0)
 [![npm version](https://img.shields.io/npm/v/antigravity-remotion-skills?style=for-the-badge&logo=npm&logoColor=white&color=cb3837)](https://www.npmjs.com/package/antigravity-remotion-skills)
 [![CI/CD Status](https://img.shields.io/github/actions/workflow/status/HamzaShaikhAI/Remotion-For-Antigravity/ci.yml?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/HamzaShaikhAI/Remotion-For-Antigravity/actions)
 [![Remotion Version](https://img.shields.io/badge/Remotion-v4.0.543-orange?style=for-the-badge&logo=remotion&logoColor=white)](https://www.remotion.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
-[![Dual TTS](https://img.shields.io/badge/Dual_TTS-Gemini_3.8_+_Edge_TTS-ff5722?style=for-the-badge&logo=google&logoColor=white)](https://github.com/HamzaShaikhAI/Remotion-For-Antigravity)
-[![Zero-Flicker Guaranteed](https://img.shields.io/badge/Deterministic-Zero--Flicker%20Guaranteed-8b5cf6?style=for-the-badge&logo=react&logoColor=white)](https://github.com/HamzaShaikhAI/Remotion-For-Antigravity)
 
-<br/>
+**Built by [HamzaShaikhAI](https://hamzashaikhai.com/remotion/#rea-gallery) — *Systems & Local-First AI Engineer***
 
-### **The Enterprise Autonomous Video Studio, Motion Graphics Engine, Procedural Sound Synthesizer & Multi-Format Video Pipeline for Google Antigravity 2.0 AI Agents.**
+### **Replace After Effects & Blurry AI Video Slop with a Deterministic React Video Compiler for Autonomous Coding Agents.**
 
-*Generate, animate, narrate, synthesize procedural audio, trim, loudness-master, and render production-grade React videos directly from autonomous AI prompts with Hollywood editorial intuition and zero frame flicker.*
-
-<br/>
+<img src="assets/rea-demo.gif" alt="Remotion For Antigravity React Video Compiler Demo" width="760" />
 
 ```bash
-# ⚡ Instant Setup: Scaffold a production Remotion + Antigravity Studio in 5 seconds
-npx create-remotion-antigravity my-video-studio
-
-# 📦 Or install the global REA CLI & Agent Skills into your existing workspace
-npm install -g antigravity-remotion-skills
-rea install-skill
+# ⚡ 3-Command Quickstart: Render crisp 60fps React motion graphics with phonetic TTS & 3s QA
+git clone https://github.com/HamzaShaikhAI/Remotion-For-Antigravity.git && cd Remotion-For-Antigravity
+npm install && node bin/rea-cli.js validate
+node bin/rea-cli.js preview
 ```
 
-<br/>
+*Or launch the interactive [1-Click REA Template Gallery](https://hamzashaikhai.com/remotion/#rea-gallery).*
 
 </div>
 

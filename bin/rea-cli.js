@@ -1133,10 +1133,17 @@ async function handleVoice(args) {
       ? 'gemini'
       : 'edge';
 
-  const voiceArg = args.find((a) => a.startsWith('--voice='));
+const voiceArg = args.find((a) => a.startsWith('--voice='));
   const styleArg = args.find((a) => a.startsWith('--style='));
   const style = styleArg ? styleArg.split('=').slice(1).join('=') : undefined;
   const validateFlag = args.includes('--validate');
+  const lexiconOff = args.includes('--lexicon=off');
+  const humanHookArg = args.find((a) => a.startsWith('--human-hook='));
+  const humanHookPath = humanHookArg ? path.resolve(humanHookArg.split('=').slice(1).join('=')) : null;
+  const humanCtaArg = args.find((a) => a.startsWith('--human-cta='));
+  const humanCtaPath = humanCtaArg ? path.resolve(humanCtaArg.split('=').slice(1).join('=')) : null;
+  const captionsOutArg = args.find((a) => a.startsWith('--captions-out='));
+  const captionsOutPath = captionsOutArg ? path.resolve(captionsOutArg.split('=').slice(1).join('=')) : null;
 
   // Resolve output path from positional args (skipping flags)
   const positionalArgs = args.slice(1).filter((a) => !a.startsWith('--'));
@@ -1156,9 +1163,28 @@ async function handleVoice(args) {
   }
 
   // Support reading text directly or from a script file
-  let text = rawInput;
+  let rawScriptText = rawInput;
   if (rawInput && fs.existsSync(path.resolve(process.cwd(), rawInput))) {
-    text = fs.readFileSync(path.resolve(process.cwd(), rawInput), 'utf8');
+    rawScriptText = fs.readFileSync(path.resolve(process.cwd(), rawInput), 'utf8');
+  }
+
+  // Separate visual captions (raw display spellings) from spoken phonetics (TTS)
+  const { applyPhoneticLexicon } = require('./phonetic-lexicon.js');
+  let text = rawScriptText;
+  if (rawScriptText && !lexiconOff) {
+    const lex = applyPhoneticLexicon(rawScriptText);
+    text = lex.spokenText;
+    if (lex.replacementsApplied.length > 0) {
+      logInfo(`Phonetic Lexicon applied ${lex.replacementsApplied.length} brand/technical pronunciation fix(es) for TTS (visual captions preserved).`);
+    }
+    if (captionsOutPath) {
+      ensureDir(path.dirname(captionsOutPath));
+      fs.writeFileSync(captionsOutPath, lex.visualText, 'utf8');
+      logInfo(`Preserved exact visual caption script -> ${captionsOutPath}`);
+    }
+  } else if (rawScriptText && captionsOutPath) {
+    ensureDir(path.dirname(captionsOutPath));
+    fs.writeFileSync(captionsOutPath, rawScriptText, 'utf8');
   }
 
   // Validate script if requested or if editorial rules exist
@@ -1204,17 +1230,20 @@ async function handleVoice(args) {
         }
 
         speechConfig = { speakers: dialogue.speakers };
-        contentBlocks = dialogue.turns.map((turn) => ({
-          type: 'text',
-          text: turn.text,
-          annotations: [
-            {
-              type: 'speech_metadata',
-              speaker: turn.speaker,
-              ...(turn.style ? { style: turn.style } : {}),
-            },
-          ],
-        }));
+        contentBlocks = dialogue.turns.map((turn) => {
+          const turnSpoken = lexiconOff ? turn.text : applyPhoneticLexicon(turn.text).spokenText;
+          return {
+            type: 'text',
+            text: turnSpoken,
+            annotations: [
+              {
+                type: 'speech_metadata',
+                speaker: turn.speaker,
+                ...(turn.style ? { style: turn.style } : {}),
+              },
+            ],
+          };
+        });
       } else {
         // Single-speaker mode
         const selectedVoice = voiceArg ? voiceArg.split('=')[1] : 'Charon';
@@ -1279,6 +1308,25 @@ $synth.Dispose()
         process.exit(1);
       }
       logSuccess(`Edge TTS (${selectedVoice}) generated -> ${outPath}`);
+    }
+
+    // Splice optional human-recorded intro hook / CTA outro seamlessly with EBU R128 loudness matching
+    const spliceInputs = [];
+    if (humanHookPath && fs.existsSync(humanHookPath)) spliceInputs.push(humanHookPath);
+    spliceInputs.push(path.resolve(outPath));
+    if (humanCtaPath && fs.existsSync(humanCtaPath)) spliceInputs.push(humanCtaPath);
+
+    if (spliceInputs.length > 1) {
+      const ffmpegPath = getFfmpegPath();
+      const absOut = path.resolve(outPath);
+      const splicedTmp = absOut + '.spliced.tmp' + path.extname(absOut);
+      const normArgs = spliceInputs.map((_, idx) => `[${idx}:a]aresample=44100,aformat=sample_fmts=fltp:channel_layouts=stereo[a${idx}]`).join(';');
+      const concatIn = spliceInputs.map((_, idx) => `[a${idx}]`).join('');
+      const filterGraph = `${normArgs};${concatIn}concat=n=${spliceInputs.length}:v=0:a=1,loudnorm=I=-14:TP=-1.5:LRA=11[aout]`;
+      const inputFlags = spliceInputs.map((p) => `-i "${p}"`).join(' ');
+      execSync(`"${ffmpegPath}" -y ${inputFlags} -filter_complex "${filterGraph}" -map "[aout]" "${splicedTmp}"`, { stdio: 'pipe' });
+      fs.renameSync(splicedTmp, absOut);
+      logSuccess(`Merged human hook/CTA clips with EBU R128 (-14 LUFS) mastering -> ${outPath}`);
     }
 
     // Probe exact audio duration via ffprobe
@@ -3271,10 +3319,64 @@ function handleDmcaShield(args) {
 
 // Command: art-director (Studio Engine: "Mean Art Director" QA Critique & Auto-Correction Loop)
 async function handleArtDirector(args) {
-  // Usage: rea art-director [compId] [current-props.json] [--render] [--no-render]
+  // Usage: rea art-director [compId] [current-props.json] [--video=out.mp4] [--render] [--no-render]
   const compId = (args[1] && !args[1].startsWith('--')) ? args[1] : 'AnimePhonkShort';
   const propsPath = (args[2] && !args[2].startsWith('--')) ? args[2] : 'current-props.json';
   const shouldRender = args.includes('--render');
+  const videoArg = args.find((a) => a.startsWith('--video='));
+  const targetVideoPath = videoArg ? path.resolve(videoArg.split('=').slice(1).join('=')) : null;
+
+  // Direct MP4 Video Audit Mode: samples rendered video every 1.5s & verifies <=3s delta + >=75% vertical fill
+  if (targetVideoPath) {
+    if (!fs.existsSync(targetVideoPath)) {
+      logError(`Video file not found for Art Director audit: ${targetVideoPath}`);
+      process.exit(1);
+    }
+    const ffmpeg = getFfmpegPath();
+    const ffprobe = getFfprobePath();
+    const tmpDir = path.join(os.tmpdir(), `rea_ad_${Date.now()}`);
+    ensureDir(tmpDir);
+    const probeJson = JSON.parse(
+      execSync(`"${ffprobe}" -v error -show_entries stream=width,height,r_frame_rate -show_entries format=duration -of json "${targetVideoPath}"`, { encoding: 'utf8' })
+    );
+    const vStream = probeJson.streams?.[0] || { width: 1080, height: 1920 };
+    const durSec = parseFloat(probeJson.format?.duration || '15');
+    console.log(`\n🎬 Initiating Mean Art Director Pixel-Delta QA on "${path.basename(targetVideoPath)}" (${vStream.width}x${vStream.height}, ${durSec.toFixed(1)}s)...`);
+
+    const fullFfmpeg = (() => {
+      try {
+        const p = require('ffmpeg-static');
+        if (p && fs.existsSync(p)) return p;
+      } catch (e) {}
+      return ffmpeg;
+    })();
+    execSync(`"${fullFfmpeg}" -nostdin -v error -y -i "${targetVideoPath}" -r 0.6667 "${path.join(tmpDir, 'frame_%03d.png')}"`, { stdio: 'pipe' });
+    const frameFiles = fs.readdirSync(tmpDir).filter((f) => f.endsWith('.png')).sort().map((f) => path.join(tmpDir, f));
+    const { runHeuristicArtDirectorQA } = require('../src/engines/studio/mean-art-director');
+    const evaluation = runHeuristicArtDirectorQA(
+      {
+        width: vStream.width,
+        height: vStream.height,
+        aspectRatio: vStream.height > vStream.width ? '9:16' : '16:9',
+        sampleStepSec: 1.5,
+        skipCaptionPropChecks: true,
+      },
+      frameFiles
+    );
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+
+    console.log(`\n⚖️  Grade: ${evaluation.grade} | Frames Audited: ${frameFiles.length} (1.5s interval)`);
+    console.log(`🗣️  Critique: "${evaluation.critique}"`);
+    console.log(`   ⏱️  Max Static Window:   ${evaluation.metrics.maxStaticDurationSec}s (Rule: <3.0s)`);
+    console.log(`   📏 Vertical Occupancy:  ${evaluation.metrics.verticalOccupancyPct}% (Rule: >=75% for 9:16)`);
+    console.log(`   🔍 Min Pixel Delta:     ${evaluation.metrics.pixelDeltaScore}%`);
+    if (!evaluation.passed) {
+      logError('Art Director rejected rendered video due to static frames or viewport underutilization.');
+      process.exit(1);
+    }
+    logSuccess('Art Director approved rendered video!');
+    return;
+  }
 
   // Handle Multi-Format Manifest Audit
   if (propsPath.endsWith('manifest.json') && fs.existsSync(propsPath)) {
@@ -3326,26 +3428,29 @@ async function handleArtDirector(args) {
   while (!passed && attempt <= maxAttempts) {
     console.log(`\n--- QA Attempt ${attempt} / ${maxAttempts} ---`);
 
-    // 1. Extract 3 critical keyframes (Hook: 10, Drop: 205, Climax: 450) using the current props
-    const frames = [10, 205, 450];
+    // 1. Extract dense keyframes every 1.5s (45 frames @ 30fps) to verify <3.0s visual change + vertical fill
+    const frames = [0, 45, 90, 135, 180, 225];
     const framePaths = [];
 
     for (let i = 0; i < frames.length; i++) {
-      const outPath = `temp_qa_frame_${i}.jpg`;
+      const outPath = `temp_qa_frame_${i}.png`;
       console.log(`📸 Capturing Frame ${frames[i]}...`);
       try {
-        execSync(`${cmd} still "${compId}" "${outPath}" --props="${propsPath}" --frame=${frames[i]} --image-format=jpeg`, { stdio: 'ignore' });
+        execSync(`${cmd} still "${compId}" "${outPath}" --props="${propsPath}" --frame=${frames[i]} --image-format=png`, { stdio: 'pipe' });
       } catch (e) {
-        // Fallback: If still rendering has headless display constraints, create valid dummy frame
-        if (!fs.existsSync(outPath)) {
-          fs.writeFileSync(outPath, Buffer.alloc(100));
-        }
+        logWarn(`Could not render still at frame ${frames[i]} (${e.message?.split('\n')[0] || 'render error'})`);
       }
-      framePaths.push(outPath);
+      if (fs.existsSync(outPath)) {
+        framePaths.push(outPath);
+      }
+    }
+    if (framePaths.length < 2) {
+      logError(`Insufficient rendered frames (${framePaths.length}) for Art Director pixel-delta verification.`);
+      process.exit(1);
     }
 
     // 2. Call the AI Art Director
-    console.log(`🧠 Submitting composition to Art Director Agent...`);
+    console.log(`🧠 Submitting composition (${framePaths.length} PNG keyframes) to Art Director Agent...`);
     const { runArtDirectorQA } = require('../src/engines/backend');
     const evaluation = await runArtDirectorQA(propsPath, framePaths);
 
