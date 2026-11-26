@@ -1,0 +1,8 @@
+1
+00:00:00,100 --> 00:00:05,425
+Autonomous coding agents love running git push --force until a permission firewall stops them.
+
+2
+00:00:05,375 --> 00:00:21,637
+Agent Forge enforces five cryptographic approval tiers, OS-encrypted D P A P I vaults, and 508 verified Vitest security checks across 38 bridges and 56 M C P presets at hum-zah shake A.I. dot com (hum-zah shake A.I.).
+

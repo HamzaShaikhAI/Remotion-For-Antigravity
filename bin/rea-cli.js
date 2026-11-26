@@ -1144,6 +1144,9 @@ const voiceArg = args.find((a) => a.startsWith('--voice='));
   const humanCtaPath = humanCtaArg ? path.resolve(humanCtaArg.split('=').slice(1).join('=')) : null;
   const captionsOutArg = args.find((a) => a.startsWith('--captions-out='));
   const captionsOutPath = captionsOutArg ? path.resolve(captionsOutArg.split('=').slice(1).join('=')) : null;
+  const subtitlesOutArg = args.find((a) => a.startsWith('--subtitles-out='));
+  const subtitlesOutPath = subtitlesOutArg ? path.resolve(subtitlesOutArg.split('=').slice(1).join('=')) : null;
+  const noTrimSilence = args.includes('--no-trim');
 
   // Resolve output path from positional args (skipping flags)
   const positionalArgs = args.slice(1).filter((a) => !a.startsWith('--'));
@@ -1277,7 +1280,8 @@ const voiceArg = args.find((a) => a.startsWith('--voice='));
       let generated = false;
 
       try {
-        const cmd = `edge-tts --text ${JSON.stringify(text)} --write-media "${path.resolve(outPath)}" --voice ${selectedVoice}`;
+        const subFlag = subtitlesOutPath ? ` --write-subtitles "${subtitlesOutPath}"` : '';
+        const cmd = `edge-tts --text ${JSON.stringify(text)} --write-media "${path.resolve(outPath)}"${subFlag} --voice ${selectedVoice}`;
         execSync(cmd, { stdio: 'pipe' });
         generated = true;
       } catch (err) {
@@ -1308,6 +1312,36 @@ $synth.Dispose()
         process.exit(1);
       }
       logSuccess(`Edge TTS (${selectedVoice}) generated -> ${outPath}`);
+      if (subtitlesOutPath && fs.existsSync(subtitlesOutPath)) {
+        logSuccess(`Synced subtitles generated -> ${subtitlesOutPath}`);
+      }
+    }
+
+    // Trim excessive leading/trailing encoder dead air (>0.20s) to prevent silent tails
+    if (!noTrimSilence) {
+      const ffmpegTrim = (() => {
+        try {
+          const p = require('ffmpeg-static');
+          if (p && fs.existsSync(p)) return p;
+        } catch (e) {}
+        return getFfmpegPath();
+      })();
+      const absVoice = path.resolve(outPath);
+      const trimmedTmp = absVoice + '.trimmed.tmp' + path.extname(absVoice);
+      try {
+        const ext = path.extname(absVoice).toLowerCase();
+        const codecArgs = ext === '.mp3' ? '-c:a libmp3lame -b:a 128k' : '-c:a pcm_s16le';
+        execSync(
+          `"${ffmpegTrim}" -nostdin -v error -y -i "${absVoice}" -af "areverse,silenceremove=start_periods=1:start_duration=0.05:start_threshold=-40dB,areverse,apad=pad_dur=0.12" ${codecArgs} "${trimmedTmp}"`,
+          { stdio: 'pipe' }
+        );
+        if (fs.existsSync(trimmedTmp) && fs.statSync(trimmedTmp).size > 4096) {
+          fs.renameSync(trimmedTmp, absVoice);
+          logInfo('Trimmed trailing encoder silence cleanly (<=0.12s breath pad).');
+        }
+      } catch (trimErr) {
+        if (fs.existsSync(trimmedTmp)) fs.unlinkSync(trimmedTmp);
+      }
     }
 
     // Splice optional human-recorded intro hook / CTA outro seamlessly with EBU R128 loudness matching
@@ -1329,18 +1363,29 @@ $synth.Dispose()
       logSuccess(`Merged human hook/CTA clips with EBU R128 (-14 LUFS) mastering -> ${outPath}`);
     }
 
-    // Probe exact audio duration via ffprobe
+    // Probe exact audio duration via ffprobe (falling back to ffmpeg-static stderr if ffprobe missing)
     const ffprobePath = getFfprobePath();
-    const probeCmd = `"${ffprobePath}" -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${path.resolve(outPath)}"`;
-    const durRaw = execSync(probeCmd, { encoding: 'utf8' }).trim();
-    const durationSec = parseFloat(durRaw);
-    const frames30 = Math.ceil(durationSec * 30);
-    const frames60 = Math.ceil(durationSec * 60);
+    let durationSec = NaN;
+    try {
+      const probeCmd = `"${ffprobePath}" -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "${path.resolve(outPath)}"`;
+      durationSec = parseFloat(execSync(probeCmd, { encoding: 'utf8' }).trim());
+    } catch (e) {}
+    if (!Number.isFinite(durationSec)) {
+      const ffStatic = (() => {
+        try { return require('ffmpeg-static'); } catch (e) { return getFfmpegPath(); }
+      })();
+      const { spawnSync } = require('child_process');
+      const r = spawnSync(ffStatic, ['-nostdin', '-i', path.resolve(outPath)], { encoding: 'utf8' });
+      const m = (r.stderr || '').match(/Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)/);
+      if (m) durationSec = Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3]);
+    }
+    const frames30 = Math.ceil((durationSec + 0.25) * 30);
+    const frames60 = Math.ceil((durationSec + 0.25) * 60);
 
     console.log(`\n${colors.bold}${colors.cyan}--- Audio Timing Telemetry ---${colors.reset}`);
     console.log(`  Duration:        ${durationSec.toFixed(2)} seconds`);
     console.log(`  Target Frames:   ${colors.green}${frames30} frames @ 30fps${colors.reset} | ${frames60} frames @ 60fps`);
-    console.log(`  Remotion Sequence: <Series.Sequence durationInFrames={${frames30 + 15}}> (+15 frames dwell buffer)\n`);
+    console.log(`  Remotion Sequence: <Series.Sequence durationInFrames={${frames30}}> (tight <=0.25s breath buffer; avoids silent tail)\n`);
   } catch (err) {
     logError(`Voiceover generation failed (${provider}): ${err.message}`);
     process.exit(1);
@@ -3352,7 +3397,7 @@ async function handleArtDirector(args) {
     })();
     execSync(`"${fullFfmpeg}" -nostdin -v error -y -i "${targetVideoPath}" -r 0.6667 "${path.join(tmpDir, 'frame_%03d.png')}"`, { stdio: 'pipe' });
     const frameFiles = fs.readdirSync(tmpDir).filter((f) => f.endsWith('.png')).sort().map((f) => path.join(tmpDir, f));
-    const { runHeuristicArtDirectorQA } = require('../src/engines/studio/mean-art-director');
+    const { runHeuristicArtDirectorQA, auditTrailingAudioTail } = require('../src/engines/studio/mean-art-director');
     const evaluation = runHeuristicArtDirectorQA(
       {
         width: vStream.width,
@@ -3365,13 +3410,21 @@ async function handleArtDirector(args) {
     );
     fs.rmSync(tmpDir, { recursive: true, force: true });
 
+    const audioAudit = auditTrailingAudioTail(targetVideoPath, fullFfmpeg, durSec);
+    if (!audioAudit.passed) {
+      evaluation.passed = false;
+      evaluation.grade = 'C';
+      evaluation.critique = `${evaluation.critique} ${audioAudit.reason}`;
+    }
+
     console.log(`\n⚖️  Grade: ${evaluation.grade} | Frames Audited: ${frameFiles.length} (1.5s interval)`);
     console.log(`🗣️  Critique: "${evaluation.critique}"`);
     console.log(`   ⏱️  Max Static Window:   ${evaluation.metrics.maxStaticDurationSec}s (Rule: <3.0s)`);
     console.log(`   📏 Vertical Occupancy:  ${evaluation.metrics.verticalOccupancyPct}% (Rule: >=75% for 9:16)`);
     console.log(`   🔍 Min Pixel Delta:     ${evaluation.metrics.pixelDeltaScore}%`);
+    console.log(`   🔊 Trailing Audio Tail: ${audioAudit.reason}`);
     if (!evaluation.passed) {
-      logError('Art Director rejected rendered video due to static frames or viewport underutilization.');
+      logError('Art Director rejected rendered video due to static frames, viewport underutilization, or trailing silent audio.');
       process.exit(1);
     }
     logSuccess('Art Director approved rendered video!');

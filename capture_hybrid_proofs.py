@@ -35,13 +35,18 @@ def launch_browser(p):
             continue
     raise RuntimeError("No Chromium browser found")
 
+MOBILE_WIDTH = 430
+MOBILE_HEIGHT = 932
+MOBILE_DPR = 2
+OUT_WIDTH = MOBILE_WIDTH * MOBILE_DPR   # 860
+OUT_HEIGHT = MOBILE_HEIGHT * MOBILE_DPR # 1864
+
 def capture_sequence(page, name, steps_fn):
     fdir = os.path.join(TMP_FRAMES, name)
     if os.path.exists(fdir):
         shutil.rmtree(fdir)
     os.makedirs(fdir, exist_ok=True)
     idx = [0]
-    stop_flag = [False]
 
     def snap():
         p = os.path.join(fdir, f"f_{idx[0]:04d}.png")
@@ -52,17 +57,17 @@ def capture_sequence(page, name, steps_fn):
     steps_fn(snap)
 
     mp4_out = os.path.join(OUT_DIR, f"{name}.mp4")
-    # Convert 8fps real browser frames -> smooth 30fps H.264 MP4 (1080x1080 crisp scale)
+    # Convert 8fps Retina mobile frames (430x932 @2x = 860x1864) -> crisp 30fps portrait H.264 MP4
     subprocess.run(
         [
             "node", "-e",
-            f"const ff=require('ffmpeg-static'); require('child_process').execFileSync(ff,['-y','-framerate','8','-i',{os.path.join(fdir, 'f_%04d.png')!r},'-vf','scale=1080:1080:flags=lanczos,fps=30','-c:v','libx264','-pix_fmt','yuv420p','-crf','18',{mp4_out!r}],{{stdio:'inherit'}});"
+            f"const ff=require('ffmpeg-static'); require('child_process').execFileSync(ff,['-y','-framerate','8','-i',{os.path.join(fdir, 'f_%04d.png')!r},'-vf','scale={OUT_WIDTH}:{OUT_HEIGHT}:flags=lanczos,fps=30','-c:v','libx264','-pix_fmt','yuv420p','-crf','18',{mp4_out!r}],{{stdio:'inherit'}});"
         ],
         cwd=r"C:\Users\win10\Documents\antigravity-remotion-skills",
         check=True,
     )
     shutil.rmtree(fdir, ignore_errors=True)
-    print(f"Captured {mp4_out} from {idx[0]} real browser frames")
+    print(f"Captured {mp4_out} ({OUT_WIDTH}x{OUT_HEIGHT} from 430x932 mobile viewport, {idx[0]} frames)")
 
 def burst(snap, count=14, dt=0.10):
     for _ in range(count):
@@ -71,14 +76,20 @@ def burst(snap, count=14, dt=0.10):
 
 with sync_playwright() as p:
     browser = launch_browser(p)
-    ctx = browser.new_context(viewport={"width": 1080, "height": 1080}, device_scale_factor=1)
+    ctx = browser.new_context(
+        viewport={"width": MOBILE_WIDTH, "height": MOBILE_HEIGHT},
+        device_scale_factor=MOBILE_DPR,
+        is_mobile=True,
+        has_touch=True,
+    )
     pg = ctx.new_page()
 
-    # 1. KeplerBridge live benchmark explorer interactions
+    # 1. KeplerBridge live benchmark explorer interactions at mobile width (430x932)
     pg.goto(f"{base_url}/keplerbridge/", wait_until="networkidle")
     pg.locator("#benchmark-explorer").scroll_into_view_if_needed()
     def step_kepler(snap):
         burst(snap, 16)
+        pg.locator(".kb-gpu-btn[data-gpu='gtx750ti']").scroll_into_view_if_needed()
         pg.locator(".kb-gpu-btn[data-gpu='gtx750ti']").click()
         burst(snap, 16)
         pg.locator(".kb-gpu-btn[data-gpu='gtx780ti']").click()
@@ -91,25 +102,27 @@ with sync_playwright() as p:
         burst(snap, 16)
     capture_sequence(pg, "kepler_explorer_capture", step_kepler)
 
-    # 2. REA 1-Click Template Gallery interactions
+    # 2. REA 1-Click Template Gallery interactions at mobile width (430x932)
     pg.goto(f"{base_url}/remotion/", wait_until="networkidle")
     pg.locator("#rea-gallery").scroll_into_view_if_needed()
     def step_rea(snap):
         burst(snap, 16)
+        pg.locator(".rea-filter-btn[data-cat='shorts']").scroll_into_view_if_needed()
         pg.locator(".rea-filter-btn[data-cat='shorts']").click()
         burst(snap, 16)
         pg.locator(".rea-filter-btn[data-cat='hybrid']").click()
         burst(snap, 16)
         pg.locator(".rea-filter-btn[data-cat='all']").click()
         burst(snap, 16)
+        pg.locator(".rea-copy-btn").first.scroll_into_view_if_needed()
         pg.locator(".rea-copy-btn").first.click()
         burst(snap, 20)
     capture_sequence(pg, "rea_gallery_capture", step_rea)
 
-    # 3. AgentForge Architecture Portal live scroll capture
+    # 3. AgentForge Architecture Portal live scroll capture at mobile width (430x932)
     pg.goto(f"{base_url}/agentforge/", wait_until="networkidle")
     def step_af(snap):
-        for y in (0, 220, 480, 760, 1040, 1320):
+        for y in (0, 260, 560, 880, 1200, 1520):
             pg.evaluate(f"window.scrollTo(0, {y})")
             burst(snap, 14)
     capture_sequence(pg, "agentforge_portal_capture", step_af)

@@ -15,6 +15,8 @@ export interface LowerThirdSlugBadgeProps {
   durationInFrames?: number;
   badgeIcon?: 'github' | 'star' | 'terminal' | 'verified';
   positionBottom?: number;
+  rightSafeMargin?: number;
+  maxWidth?: number;
   accentColor?: string;
   theme?: 'dark-glass' | 'cyber' | 'editorial';
 }
@@ -95,12 +97,23 @@ export const LowerThirdSlugBadge: React.FC<LowerThirdSlugBadgeProps> = ({
   startFrame = 1800, // 30.0s @ 60fps
   durationInFrames = 300, // Exact 5.0 seconds (300 frames)
   badgeIcon = 'github',
-  positionBottom = 340, // 340px from bottom (well clear of YouTube Shorts 280px trap)
+  positionBottom = 360, // >=360px bottom clearance avoids YouTube Shorts chrome overlap
+  rightSafeMargin,
+  maxWidth = 860,
   accentColor = '#38BDF8',
   theme = 'dark-glass',
 }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, width, height } = useVideoConfig();
+  const isVertical = height > width;
+  const effectiveRightSafe = rightSafeMargin ?? (isVertical ? 140 : 0);
+  const effectiveBottom = isVertical ? Math.max(positionBottom, 360) : positionBottom;
+  const cardWidth = effectiveRightSafe > 0
+    ? Math.min(maxWidth, Math.max(540, width - effectiveRightSafe - 44))
+    : Math.min(maxWidth, 820);
+  const horizontalAnchorLeft = effectiveRightSafe > 0
+    ? `${44 + Math.round((width - effectiveRightSafe - 44) / 2)}px`
+    : '50%';
 
   if (frame < startFrame || frame > startFrame + durationInFrames) {
     return null;
@@ -141,8 +154,8 @@ export const LowerThirdSlugBadge: React.FC<LowerThirdSlugBadgeProps> = ({
     <div
       style={{
         position: 'absolute',
-        bottom: positionBottom,
-        left: '50%',
+        bottom: effectiveBottom,
+        left: horizontalAnchorLeft,
         transform: `translateX(-50%) translateY(${translateY}px) scale(${scale})`,
         opacity,
         zIndex: 100,
@@ -151,7 +164,7 @@ export const LowerThirdSlugBadge: React.FC<LowerThirdSlugBadgeProps> = ({
     >
       <div
         style={{
-          width: 820,
+          width: cardWidth,
           backgroundColor:
             theme === 'cyber'
               ? 'rgba(8, 14, 26, 0.94)'

@@ -11,12 +11,14 @@ const { runHeuristicArtDirectorQA } = require('../src/engines/studio/mean-art-di
 const raw = 'Visit hamzashaikhai.com to clone Remotion-For-Antigravity, KeplerBridge, and AgentForge by @HamzaShaikhAI.';
 const lex = applyPhoneticLexicon(raw);
 assert.equal(lex.visualText, raw);
-assert.match(lex.spokenText, /Hahm-za Shaykh A I dot com/);
+assert.match(lex.spokenText, /hum-zah shake A\.I\. dot com/);
 assert.match(lex.spokenText, /Ree-motion for Anti-gravity/);
 assert.match(lex.spokenText, /Kepler Bridge/);
 assert.match(lex.spokenText, /Agent Forge/);
-assert.match(lex.spokenText, /by Hahm-za Shaykh A I\.$/);
+assert.match(lex.spokenText, /by hum-zah shake A\.I\.$/);
 assert.ok(lex.replacementsApplied.length >= 4);
+const repoLex = applyPhoneticLexicon('github.com/HamzaShaikhAI/KeplerBridge');
+assert.match(repoLex.spokenText, /github dot com slash hum-zah shake A\.I\. slash Kepler Bridge/);
 console.log('PASS phonetic lexicon:', lex.spokenText);
 
 // 2. Test 3s static pixel-delta rejection + <75% vertical viewport occupancy rejection using raw PPM frames

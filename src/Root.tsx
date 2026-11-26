@@ -55,6 +55,19 @@ import {
   HybridProofShort,
   HYBRID_SHORT_PRESETS,
 } from './compositions/HybridProofShort';
+import {
+  AiAgentLiveCodeDemo,
+  DemoAct1ColdOpen,
+  DemoAct2RealAssets,
+  DemoAct3TypographyFix,
+  DemoAct4AudioQA,
+  DemoAct5RenderMCP,
+  DemoAct6OutroCTA,
+} from './compositions/ai_agent_demo/AiDemoActs';
+import {
+  AI_DEMO_ACTS_MANIFEST,
+  getAiDemoDuration,
+} from './compositions/ai_agent_demo/AiDemoMaster';
 
 export const RemotionRoot: React.FC = () => {
   const reaMasterDuration = (reaMasterTimeline as any)[reaMasterTimeline.length - 1]?.endFrame || 11800;
@@ -511,7 +524,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="HybridShortKepler"
         component={HybridProofShort}
-        durationInFrames={480}
+        durationInFrames={693}
         fps={30}
         width={1080}
         height={1920}
@@ -520,7 +533,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="HybridShortAgentForge"
         component={HybridProofShort}
-        durationInFrames={540}
+        durationInFrames={651}
         fps={30}
         width={1080}
         height={1920}
@@ -529,12 +542,42 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="HybridShortRea"
         component={HybridProofShort}
-        durationInFrames={540}
+        durationInFrames={634}
         fps={30}
         width={1080}
         height={1920}
         defaultProps={HYBRID_SHORT_PRESETS.rea}
       />
+
+      {/* Full-Form Proof Video: "This Video Was Rendered 100% by an AI Coding Agent (Live Code Demo)" */}
+      <Composition
+        id="AiAgentLiveCodeDemo"
+        component={AiAgentLiveCodeDemo}
+        durationInFrames={getAiDemoDuration()}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Folder name="AiAgentDemo-Segments">
+        {[
+          { id: 'DemoAct1ColdOpen', comp: DemoAct1ColdOpen, act: 1 },
+          { id: 'DemoAct2RealAssets', comp: DemoAct2RealAssets, act: 2 },
+          { id: 'DemoAct3TypographyFix', comp: DemoAct3TypographyFix, act: 3 },
+          { id: 'DemoAct4AudioQA', comp: DemoAct4AudioQA, act: 4 },
+          { id: 'DemoAct5RenderMCP', comp: DemoAct5RenderMCP, act: 5 },
+          { id: 'DemoAct6OutroCTA', comp: DemoAct6OutroCTA, act: 6 },
+        ].map((seg) => (
+          <Composition
+            key={seg.id}
+            id={seg.id}
+            component={seg.comp}
+            durationInFrames={AI_DEMO_ACTS_MANIFEST.find((a) => a.actNumber === seg.act)?.durationInFrames || 300}
+            fps={30}
+            width={1920}
+            height={1080}
+          />
+        ))}
+      </Folder>
     </>
   );
 };

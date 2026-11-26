@@ -15,18 +15,39 @@ export interface LexiconEntry {
 
 export const MANDATORY_PHONETIC_DICTIONARY: Record<string, LexiconEntry> = {
   'hamzashaikhai.com': {
-    spoken: 'Hamza Shaikh A I dot com',
-    ssmlSub: '<sub alias="Hamza Shaikh A I dot com">hamzashaikhai.com</sub>',
+    spoken: 'hum-zah shake A.I. dot com',
+    ssmlSub: '<sub alias="hum-zah shake A.I. dot com">hamzashaikhai.com</sub>',
     notes: 'Personal engineer portfolio and open-source hub',
   },
+  'hamzashaikhai.github.io': {
+    spoken: 'hum-zah shake A.I. dot github dot I O',
+    ssmlSub: '<sub alias="hum-zah shake A.I. dot github dot I O">hamzashaikhai.github.io</sub>',
+    notes: 'GitHub Pages mirror domain',
+  },
+  '@HamzaShaikhAI': {
+    spoken: 'hum-zah shake A.I.',
+    ssmlSub: '<sub alias="hum-zah shake A.I.">@HamzaShaikhAI</sub>',
+  },
+  'HamzaShaikhAI': {
+    spoken: 'hum-zah shake A.I.',
+    ssmlSub: '<sub alias="hum-zah shake A.I.">HamzaShaikhAI</sub>',
+  },
+  'hamzashaikhai': {
+    spoken: 'hum-zah shake A.I.',
+    ssmlSub: '<sub alias="hum-zah shake A.I.">hamzashaikhai</sub>',
+  },
   'hamzashaikh': {
-    spoken: 'Hamza Shaikh',
-    ssmlSub: '<sub alias="Hamza Shaikh">hamzashaikh</sub>',
+    spoken: 'hum-zah shake',
+    ssmlSub: '<sub alias="hum-zah shake">hamzashaikh</sub>',
   },
   'Remotion-For-Antigravity': {
     spoken: 'Remotion For Anti gravity',
     ssmlSub: '<sub alias="Remotion For Anti gravity">Remotion-For-Antigravity</sub>',
     notes: 'Flagship REA framework repository title',
+  },
+  'GT 740': {
+    spoken: 'G T seven forty',
+    ssmlSub: '<sub alias="G T seven forty">GT 740</sub>',
   },
   'remotion-for-antigravity': {
     spoken: 'Remotion For Anti gravity',
@@ -158,9 +179,11 @@ export class PhoneticLexiconEngine {
 
     for (const term of sortedTerms) {
       const entry = this.dictionary.get(term)!;
-      // Escape term for regex
+      // Escape term for regex and avoid \b before non-word prefixes such as '@'
       const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const regex = new RegExp(`\\b${escaped}\\b`, 'gi');
+      const prefix = /^\w/.test(term) ? '\\b' : '(?<!\\w)';
+      const suffix = /\w$/.test(term) ? '\\b' : '(?!\\w)';
+      const regex = new RegExp(`${prefix}${escaped}${suffix}`, 'gi');
 
       if (regex.test(ssmlResult)) {
         matchedTerms.push(term);

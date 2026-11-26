@@ -317,8 +317,72 @@ async function runArtDirectorQA(propsJsonPath, framePaths) {
   return runHeuristicArtDirectorQA(props, framePaths);
 }
 
+function parseVolumeMetrics(stderrText) {
+  const meanMatch = (stderrText || '').match(/mean_volume:\s*([-\d.]+)\s*dB/);
+  const maxMatch = (stderrText || '').match(/max_volume:\s*([-\d.]+)\s*dB/);
+  return {
+    meanDb: meanMatch ? parseFloat(meanMatch[1]) : -91,
+    maxDb: maxMatch ? parseFloat(maxMatch[1]) : -91,
+  };
+}
+
+/**
+ * Audits rendered video audio track to reject dead narration / silent tails (>=1.2s true silence
+ * or >=8.5dB voiceover energy drop over the last 2.0 seconds even under faint background music).
+ */
+function auditTrailingAudioTail(videoPath, ffmpegPath, totalDurationSec) {
+  if (!videoPath || !fs.existsSync(videoPath) || totalDurationSec < 4.0) {
+    return { passed: true, reason: 'Short/mock clip skipped trailing audio check', tailDropDb: 0, trailingSilenceSec: 0 };
+  }
+  const { spawnSync } = require('child_process');
+  const ff = ffmpegPath || resolveFfmpegBinary();
+
+  const bodyEnd = Math.max(2.0, totalDurationSec - 2.5);
+  const tailStart = Math.max(0, totalDurationSec - 2.0);
+  const bodyRun = spawnSync(ff, ['-nostdin', '-ss', '0', '-t', bodyEnd.toFixed(2), '-i', videoPath, '-af', 'volumedetect', '-f', 'null', '-'], { encoding: 'utf8' });
+  const tailRun = spawnSync(ff, ['-nostdin', '-ss', tailStart.toFixed(2), '-i', videoPath, '-af', 'volumedetect', '-f', 'null', '-'], { encoding: 'utf8' });
+  const silRun = spawnSync(ff, ['-nostdin', '-ss', tailStart.toFixed(2), '-i', videoPath, '-af', 'silencedetect=noise=-34dB:d=1.2', '-f', 'null', '-'], { encoding: 'utf8' });
+
+  const body = parseVolumeMetrics(bodyRun.stderr);
+  const tail = parseVolumeMetrics(tailRun.stderr);
+  const tailDropDb = Number((body.meanDb - tail.meanDb).toFixed(1));
+  const hasTrailingSilence = /silence_start:/.test(silRun.stderr || '');
+
+  if (tail.meanDb <= -55 || hasTrailingSilence) {
+    return {
+      passed: false,
+      reason: `DEAD AUDIO TAIL VIOLATION: Final 2.0s contains >=1.2s silence or dead audio (tail mean ${tail.meanDb} dB). Trim composition duration to match spoken voiceover + <=0.3s pad.`,
+      tailDropDb,
+      bodyMeanDb: body.meanDb,
+      tailMeanDb: tail.meanDb,
+      trailingSilenceSec: hasTrailingSilence ? 1.2 : 2.0,
+    };
+  }
+
+  if (tailDropDb >= 8.5 && tail.maxDb <= -15.0) {
+    return {
+      passed: false,
+      reason: `DEAD NARRATION TAIL VIOLATION: Voiceover drops out early (${tailDropDb} dB mean drop in last 2.0s: body ${body.meanDb} dB vs tail ${tail.meanDb} dB). Tighten composition frames to eliminate silent tail.`,
+      tailDropDb,
+      bodyMeanDb: body.meanDb,
+      tailMeanDb: tail.meanDb,
+      trailingSilenceSec: 2.0,
+    };
+  }
+
+  return {
+    passed: true,
+    reason: `Audio tail healthy (body ${body.meanDb} dB vs tail ${tail.meanDb} dB, drop ${tailDropDb} dB).`,
+    tailDropDb,
+    bodyMeanDb: body.meanDb,
+    tailMeanDb: tail.meanDb,
+    trailingSilenceSec: 0,
+  };
+}
+
 module.exports = {
   calculateBufferPixelDelta,
   runArtDirectorQA,
   runHeuristicArtDirectorQA,
+  auditTrailingAudioTail,
 };

@@ -28,7 +28,7 @@ export const ASPECT_PRESETS: Record<AspectRatioName, AspectPreset> = {
     width: 1080,
     height: 1920,
     fps: 60,
-    safePadding: { top: 120, bottom: 280, left: 50, right: 100 }, // Safe zone for TikTok / Shorts UI buttons
+    safePadding: { top: 120, bottom: 360, left: 48, right: 140 }, // Safe zone clear of TikTok/Shorts bottom chrome and right icons
     recommendedFontScale: 1.15,
   },
   '1:1': {

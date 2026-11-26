@@ -8,12 +8,15 @@
 
 const PHONETIC_RULES = [
   // Domains & Handles (longest/most specific first)
-  [/https?:\/\/(www\.)?hamzashaikhai\.com\/?/gi, 'hamza shaikh A I dot com'],
-  [/https?:\/\/(www\.)?hamzashaikhai\.github\.io\/?/gi, 'hamza shaikh A I dot github dot I O'],
-  [/\bhamzashaikhai\.com\b/gi, 'hamza shaikh A I dot com'],
-  [/\bhamzashaikhai\.github\.io\b/gi, 'hamza shaikh A I dot github dot I O'],
-  [/@?HamzaShaikhAI\b/gi, 'Hamza Shaikh A I'],
-  [/\bHamza\s+Shaikh\b/gi, 'Hahm-za Shaykh'],
+  [/https?:\/\/(www\.)?hamzashaikhai\.com\/?/gi, 'hum-zah shake A.I. dot com'],
+  [/https?:\/\/(www\.)?hamzashaikhai\.github\.io\/?/gi, 'hum-zah shake A.I. dot github dot I O'],
+  [/github\.com\/HamzaShaikhAI\/([A-Za-z0-9._-]+)/gi, 'github dot com slash hum-zah shake A.I. slash $1'],
+  [/\bhamzashaikhai\.com\b/gi, 'hum-zah shake A.I. dot com'],
+  [/\bhamzashaikhai\.github\.io\b/gi, 'hum-zah shake A.I. dot github dot I O'],
+  [/@HamzaShaikhAI\b/gi, 'hum-zah shake A.I.'],
+  [/\bHamzaShaikhAI\b/gi, 'hum-zah shake A.I.'],
+  [/\bhamzashaikhai\b/gi, 'hum-zah shake A.I.'],
+  [/\bHamza\s+Shaikh\b/gi, 'hum-zah shake'],
 
   // Flagship Repo & Product Names
   [/\bRemotion[-_\s]+For[-_\s]+Antigravity\b/gi, 'Ree-motion for Anti-gravity'],
@@ -46,7 +49,6 @@ const PHONETIC_RULES = [
   [/\bHRESULT\b/g, 'H Result'],
   [/\bd3d12\.dll\b/gi, 'd 3 d 12 dot d l l'],
   [/\bkepler_bridge\.ini\b/gi, 'kepler bridge dot I N I'],
-  [/github\.com\/HamzaShaikhAI\/([A-Za-z0-9._-]+)/gi, 'github dot com slash Hamza Shaikh A I slash $1'],
 ];
 
 /**
@@ -74,7 +76,9 @@ function applyPhoneticLexicon(rawText, customOverrides = {}) {
   for (const [key, val] of Object.entries(customOverrides)) {
     if (!key) continue;
     const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const rx = new RegExp(`\\b${escaped}\\b`, 'gi');
+    const prefix = /^\w/.test(key) ? '\\b' : '(?<!\\w)';
+    const suffix = /\w$/.test(key) ? '\\b' : '(?!\\w)';
+    const rx = new RegExp(`${prefix}${escaped}${suffix}`, 'gi');
     const before = spoken;
     spoken = spoken.replace(rx, val);
     if (spoken !== before) {
@@ -82,8 +86,8 @@ function applyPhoneticLexicon(rawText, customOverrides = {}) {
     }
   }
 
-  // Collapse excess whitespace introduced by replacements
-  spoken = spoken.replace(/[ \t]{2,}/g, ' ').trim();
+  // Collapse excess whitespace and double sentence dots introduced by A.I. abbreviations
+  spoken = spoken.replace(/A\.I\.\./g, 'A.I.').replace(/[ \t]{2,}/g, ' ').trim();
 
   return {
     spokenText: spoken,
